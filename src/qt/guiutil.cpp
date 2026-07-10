@@ -151,7 +151,7 @@ bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no bitcoin: URI
     // !SCASH
-    if(!uri.isValid() || uri.scheme() != QString("scash"))
+    if(!uri.isValid() || uri.scheme() != QString("rcpu"))
         return false;
     // !SCASH END
 
@@ -516,7 +516,7 @@ fs::path static StartupShortcutPath()
 {
     ChainType chain = gArgs.GetChainType();
     // !SCASH
-    if (chain == ChainType::SCASHMAIN)
+    if (chain == ChainType::RCPUMAIN)
         return GetSpecialFolderPath(CSIDL_STARTUP) / "Scash.lnk";
     return GetSpecialFolderPath(CSIDL_STARTUP) / fs::u8path(strprintf("Scash (%s).lnk", ChainTypeToString(chain)));
     // !SCASH END
@@ -599,7 +599,7 @@ fs::path static GetAutostartFilePath()
 {
     ChainType chain = gArgs.GetChainType();
     // !SCASH
-    if (chain == ChainType::SCASHMAIN)
+    if (chain == ChainType::RCPUMAIN)
         return GetAutostartDir() / "scash.desktop";
     return GetAutostartDir() / fs::u8path(strprintf("scash-%s.desktop", ChainTypeToString(chain)));
     // !SCASH END
@@ -647,7 +647,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         // !SCASH
-        if (chain == ChainType::SCASHMAIN)
+        if (chain == ChainType::RCPUMAIN)
             optionFile << "Name=Scash\n";
         else
             optionFile << strprintf("Name=Scash (%s)\n", ChainTypeToString(chain));

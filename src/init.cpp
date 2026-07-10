@@ -464,12 +464,12 @@ void SetupServerArgs(ArgsManager& argsman)
     const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
 
     // !SCASH
-    const auto scashRegtestBaseParams = CreateBaseChainParams(ChainType::SCASHREGTEST);
-    const auto scashTestnetBaseParams = CreateBaseChainParams(ChainType::SCASHTESTNET);
-    const auto scashMainBaseParams = CreateBaseChainParams(ChainType::SCASHMAIN);
-    const auto scashRegtestChainParams = CreateChainParams(argsman, ChainType::SCASHREGTEST);
-    const auto scashTestnetChainParams = CreateChainParams(argsman, ChainType::SCASHTESTNET);
-    const auto scashMainChainParams = CreateChainParams(argsman, ChainType::SCASHMAIN);
+    const auto scashRegtestBaseParams = CreateBaseChainParams(ChainType::RCPUREGTEST);
+    const auto scashTestnetBaseParams = CreateBaseChainParams(ChainType::RCPUTESTNET);
+    const auto scashMainBaseParams = CreateBaseChainParams(ChainType::RCPUMAIN);
+    const auto scashRegtestChainParams = CreateChainParams(argsman, ChainType::RCPUREGTEST);
+    const auto scashTestnetChainParams = CreateChainParams(argsman, ChainType::RCPUTESTNET);
+    const auto scashMainChainParams = CreateChainParams(argsman, ChainType::RCPUMAIN);
     // !SCASH END
 
     // Hidden Options
@@ -1076,7 +1076,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     }
 
     // !SCASH
-    if (chain == ChainType::SCASHMAIN || chain == ChainType::SCASHREGTEST || chain == ChainType::SCASHTESTNET) {
+    if (chain == ChainType::RCPUMAIN || chain == ChainType::RCPUREGTEST || chain == ChainType::RCPUTESTNET) {
         if (args.GetBoolArg("-mempoolfullrbf", DEFAULT_MEMPOOL_FULL_RBF)) {
             return InitError(Untranslated("RBF is not supported."));
         }

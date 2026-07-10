@@ -125,16 +125,16 @@ std::unique_ptr<const CChainParams> CreateChainParams(const ArgsManager& args, c
         return CChainParams::RegTest(opts);
     }
     // !SCASH
-    case ChainType::SCASHREGTEST: {
+    case ChainType::RCPUREGTEST: {
         auto opts = CChainParams::RegTestOptions{};
         ReadRegTestArgs(args, opts);
-        return CChainParams::ScashRegTest(opts);
+        return CChainParams::RcpuRegTest(opts);
     }
-    case ChainType::SCASHTESTNET: {
-        return CChainParams::ScashTestNet();
+    case ChainType::RCPUTESTNET: {
+        return CChainParams::RcpuTestNet();
     }
-    case ChainType::SCASHMAIN: {
-        return CChainParams::ScashMain();
+    case ChainType::RCPUMAIN: {
+        return CChainParams::RcpuMain();
     }
     // !SCASH END
     }

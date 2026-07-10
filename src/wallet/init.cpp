@@ -123,7 +123,7 @@ bool WalletInit::ParameterInteraction() const
 
     // !SCASH
     ChainType chain = gArgs.GetChainType();
-    if (chain == ChainType::SCASHMAIN || chain == ChainType::SCASHREGTEST || chain == ChainType::SCASHTESTNET) {
+    if (chain == ChainType::RCPUMAIN || chain == ChainType::RCPUREGTEST || chain == ChainType::RCPUTESTNET) {
         if (gArgs.GetBoolArg("-walletrbf", DEFAULT_WALLET_RBF)) {
             return InitError(Untranslated("RBF is not supported."));
         }

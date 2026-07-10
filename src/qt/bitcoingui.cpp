@@ -260,7 +260,7 @@ void BitcoinGUI::createActions()
 
     sendCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/send"), tr("&Send"), this);
     // !SCASH
-    sendCoinsAction->setStatusTip(tr("Send coins to a Scash address"));
+    sendCoinsAction->setStatusTip(tr("Send coins to a RCPU address"));
     // !SCASH END
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
@@ -321,9 +321,9 @@ void BitcoinGUI::createActions()
     changePassphraseAction->setStatusTip(tr("Change the passphrase used for wallet encryption"));
     signMessageAction = new QAction(tr("Sign &message…"), this);
     // !SCASH
-    signMessageAction->setStatusTip(tr("Sign messages with your Scash addresses to prove you own them"));
+    signMessageAction->setStatusTip(tr("Sign messages with your RCPU addresses to prove you own them"));
     verifyMessageAction = new QAction(tr("&Verify message…"), this);
-    verifyMessageAction->setStatusTip(tr("Verify messages to ensure they were signed with specified Scash addresses"));
+    verifyMessageAction->setStatusTip(tr("Verify messages to ensure they were signed with specified RCPU addresses"));
     m_load_psbt_action = new QAction(tr("&Load PSBT from file…"), this);
     m_load_psbt_action->setStatusTip(tr("Load Partially Signed Scash Transaction"));
     m_load_psbt_clipboard_action = new QAction(tr("Load PSBT from &clipboard…"), this);

@@ -15,10 +15,10 @@
 void SetupChainParamsBaseOptions(ArgsManager& argsman)
 {
 // !SCASH
-    argsman.AddArg("-chain=<chain>", "Use the chain <chain> (default: main). Allowed values: scash, scashtestnet, scashregtest, main, test, signet, regtest", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
-    argsman.AddArg("-scashregtest", "Enter scash regression test mode. Equivalent to -chain=scashregtest.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
-    argsman.AddArg("-scashtestnet", "Use the scash test chain. Equivalent to -chain=scashtestnet.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
-    argsman.AddArg("-scash", "Use the scash chain. Equivalent to -chain=scash.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    argsman.AddArg("-chain=<chain>", "Use the chain <chain> (default: main). Allowed values: rcpu, rcputestnet, rcpuregtest, main, test, signet, regtest", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    argsman.AddArg("-rcpuregtest", "Enter scash regression test mode. Equivalent to -chain=rcpuregtest.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    argsman.AddArg("-rcputestnet", "Use the rcpu test chain. Equivalent to -chain=rcputestnet.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    argsman.AddArg("-rcpu", "Use the rcpu chain. Equivalent to -chain=rcpu.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
 // !SCASH END
     argsman.AddArg("-regtest", "Enter regression test mode, which uses a special chain in which blocks can be solved instantly. "
                  "This is intended for regression testing tools and app development. Equivalent to -chain=regtest.", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::CHAINPARAMS);
@@ -54,12 +54,12 @@ std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
         return std::make_unique<CBaseChainParams>("btcsignet", 38332, 38334);
     case ChainType::REGTEST:
         return std::make_unique<CBaseChainParams>("btcregtest", 18443, 18445);
-    case ChainType::SCASHMAIN:
-        return std::make_unique<CBaseChainParams>("scash", 8342, 8344);
-    case ChainType::SCASHTESTNET:
-        return std::make_unique<CBaseChainParams>("scashtestnet", 18342, 18344);
-    case ChainType::SCASHREGTEST:
-        return std::make_unique<CBaseChainParams>("scashregtest", 18453, 18455);
+    case ChainType::RCPUMAIN:
+        return std::make_unique<CBaseChainParams>("rcpu", 9362, 9363);
+    case ChainType::RCPUTESTNET:
+        return std::make_unique<CBaseChainParams>("rcputestnet", 19362, 19363);
+    case ChainType::RCPUREGTEST:
+        return std::make_unique<CBaseChainParams>("rcpuregtest", 19462, 19463);
     // !SCASH END
     }
     assert(false);

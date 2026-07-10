@@ -36,13 +36,13 @@
 #include <utility>
 #include <variant>
 
-const char * const BITCOIN_CONF_FILENAME = "scash.conf";
+const char * const BITCOIN_CONF_FILENAME = "rcpu.conf";
 const char * const BITCOIN_SETTINGS_FILENAME = "settings.json";
 
 ArgsManager gArgs;
 
 // !SCASH
-static bool fExecutableNamedScash;
+static bool fExecutableNamedRcpu;
 // !SCASH END
 
 /**
@@ -148,7 +148,7 @@ std::set<std::string> ArgsManager::GetUnsuitableSectionOnlyArgs() const
 
     // if it's okay to use the default section for this network, don't worry
     // !SCASH
-    if (m_network == ChainTypeToString(ChainType::SCASHMAIN) || m_network == ChainTypeToString(ChainType::MAIN)) return std::set<std::string> {};
+    if (m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network == ChainTypeToString(ChainType::MAIN)) return std::set<std::string> {};
     // !SCASH END
 
     for (const auto& arg : m_network_only_args) {
@@ -164,9 +164,9 @@ std::list<SectionInfo> ArgsManager::GetUnrecognizedSections() const
     // Section names to be recognized in the config file.
     static const std::set<std::string> available_sections{
         // !SCASH
-        ChainTypeToString(ChainType::SCASHREGTEST),
-        ChainTypeToString(ChainType::SCASHTESTNET),
-        ChainTypeToString(ChainType::SCASHMAIN),
+        ChainTypeToString(ChainType::RCPUREGTEST),
+        ChainTypeToString(ChainType::RCPUTESTNET),
+        ChainTypeToString(ChainType::RCPUMAIN),
         // !SCASH END
         ChainTypeToString(ChainType::REGTEST),
         ChainTypeToString(ChainType::SIGNET),
@@ -193,7 +193,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
 
     // !SCASH
     std::string filename = ToLower(fs::PathFromString(argv[0]).lexically_normal().filename().string());
-    fExecutableNamedScash = filename.find("scash") != std::string::npos;
+    fExecutableNamedRcpu = filename.find("rcpu") != std::string::npos;
     // !SCASH END
 
     for (int i = 1; i < argc; i++) {
@@ -707,7 +707,7 @@ fs::path GetDefaultDataDir()
 #ifdef WIN32
     // Windows
     // !SCASH
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Scash";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "RCPU";
     // !SCASH END
 #else
     fs::path pathRet;
@@ -719,12 +719,12 @@ fs::path GetDefaultDataDir()
 #ifdef MAC_OSX
     // macOS
     // !SCASH
-    return pathRet / "Library/Application Support/Scash";
+    return pathRet / "Library/Application Support/RCPU";
     // !SCASH END
 #else
     // Unix-like
     // !SCASH
-    return pathRet / ".scash";
+    return pathRet / ".rcpu";
     // !SCASH END
 #endif
 #endif
@@ -792,19 +792,19 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     if (fTestNet) return ChainType::TESTNET;
 
     // !SCASH
-    const bool fScashMain = get_net("-scash");
-    const bool fScashRegTest = get_net("-scashregtest");
-    const bool fScashTestnet = get_net("-scashtestnet");
+    const bool fRcpuMain = get_net("-rcpu");
+    const bool fRcpuRegTest = get_net("-rcpuregtest");
+    const bool fRcpuTestnet = get_net("-rcputestnet");
 
-    if ((int)chain_arg.has_value() + (int)fScashMain + (int)fScashTestnet + (int)fScashRegTest + (int)fRegTest + (int)fSigNet + (int)fTestNet > 1) {
-        throw std::runtime_error("Invalid combination of -scash, -scashregtest, -scashtestnet, -regtest, -signet, -testnet and -chain. Can use at most one.");
+    if ((int)chain_arg.has_value() + (int)fRcpuMain + (int)fRcpuTestnet + (int)fRcpuRegTest + (int)fRegTest + (int)fSigNet + (int)fTestNet > 1) {
+        throw std::runtime_error("Invalid combination of -rcpu, -rcpuregtest, -rcputestnet, -regtest, -signet, -testnet and -chain. Can use at most one.");
     }
 
-    if (fScashMain) return ChainType::SCASHMAIN;
-    if (fScashRegTest) return ChainType::SCASHREGTEST;
-    if (fScashTestnet) return ChainType::SCASHTESTNET;
+    if (fRcpuMain) return ChainType::RCPUMAIN;
+    if (fRcpuRegTest) return ChainType::RCPUREGTEST;
+    if (fRcpuTestnet) return ChainType::RCPUTESTNET;
 
-    if (fExecutableNamedScash) return ChainType::SCASHMAIN;
+    if (fExecutableNamedRcpu) return ChainType::RCPUMAIN;
     // !SCASH END
 
     return ChainType::MAIN;
@@ -813,7 +813,7 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
 bool ArgsManager::UseDefaultSection(const std::string& arg) const
 {
     // !SCASH
-    return m_network == ChainTypeToString(ChainType::SCASHMAIN) || m_network == ChainTypeToString(ChainType::MAIN) || m_network_only_args.count(arg) == 0;
+    return m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network == ChainTypeToString(ChainType::MAIN) || m_network_only_args.count(arg) == 0;
     // !SCASH END
 }
 

@@ -21,12 +21,12 @@ std::string ChainTypeToString(ChainType chain)
     case ChainType::REGTEST:
         return "regtest";
     // !SCASH
-    case ChainType::SCASHMAIN:
-        return "scash";
-    case ChainType::SCASHTESTNET:
-        return "scashtestnet";
-    case ChainType::SCASHREGTEST:
-        return "scashregtest";
+    case ChainType::RCPUMAIN:
+        return "rcpu";
+    case ChainType::RCPUTESTNET:
+        return "rcputestnet";
+    case ChainType::RCPUREGTEST:
+        return "rcpuregtest";
     // !SCASH END
     }
     assert(false);
@@ -43,12 +43,12 @@ std::optional<ChainType> ChainTypeFromString(std::string_view chain)
     } else if (chain == "regtest") {
         return ChainType::REGTEST;
     // !SCASH
-    } else if (chain == "scash") {
-        return ChainType::SCASHMAIN;
-    } else if (chain == "scashtestnet") {
-        return ChainType::SCASHTESTNET;
-    } else if (chain == "scashregtest") {
-        return ChainType::SCASHREGTEST;
+    } else if (chain == "rcpu") {
+        return ChainType::RCPUMAIN;
+    } else if (chain == "rcputestnet") {
+        return ChainType::RCPUTESTNET;
+    } else if (chain == "rcpuregtest") {
+        return ChainType::RCPUREGTEST;
     // !SCASH END
     } else {
         return std::nullopt;

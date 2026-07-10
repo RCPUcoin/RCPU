@@ -1,5 +1,5 @@
 // Copyright (c) 2012-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +22,7 @@
  * target servers or GUI users specifically.
  */
 // !SCASH
-const std::string CLIENT_NAME("Scash");
+const std::string CLIENT_NAME("RCPU");
 // !SCASH END
 
 #ifdef HAVE_BUILD_INFO
@@ -94,8 +94,8 @@ std::string CopyrightHolders(const std::string& strPrefix)
     }
 
     // !SCASH
-    if (copyright_devs.find("Scash") == std::string::npos) {
-        strCopyrightHolders += "\nCopyright (C) 2024 The Scash developers";
+    if (copyright_devs.find("RCPU") == std::string::npos) {
+        strCopyrightHolders += "\nCopyright (C) 2024 The RCPU developers";
     }
     // !SCASH END
     return strCopyrightHolders;
@@ -104,7 +104,7 @@ std::string CopyrightHolders(const std::string& strPrefix)
 std::string LicenseInfo()
 {
     // !SCASH
-    const std::string URL_SOURCE_CODE = "<https://github.com/scash-project/scash>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/rcpu-project/rcpu>";
     // !SCASH END
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2009, COPYRIGHT_YEAR) + " ") + "\n" +

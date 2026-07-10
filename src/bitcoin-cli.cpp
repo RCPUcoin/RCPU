@@ -439,11 +439,11 @@ private:
             return " btcregtest";
         case ChainType::MAIN:
             return " btc";
-        case ChainType::SCASHTESTNET:
+        case ChainType::RCPUTESTNET:
             return " scashtestnet";
-        case ChainType::SCASHREGTEST:
+        case ChainType::RCPUREGTEST:
             return " scashregtest";
-        case ChainType::SCASHMAIN:
+        case ChainType::RCPUMAIN:
             return " scash";
         // !SCASH END
         }

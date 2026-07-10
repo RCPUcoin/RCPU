@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -89,7 +89,7 @@ static std::vector<RPCResult> ScriptPubKeyDoc() {
              {RPCResult::Type::STR, "desc", "Inferred descriptor for the output"},
              {RPCResult::Type::STR_HEX, "hex", "The raw public key script bytes, hex-encoded"},
              // !SCASH
-             {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
+             {RPCResult::Type::STR, "address", /*optional=*/true, "The RCPU address (only if a well-defined address exists)"},
              // !SCASH END
              {RPCResult::Type::STR, "type", "The type (one of: " + GetAllOutputTypes() + ")"},
          };
@@ -159,7 +159,7 @@ static std::vector<RPCArg> CreateTxDoc()
                 {"", RPCArg::Type::OBJ_USER_KEYS, RPCArg::Optional::OMITTED, "",
                     {
                         // !SCASH
-                        {"address", RPCArg::Type::AMOUNT, RPCArg::Optional::NO, "A key-value pair. The key (string) is the Scash address, the value (float or string) is the amount in " + CURRENCY_UNIT},
+                        {"address", RPCArg::Type::AMOUNT, RPCArg::Optional::NO, "A key-value pair. The key (string) is the RCPU address, the value (float or string) is the amount in " + CURRENCY_UNIT},
                         // !SCASH END
                     },
                 },
@@ -523,7 +523,7 @@ static RPCHelpMan decodescript()
                 {RPCResult::Type::STR, "desc", "Inferred descriptor for the script"},
                 {RPCResult::Type::STR, "type", "The output type (e.g. " + GetAllOutputTypes() + ")"},
                 // !SCASH
-                {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
+                {RPCResult::Type::STR, "address", /*optional=*/true, "The RCPU address (only if a well-defined address exists)"},
                 // !SCASH END
                 {RPCResult::Type::STR, "p2sh", /*optional=*/true,
                  "address of P2SH script wrapping this redeem script (not returned for types that should not be wrapped)"},
@@ -534,7 +534,7 @@ static RPCHelpMan decodescript()
                      {RPCResult::Type::STR_HEX, "hex", "Hex string of the script public key"},
                      {RPCResult::Type::STR, "type", "The type of the script public key (e.g. witness_v0_keyhash or witness_v0_scripthash)"},
                      // !SCASH
-                     {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
+                     {RPCResult::Type::STR, "address", /*optional=*/true, "The RCPU address (only if a well-defined address exists)"},
                      // !SCASH END
                      {RPCResult::Type::STR, "desc", "Inferred descriptor for the script"},
                      {RPCResult::Type::STR, "p2sh-segwit", "address of the P2SH script wrapping this witness redeem script"},
@@ -851,7 +851,7 @@ const RPCResult decodepsbt_inputs{
                     {RPCResult::Type::STR_HEX, "hex", "The raw public key script bytes, hex-encoded"},
                     {RPCResult::Type::STR, "type", "The type, eg 'pubkeyhash'"},
                     // !SCASH
-                    {RPCResult::Type::STR, "address", /*optional=*/true, "The Scash address (only if a well-defined address exists)"},
+                    {RPCResult::Type::STR, "address", /*optional=*/true, "The RCPU address (only if a well-defined address exists)"},
                     // !SCASH END
                 }},
             }},
@@ -1033,7 +1033,7 @@ static RPCHelpMan decodepsbt()
     return RPCHelpMan{
         "decodepsbt",
         // !SCASH
-        "Return a JSON object representing the serialized, base64-encoded partially signed Scash transaction.",
+        "Return a JSON object representing the serialized, base64-encoded partially signed RCPU transaction.",
         // !SCASH END
                 {
                     {"psbt", RPCArg::Type::STR, RPCArg::Optional::NO, "The PSBT base64 string"},
@@ -1475,7 +1475,7 @@ static RPCHelpMan combinepsbt()
 {
     return RPCHelpMan{"combinepsbt",
                 // !SCASH
-                "\nCombine multiple partially signed Scash transactions into one transaction.\n"
+                "\nCombine multiple partially signed RCPU transactions into one transaction.\n"
                 // !SCASH END
                 "Implements the Combiner role.\n",
                 {
