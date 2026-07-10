@@ -219,9 +219,9 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
 }
 
 static int qt_argc = 1;
-// !SCASH
-static const char* qt_argv = "scash-qt";
-// !SCASH END
+// !RCPU
+static const char* qt_argv = "rcpu-qt";
+// !RCPU END
 
 BitcoinApplication::BitcoinApplication()
     : QApplication(qt_argc, const_cast<char**>(&qt_argv))

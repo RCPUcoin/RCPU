@@ -2188,10 +2188,10 @@ void CConnman::ThreadDNSAddressSeed()
     FastRandomContext rng;
     std::vector<std::string> seeds = m_params.DNSSeeds();
 
-    // !SCASH
+    // !RCPU
     auto added_dns_seeds = gArgs.GetArgs("-adddnsseed");
     seeds.insert(seeds.end(), added_dns_seeds.begin(), added_dns_seeds.end());
-    // !SCASH END
+    // !RCPU END
 
     Shuffle(seeds.begin(), seeds.end(), rng);
     int seeds_right_now = 0; // Number of seeds left before testing if we have enough connections

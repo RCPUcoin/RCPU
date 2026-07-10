@@ -58,10 +58,10 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, bool about) :
         ui->helpMessage->setVisible(false);
     } else {
         setWindowTitle(tr("Command-line options"));
-        // !SCASH
-        QString header = "Usage:  scash-qt [command-line options] [URI]\n\n"
+        // !RCPU
+        QString header = "Usage:  rcpu-qt [command-line options] [URI]\n\n"
                          "Optional URI is a RCPU address in BIP21 URI format.\n";
-        // !SCASH END
+        // !RCPU END
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();

@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -206,9 +206,9 @@ public:
     uint32_t nBits{0};
     uint32_t nNonce{0};
     
-    // !SCASH
+    // !RCPU
     uint256 hashRandomX{};
-    // !SCASH END
+    // !RCPU END
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId{0};
@@ -222,9 +222,9 @@ public:
           nTime{block.nTime},
           nBits{block.nBits},
           nNonce{block.nNonce},
-          // !SCASH
+          // !RCPU
           hashRandomX{block.hashRandomX}
-          // !SCASH END
+          // !RCPU END
     {
     }
 
@@ -260,9 +260,9 @@ public:
         block.nTime = nTime;
         block.nBits = nBits;
         block.nNonce = nNonce;
-        // !SCASH
+        // !RCPU
         block.hashRandomX = hashRandomX;
-        // !SCASH END
+        // !RCPU END
         return block;
     }
 
@@ -435,11 +435,11 @@ public:
         READWRITE(obj.nTime);
         READWRITE(obj.nBits);
         READWRITE(obj.nNonce);
-        // !SCASH
+        // !RCPU
         if (g_isRandomX) {
             READWRITE(obj.hashRandomX);
         }
-        // !SCASH END
+        // !RCPU END
     }
 
     uint256 ConstructBlockHash() const
@@ -451,9 +451,9 @@ public:
         block.nTime = nTime;
         block.nBits = nBits;
         block.nNonce = nNonce;
-        // !SCASH
+        // !RCPU
         block.hashRandomX = hashRandomX;
-        // !SCASH END
+        // !RCPU END
         return block.GetHash();
     }
 

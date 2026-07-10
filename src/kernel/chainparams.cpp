@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2021 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -544,7 +544,7 @@ std::unique_ptr<const CChainParams> CChainParams::TestNet()
     return std::make_unique<const CTestNetParams>();
 }
 
-// !SCASH
+// !RCPU
 
 // Compute block hash over entire header (including RandomX fields) even if global flag is not set
 static uint256 GetHashOfRcpuGenesisBlock(const CBlock& genesis) {
@@ -891,4 +891,4 @@ std::unique_ptr<const CChainParams> CChainParams::RcpuMain()
     return std::make_unique<const CRcpuMainParams>();
 }
 
-// !SCASH END
+// !RCPU END

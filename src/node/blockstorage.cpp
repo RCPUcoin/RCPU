@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -131,13 +131,13 @@ bool BlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, s
                 pindexNew->nStatus        = diskindex.nStatus;
                 pindexNew->nTx            = diskindex.nTx;
 
-                // !SCASH
+                // !RCPU
                 pindexNew->hashRandomX    = diskindex.hashRandomX;
 
                 if (!CheckProofOfWorkRandomX(pindexNew->GetBlockHeader(), consensusParams, POW_VERIFY_COMMITMENT_ONLY)) {
                     return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());
                 }
-                // !SCASH END
+                // !RCPU END
 
                 pcursor->Next();
             } else {
@@ -1047,9 +1047,9 @@ bool BlockManager::ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos) cons
     }
 
     // Check the header
-    // !SCASH
+    // !RCPU
     if (!CheckProofOfWorkRandomX(block.GetBlockHeader(), GetConsensus(), POW_VERIFY_COMMITMENT_ONLY)) {
-    // !SCASH END
+    // !RCPU END
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
     }
 

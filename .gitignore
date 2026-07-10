@@ -15,19 +15,19 @@ src/test/fuzz/fuzz
 src/test/test_bitcoin
 src/qt/test/test_bitcoin-qt
 
-# !SCASH
-src/scash
-src/scashd
-src/scash-cli
-src/scash-gui
-src/scash-node
-src/scash-tx
-src/scash-util
-src/scash-chainstate
-src/scash-wallet
-src/test/test_scash
-src/qt/test/test_scash-qt
-# !SCASH END
+# !RCPU
+src/rcpu
+src/rcpud
+src/rcpu-cli
+src/rcpu-gui
+src/rcpu-node
+src/rcpu-tx
+src/rcpu-util
+src/rcpu-chainstate
+src/rcpu-wallet
+src/test/test_rcpu
+src/qt/test/test_rcpu-qt
+# !RCPU END
 
 # autoreconf
 Makefile.in

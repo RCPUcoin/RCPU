@@ -20,9 +20,9 @@ static RPCHelpMan verifymessage()
     return RPCHelpMan{"verifymessage",
         "Verify a signed message.",
         {
-            // !SCASH
+            // !RCPU
             {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The RCPU address to use for the signature."},
-            // !SCASH END
+            // !RCPU END
             {"signature", RPCArg::Type::STR, RPCArg::Optional::NO, "The signature provided by the signer in base 64 encoding (see signmessage)."},
             {"message", RPCArg::Type::STR, RPCArg::Optional::NO, "The message that was signed."},
         },

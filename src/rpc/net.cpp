@@ -492,9 +492,9 @@ static RPCHelpMan getaddednodeinfo()
                             {
                                 {RPCResult::Type::OBJ, "", "",
                                 {
-                                    // !SCASH
-                                    {RPCResult::Type::STR, "address", "The Scash server IP and port we're connected to"},
-                                    // !SCASH END
+                                    // !RCPU
+                                    {RPCResult::Type::STR, "address", "The RCPU server IP and port we're connected to"},
+                                    // !RCPU END
                                     {RPCResult::Type::STR, "connected", "connection, inbound or outbound"},
                                 }},
                             }},

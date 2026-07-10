@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Scash Security Policy
-    url: https://github.com/scash-project/scash/blob/scash_master/SECURITY-SCASH.md
+  - name: RCPU Security Policy
+    url: https://github.com/rcpu-project/rcpu/blob/rcpu_master/SECURITY-RCPU.md
     about: View security policy
-  - name: Scash Developers
-    url: https://github.com/scash-project
-    about: Scash Project homepage
+  - name: RCPU Developers
+    url: https://github.com/rcpu-project
+    about: RCPU Project homepage

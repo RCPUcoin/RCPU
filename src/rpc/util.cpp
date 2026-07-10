@@ -29,9 +29,9 @@
 #include <tuple>
 
 const std::string UNIX_EPOCH_TIME = "UNIX epoch time";
-// !SCASH
-const std::string EXAMPLE_ADDRESS[2] = {"scash1qszrk8tlw87204xl2mhw3d4d4gypz9ytalzk8rq", "scash1qdqh2zcph5nqqlhk2cnrf3lrfs4s4k0j2eczuq6"};
-// !SCASH END
+// !RCPU
+const std::string EXAMPLE_ADDRESS[2] = {"rcpu1qszrk8tlw87204xl2mhw3d4d4gypz9ytalzk8rq", "rcpu1qdqh2zcph5nqqlhk2cnrf3lrfs4s4k0j2eczuq6"};
+// !RCPU END
 
 std::string GetAllOutputTypes()
 {
@@ -157,16 +157,16 @@ std::string ShellQuoteIfNeeded(const std::string& s)
 
 std::string HelpExampleCli(const std::string& methodname, const std::string& args)
 {
-    // !SCASH
-    return "> scash-cli " + methodname + " " + args + "\n";
-    // !SCASH END
+    // !RCPU
+    return "> rcpu-cli " + methodname + " " + args + "\n";
+    // !RCPU END
 }
 
 std::string HelpExampleCliNamed(const std::string& methodname, const RPCArgList& args)
 {
-    // !SCASH
-    std::string result = "> scash-cli -named " + methodname;
-    // !SCASH END
+    // !RCPU
+    std::string result = "> rcpu-cli -named " + methodname;
+    // !RCPU END
     for (const auto& argpair: args) {
         const auto& value = argpair.second.isStr()
                 ? argpair.second.get_str()

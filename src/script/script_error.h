@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -83,10 +83,10 @@ typedef enum ScriptError_t
     SCRIPT_ERR_OP_CODESEPARATOR,
     SCRIPT_ERR_SIG_FINDANDDELETE,
 
-    // !SCASH
+    // !RCPU
     /* Ordinals inscriptions */
     SCRIPT_ERR_ORDINALS,
-    // !SCASH END
+    // !RCPU END
 
     SCRIPT_ERR_ERROR_COUNT
 } ScriptError;

@@ -104,18 +104,18 @@ static int AppInitRawTx(int argc, char* argv[])
 
     if (argc < 2 || HelpRequested(gArgs) || gArgs.IsArgSet("-version")) {
         // First part of help message is specific to this utility
-        // !SCASH
-        std::string strUsage = PACKAGE_NAME " scash-tx utility version " + FormatFullVersion() + "\n";
-        // !SCASH END
+        // !RCPU
+        std::string strUsage = PACKAGE_NAME " rcpu-tx utility version " + FormatFullVersion() + "\n";
+        // !RCPU END
 
         if (gArgs.IsArgSet("-version")) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"
-                // !SCASH
-                "Usage:  scash-tx [options] <hex-tx> [commands]  Update hex-encoded scash transaction\n"
-                "or:     scash-tx [options] -create [commands]   Create hex-encoded scash transaction\n"
-                // !SCASH END
+                // !RCPU
+                "Usage:  rcpu-tx [options] <hex-tx> [commands]  Update hex-encoded rcpu transaction\n"
+                "or:     rcpu-tx [options] -create [commands]   Create hex-encoded rcpu transaction\n"
+                // !RCPU END
                 "\n";
             strUsage += gArgs.GetHelpMessage();
         }

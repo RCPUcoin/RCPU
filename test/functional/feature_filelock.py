@@ -33,9 +33,9 @@ class FilelockTest(BitcoinTestFramework):
         self.log.info("Check that cookie and PID file are not deleted when attempting to start a second bitcoind using the same datadir")
         cookie_file = datadir / ".cookie"
         assert cookie_file.exists()  # should not be deleted during the second bitcoind instance shutdown
-        #! SCASH
-        pid_file = datadir / "scashd.pid"
-        #! SCASH END
+        #! RCPU
+        pid_file = datadir / "rcpud.pid"
+        #! RCPU END
         assert pid_file.exists()
 
         if self.is_wallet_compiled():

@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2021 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -162,11 +162,11 @@ public:
     static std::unique_ptr<const CChainParams> Main();
     static std::unique_ptr<const CChainParams> TestNet();
 
-    // !SCASH
+    // !RCPU
     static std::unique_ptr<const CChainParams> RcpuRegTest(const RegTestOptions& options);
     static std::unique_ptr<const CChainParams> RcpuTestNet();
     static std::unique_ptr<const CChainParams> RcpuMain();
-    // !SCASH END
+    // !RCPU END
 
 protected:
     CChainParams() {}

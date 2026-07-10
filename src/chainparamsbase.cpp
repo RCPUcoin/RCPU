@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2021 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,12 +14,12 @@
 
 void SetupChainParamsBaseOptions(ArgsManager& argsman)
 {
-// !SCASH
+// !RCPU
     argsman.AddArg("-chain=<chain>", "Use the chain <chain> (default: main). Allowed values: rcpu, rcputestnet, rcpuregtest, main, test, signet, regtest", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
-    argsman.AddArg("-rcpuregtest", "Enter scash regression test mode. Equivalent to -chain=rcpuregtest.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    argsman.AddArg("-rcpuregtest", "Enter rcpu regression test mode. Equivalent to -chain=rcpuregtest.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
     argsman.AddArg("-rcputestnet", "Use the rcpu test chain. Equivalent to -chain=rcputestnet.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
     argsman.AddArg("-rcpu", "Use the rcpu chain. Equivalent to -chain=rcpu.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
-// !SCASH END
+// !RCPU END
     argsman.AddArg("-regtest", "Enter regression test mode, which uses a special chain in which blocks can be solved instantly. "
                  "This is intended for regression testing tools and app development. Equivalent to -chain=regtest.", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::CHAINPARAMS);
     argsman.AddArg("-testactivationheight=name@height.", "Set the activation height of 'name' (segwit, bip34, dersig, cltv, csv). (regtest-only)", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
@@ -45,7 +45,7 @@ const CBaseChainParams& BaseParams()
 std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
 {
     switch (chain) {
-    // !SCASH
+    // !RCPU
     case ChainType::MAIN:
         return std::make_unique<CBaseChainParams>("btc", 8332, 8334);
     case ChainType::TESTNET:
@@ -60,7 +60,7 @@ std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
         return std::make_unique<CBaseChainParams>("rcputestnet", 19362, 19363);
     case ChainType::RCPUREGTEST:
         return std::make_unique<CBaseChainParams>("rcpuregtest", 19462, 19463);
-    // !SCASH END
+    // !RCPU END
     }
     assert(false);
 }

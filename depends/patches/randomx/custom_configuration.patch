@@ -1,4 +1,4 @@
-Patch to update Argon salt for Scash
+Patch to update Argon salt for RCPU
 
 ---
  src/configuration.h | 2 +-
@@ -13,7 +13,7 @@ index 84400dd..1fcdf19 100644
  
  //Argon2d salt
 -#define RANDOMX_ARGON_SALT         "RandomX\x03"
-+#define RANDOMX_ARGON_SALT         "RandomX-Scash\x01"
++#define RANDOMX_ARGON_SALT         "RandomX-RCPU\x01"
  
  //Number of random Cache accesses per Dataset item. Minimum is 2.
  #define RANDOMX_CACHE_ACCESSES     8

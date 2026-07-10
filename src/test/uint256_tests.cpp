@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2021 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE( check_ONE )
     BOOST_CHECK_EQUAL(one, uint256::ONE);
 }
 
-// !SCASH
+// !RCPU
 BOOST_AUTO_TEST_CASE( check_512 )
 {
     std::string zero = "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
@@ -370,6 +370,6 @@ BOOST_AUTO_TEST_CASE( check_512 )
     BOOST_CHECK(arith_uint256::from(v) != target);
     BOOST_CHECK_EQUAL(target.GetHex(), "0000032b65e991cc4ff832b65e991cc4ff832b65e991cc4ff832b65e991cc4fe"); // overflow
 }
-// !SCASH END
+// !RCPU END
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -41,9 +41,9 @@ const char * const BITCOIN_SETTINGS_FILENAME = "settings.json";
 
 ArgsManager gArgs;
 
-// !SCASH
+// !RCPU
 static bool fExecutableNamedRcpu;
-// !SCASH END
+// !RCPU END
 
 /**
  * Interpret a string argument as a boolean.
@@ -147,9 +147,9 @@ std::set<std::string> ArgsManager::GetUnsuitableSectionOnlyArgs() const
     if (m_network.empty()) return std::set<std::string> {};
 
     // if it's okay to use the default section for this network, don't worry
-    // !SCASH
+    // !RCPU
     if (m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network == ChainTypeToString(ChainType::MAIN)) return std::set<std::string> {};
-    // !SCASH END
+    // !RCPU END
 
     for (const auto& arg : m_network_only_args) {
         if (OnlyHasDefaultSectionSetting(m_settings, m_network, SettingName(arg))) {
@@ -163,11 +163,11 @@ std::list<SectionInfo> ArgsManager::GetUnrecognizedSections() const
 {
     // Section names to be recognized in the config file.
     static const std::set<std::string> available_sections{
-        // !SCASH
+        // !RCPU
         ChainTypeToString(ChainType::RCPUREGTEST),
         ChainTypeToString(ChainType::RCPUTESTNET),
         ChainTypeToString(ChainType::RCPUMAIN),
-        // !SCASH END
+        // !RCPU END
         ChainTypeToString(ChainType::REGTEST),
         ChainTypeToString(ChainType::SIGNET),
         ChainTypeToString(ChainType::TESTNET),
@@ -191,10 +191,10 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
     LOCK(cs_args);
     m_settings.command_line_options.clear();
 
-    // !SCASH
+    // !RCPU
     std::string filename = ToLower(fs::PathFromString(argv[0]).lexically_normal().filename().string());
     fExecutableNamedRcpu = filename.find("rcpu") != std::string::npos;
-    // !SCASH END
+    // !RCPU END
 
     for (int i = 1; i < argc; i++) {
         std::string key(argv[i]);
@@ -706,9 +706,9 @@ fs::path GetDefaultDataDir()
     // Unix-like: ~/.bitcoin
 #ifdef WIN32
     // Windows
-    // !SCASH
+    // !RCPU
     return GetSpecialFolderPath(CSIDL_APPDATA) / "RCPU";
-    // !SCASH END
+    // !RCPU END
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -718,14 +718,14 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // macOS
-    // !SCASH
+    // !RCPU
     return pathRet / "Library/Application Support/RCPU";
-    // !SCASH END
+    // !RCPU END
 #else
     // Unix-like
-    // !SCASH
+    // !RCPU
     return pathRet / ".rcpu";
-    // !SCASH END
+    // !RCPU END
 #endif
 #endif
 }
@@ -791,7 +791,7 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     if (fSigNet) return ChainType::SIGNET;
     if (fTestNet) return ChainType::TESTNET;
 
-    // !SCASH
+    // !RCPU
     const bool fRcpuMain = get_net("-rcpu");
     const bool fRcpuRegTest = get_net("-rcpuregtest");
     const bool fRcpuTestnet = get_net("-rcputestnet");
@@ -805,16 +805,16 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     if (fRcpuTestnet) return ChainType::RCPUTESTNET;
 
     if (fExecutableNamedRcpu) return ChainType::RCPUMAIN;
-    // !SCASH END
+    // !RCPU END
 
     return ChainType::MAIN;
 }
 
 bool ArgsManager::UseDefaultSection(const std::string& arg) const
 {
-    // !SCASH
+    // !RCPU
     return m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network == ChainTypeToString(ChainType::MAIN) || m_network_only_args.count(arg) == 0;
-    // !SCASH END
+    // !RCPU END
 }
 
 common::SettingsValue ArgsManager::GetSetting(const std::string& arg) const

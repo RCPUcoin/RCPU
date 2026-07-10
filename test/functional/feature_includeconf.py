@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2018-2021 The Bitcoin Core developers
-# Copyright (c) 2024 The Scash developers
+# Copyright (c) 2024 The RCPU developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Tests the includeconf argument
@@ -30,9 +30,9 @@ class IncludeConfTest(BitcoinTestFramework):
         # - tmpdir/node0/relative2.conf
         with open(self.nodes[0].datadir_path / "relative2.conf", "w", encoding="utf8") as f:
             f.write("uacomment=relative2\n")
-        # !SCASH
-        with open(self.nodes[0].datadir_path / 'scash.conf', "a", encoding="utf8") as f:
-        # !SCASH END
+        # !RCPU
+        with open(self.nodes[0].datadir_path / 'rcpu.conf', "a", encoding="utf8") as f:
+        # !RCPU END
             f.write("uacomment=main\nincludeconf=relative.conf\n")
         self.restart_node(0)
 
@@ -77,9 +77,9 @@ class IncludeConfTest(BitcoinTestFramework):
             # Restore initial file contents
             f.write("uacomment=relative\n")
 
-        #! SCASH
-        with open(self.nodes[0].datadir_path / 'scash.conf', "a", encoding="utf8") as f:
-        #! SCASH END
+        #! RCPU
+        with open(self.nodes[0].datadir_path / 'rcpu.conf', "a", encoding="utf8") as f:
+        #! RCPU END
             f.write("includeconf=relative2.conf\n")
 
         self.start_node(0)

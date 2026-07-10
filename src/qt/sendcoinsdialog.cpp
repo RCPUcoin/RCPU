@@ -195,11 +195,11 @@ void SendCoinsDialog::setModel(WalletModel *_model)
         updateSmartFeeLabel();
 
         // set default rbf checkbox state
-        // !SCASH
+        // !RCPU
         ui->optInRBF->setCheckState(Qt::Unchecked); // Checked);
         ui->optInRBF->setDisabled(true);
         ui->optInRBF->setHidden(true);
-        // !SCASH END
+        // !RCPU END
 
         if (model->wallet().hasExternalSigner()) {
             //: "device" usually means a hardware wallet.

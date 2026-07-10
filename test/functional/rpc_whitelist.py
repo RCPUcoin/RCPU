@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2017-2019 The Bitcoin Core developers
-# Copyright (c) 2024 The Scash developers
+# Copyright (c) 2024 The RCPU developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """
@@ -53,9 +53,9 @@ class RPCWhitelistTest(BitcoinTestFramework):
         ]
         # These commands shouldn't be allowed for any user to test failures
         self.never_allowed = ["getnetworkinfo"]
-        # !SCASH
-        with open(self.nodes[0].datadir_path / 'scash.conf', "a", encoding="utf8") as f:
-        # !SCASH END
+        # !RCPU
+        with open(self.nodes[0].datadir_path / 'rcpu.conf', "a", encoding="utf8") as f:
+        # !RCPU END
             f.write("\nrpcwhitelistdefault=0\n")
             for user in self.users:
                 f.write("rpcauth=" + user[0] + ":" + user[1] + "\n")

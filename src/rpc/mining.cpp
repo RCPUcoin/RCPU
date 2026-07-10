@@ -133,7 +133,7 @@ static bool GenerateBlock(ChainstateManager& chainman, CBlock& block, uint64_t& 
     block_out.reset();
     block.hashMerkleRoot = BlockMerkleRoot(block);
 
-    // !SCASH
+    // !RCPU
     uint256 rxHash;
     rxHash.SetNull();
     while (max_tries > 0 &&
@@ -143,7 +143,7 @@ static bool GenerateBlock(ChainstateManager& chainman, CBlock& block, uint64_t& 
         --max_tries;
     }
     block.hashRandomX = rxHash;
-    // !SCASH END
+    // !RCPU END
 
     if (max_tries == 0 || chainman.m_interrupt) {
         return false;
@@ -225,9 +225,9 @@ static RPCHelpMan generatetodescriptor()
         "Mine to a specified descriptor and return the block hashes.",
         {
             {"num_blocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated."},
-            // !SCASH
+            // !RCPU
             {"descriptor", RPCArg::Type::STR, RPCArg::Optional::NO, "The descriptor to send the newly generated RCPU to."},
-            // !SCASH END
+            // !RCPU END
             {"maxtries", RPCArg::Type::NUM, RPCArg::Default{DEFAULT_MAX_TRIES}, "How many iterations to try."},
         },
         RPCResult{
@@ -271,9 +271,9 @@ static RPCHelpMan generatetoaddress()
         "Mine to a specified address and return the block hashes.",
          {
              {"nblocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated."},
-             // !SCASH
+             // !RCPU
              {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The address to send the newly generated RCPU to."},
-             // !SCASH END
+             // !RCPU END
              {"maxtries", RPCArg::Type::NUM, RPCArg::Default{DEFAULT_MAX_TRIES}, "How many iterations to try."},
          },
          RPCResult{
@@ -284,9 +284,9 @@ static RPCHelpMan generatetoaddress()
          RPCExamples{
             "\nGenerate 11 blocks to myaddress\n"
             + HelpExampleCli("generatetoaddress", "11 \"myaddress\"")
-            // !SCASH
+            // !RCPU
             + "If you are using the " PACKAGE_NAME " wallet, you can get a new address to send the newly generated RCPU to with:\n"
-            // !SCASH END
+            // !RCPU END
             + HelpExampleCli("getnewaddress", "")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
@@ -315,9 +315,9 @@ static RPCHelpMan generateblock()
     return RPCHelpMan{"generateblock",
         "Mine a set of ordered transactions to a specified address or descriptor and return the block hash.",
         {
-            // !SCASH
+            // !RCPU
             {"output", RPCArg::Type::STR, RPCArg::Optional::NO, "The address or descriptor to send the newly generated RCPU to."},
-            // !SCASH END
+            // !RCPU END
             {"transactions", RPCArg::Type::ARR, RPCArg::Optional::NO, "An array of hex strings which are either txids or raw transactions.\n"
                 "Txids must reference transactions currently in the mempool.\n"
                 "All transactions must be valid and in valid order, otherwise the block will be rejected.",
@@ -663,9 +663,9 @@ static RPCHelpMan getblocktemplate()
                 {RPCResult::Type::STR_HEX, "signet_challenge", /*optional=*/true, "Only on signet"},
                 {RPCResult::Type::STR_HEX, "default_witness_commitment", /*optional=*/true, "a valid witness commitment for the unmodified block template"},
 
-                // !SCASH
+                // !RCPU
                 {RPCResult::Type::NUM, "rx_epoch_duration", "seconds"},
-                // !SCASH END
+                // !RCPU END
             }},
         },
         RPCExamples{
@@ -985,9 +985,9 @@ static RPCHelpMan getblocktemplate()
         result.pushKV("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment));
     }
 
-    // !SCASH
+    // !RCPU
     result.pushKV("rx_epoch_duration", consensusParams.nRandomXEpochDuration);
-    // !SCASH END
+    // !RCPU END
 
     return result;
 },

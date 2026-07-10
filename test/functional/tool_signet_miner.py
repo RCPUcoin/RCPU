@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2022 The Bitcoin Core developers
-# Copyright (c) 2024 The Scash developers
+# Copyright (c) 2024 The RCPU developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test signet miner tool"""
@@ -25,9 +25,9 @@ class SignetMinerTest(BitcoinTestFramework):
         self.add_wallet_options(parser)
 
     def set_test_params(self):
-        #! SCASH
+        #! RCPU
         self.chain = "btcsignet"
-        #! SCASH END
+        #! RCPU END
         self.setup_clean_chain = True
         self.num_nodes = 1
 

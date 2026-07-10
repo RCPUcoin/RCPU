@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019-2022 The Bitcoin Core developers
-# Copyright (c) 2024 The Scash developers
+# Copyright (c) 2024 The RCPU developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test basic signet functionality"""
@@ -26,9 +26,9 @@ signet_blocks = [
 
 class SignetBasicTest(BitcoinTestFramework):
     def set_test_params(self):
-        #! SCASH
+        #! RCPU
         self.chain = "btcsignet"
-        #! SCASH END
+        #! RCPU END
         self.num_nodes = 6
         self.setup_clean_chain = True
         shared_args1 = ["-signetchallenge=51"]  # OP_TRUE

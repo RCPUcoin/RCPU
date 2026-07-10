@@ -79,14 +79,14 @@ MAGIC_BYTES = {
     "testnet3": b"\x0b\x11\x09\x07",  # testnet3
     "regtest": b"\xfa\xbf\xb5\xda",   # regtest
     "signet": b"\x0a\x03\xcf\x40",    # signet
-    # !SCASH
+    # !RCPU
     "btctestnet3": b"\x0b\x11\x09\x07",  # testnet3
     "btcregtest": b"\xfa\xbf\xb5\xda",   # regtest
     "btcsignet": b"\x0a\x03\xcf\x40",    # signet
-    "scashtestnet": b"\x0c\x12\x0a\x08",  # scash testnet
-    "scashregtest": b"\xfb\xc0\xb6\xdb",   # scash regtest
-    "scash": b"\xfa\xbf\xb5\xda",   # scash mainnet
-    # !SCASH END
+    "rcputestnet": b"\x0c\x12\x0a\x08",  # rcpu testnet
+    "rcpuregtest": b"\xfb\xc0\xb6\xdb",   # rcpu regtest
+    "rcpu": b"\xfa\xbf\xb5\xda",   # rcpu mainnet
+    # !RCPU END
 }
 
 def sha256(s):

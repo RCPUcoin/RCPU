@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2016-2022 The Bitcoin Core developers
-# Copyright (c) 2024 The Scash developers
+# Copyright (c) 2024 The RCPU developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test label RPCs.
@@ -213,9 +213,9 @@ class WalletLabelsTest(BitcoinTestFramework):
                 ad = BECH32_INVALID[l]
                 assert_raises_rpc_error(
                     -5,
-                    # !SCASH
-                    "Address is not valid" if self.options.descriptors else "Invalid Scash address or script",
-                    # !SCASH END
+                    # !RCPU
+                    "Address is not valid" if self.options.descriptors else "Invalid RCPU address or script",
+                    # !RCPU END
                     lambda: wallet_watch_only.importaddress(label=l, rescan=False, address=ad),
                 )
 

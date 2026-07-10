@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,10 +12,10 @@
 #include <uint256.h>
 #include <util/time.h>
 
-// !SCASH
+// !RCPU
 extern bool g_isRandomX;
 extern bool g_isIBDFinished;
-// !SCASH END
+// !RCPU END
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -34,9 +34,9 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
-    // !SCASH
+    // !RCPU
     uint256 hashRandomX;
-    // !SCASH END
+    // !RCPU END
 
     CBlockHeader()
     {
@@ -45,11 +45,11 @@ public:
 
     SERIALIZE_METHODS(CBlockHeader, obj) { 
         READWRITE(obj.nVersion, obj.hashPrevBlock, obj.hashMerkleRoot, obj.nTime, obj.nBits, obj.nNonce);
-        // !SCASH
+        // !RCPU
         if (g_isRandomX) {
             READWRITE(obj.hashRandomX); 
         }
-        // !SCASH END
+        // !RCPU END
     }
 
     void SetNull()
@@ -60,9 +60,9 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
-        // !SCASH
+        // !RCPU
         hashRandomX.SetNull();
-        // !SCASH END
+        // !RCPU END
     }
 
     bool IsNull() const
@@ -129,9 +129,9 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
-        // !SCASH
+        // !RCPU
         block.hashRandomX  = hashRandomX;
-        // !SCASH END
+        // !RCPU END
         return block;
     }
 

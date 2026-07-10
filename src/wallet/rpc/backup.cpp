@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -306,9 +306,9 @@ RPCHelpMan importaddress()
 
             pwallet->ImportScriptPubKeys(strLabel, scripts, /*have_solving_data=*/false, /*apply_label=*/true, /*timestamp=*/1);
         } else {
-            // !SCASH
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Scash address or script");
-            // !SCASH END
+            // !RCPU
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid RCPU address or script");
+            // !RCPU END
         }
     }
     if (fRescan)
@@ -673,9 +673,9 @@ RPCHelpMan dumpprivkey()
     std::string strAddress = request.params[0].get_str();
     CTxDestination dest = DecodeDestination(strAddress);
     if (!IsValidDestination(dest)) {
-        // !SCASH
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Scash address");
-        // !SCASH END
+        // !RCPU
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid RCPU address");
+        // !RCPU END
     }
     auto keyid = GetKeyForDestination(spk_man, dest);
     if (keyid.IsNull()) {

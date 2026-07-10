@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,9 +14,9 @@
 #include <map>
 #include <vector>
 
-// !SCASH
+// !RCPU
 #include <optional>
-// !SCASH END
+// !RCPU END
 
 namespace Consensus {
 
@@ -150,7 +150,7 @@ struct Params {
         return std::numeric_limits<int>::max();
     }
 
-    // !SCASH
+    // !RCPU
     bool fPowRandomX{false};
     uint32_t nRandomXEpochDuration;
 
@@ -164,7 +164,7 @@ struct Params {
     };
     std::optional<ASERTAnchor> asertAnchorParams;
 
-    // !SCASH END
+    // !RCPU END
 };
 
 } // namespace Consensus

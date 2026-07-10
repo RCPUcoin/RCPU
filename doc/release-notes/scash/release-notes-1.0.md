@@ -1,31 +1,31 @@
 1.0 Release Notes
 ==================
 
-Scash is built from source. There are no binaries available yet.
+RCPU is built from source. There are no binaries available yet.
 
-Scash versioning is as follows:
+RCPU versioning is as follows:
 ```
-Scash version v1.x.x-mithril-core-26.0.0 
+RCPU version v1.x.x-mithril-core-26.0.0 
               |        |            |
-            SCASH   CODENAME    BITCOIN CORE
+            RCPU   CODENAME    BITCOIN CORE
 ```
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/scash-project/scash/issues>
+  <https://github.com/rcpu-project/rcpu/issues>
 
 How to Upgrade
 ==============
 
 If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes in some cases) then just copy over
-`scashd` (on Linux).
+`rcpud` (on Linux).
 
 Compatibility
 ==============
 
-Scash is built as a new chain type on top of the Bitcoin Core software. Scash
-can connect to the Bitcoin network and operate as a Bitcoin client fully compatible with the current network consensus rules. However, it is not recommended to use Scash
+RCPU is built as a new chain type on top of the Bitcoin Core software. RCPU
+can connect to the Bitcoin network and operate as a Bitcoin client fully compatible with the current network consensus rules. However, it is not recommended to use RCPU
 as a Bitcoin client, and instead Bitcoin Core should be used.
 
 Notable changes
@@ -33,27 +33,27 @@ Notable changes
 
 Proof of work
 -------------
-- The SHA256 proof of work has been replaced with RandomX.  See the the [Scash Protocol spec](https://github.com/scash-project/sips/blob/main/scash-protocol-spec.md).
+- The SHA256 proof of work has been replaced with RandomX.  See the the [RCPU Protocol spec](https://github.com/rcpu-project/sips/blob/main/rcpu-protocol-spec.md).
 
 Replace-by-fee
 -------------- 
-- Disabled when running the Scash network
+- Disabled when running the RCPU network
 
 Datacarrier
 ------------
-- Disabled when running the Scash network
+- Disabled when running the RCPU network
 
 Ordinals
 --------
-- Transactions containing ordinals inscriptions are treated as non-standard when running the Scash network.
+- Transactions containing ordinals inscriptions are treated as non-standard when running the RCPU network.
 
 New options
 -----------
 
-- New chain options `-scash`, `-scashtestnet`, `-scashregtest`
+- New chain options `-rcpu`, `-rcputestnet`, `-rcpuregtest`
 
 - New proof of work related options `-randomxfastmode` and `-randomxvmcachesize`.
-  See the [Scash Protocol spec](https://github.com/scash-project/sips/blob/main/scash-protocol-spec.md).
+  See the [RCPU Protocol spec](https://github.com/rcpu-project/sips/blob/main/rcpu-protocol-spec.md).
 
 Updated RPCs
 ------------

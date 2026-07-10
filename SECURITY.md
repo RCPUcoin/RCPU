@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-To report security issues send an email to scashdevs@proton.me. This is a Protonmail account.
+To report security issues send an email to rcpudevs@proton.me. This is a Protonmail account.
 
 If you are sending an email from Protonmail, your email will already be end-to-end encrypted.
 
@@ -10,7 +10,7 @@ If you are sending from a non-Protonmail account, use the following key to commu
 
 | Name | Fingerprint |
 |------|-------------|
-| scashdevs | 8706800a8d41f7b639d80db7de9cabdec423b992 |
+| rcpudevs | 8706800a8d41f7b639d80db7de9cabdec423b992 |
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----

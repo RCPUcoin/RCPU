@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2022 The Bitcoin Core developers
-# Copyright (c) 2024 The Scash developers
+# Copyright (c) 2024 The RCPU developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Helpful routines for regression testing."""
@@ -359,9 +359,9 @@ def initialize_datadir(dirname, n, chain, disable_autoconnect=True):
     datadir = get_datadir_path(dirname, n)
     if not os.path.isdir(datadir):
         os.makedirs(datadir)
-    # !SCASH
-    write_config(os.path.join(datadir, 'scash.conf'), n=n, chain=chain, disable_autoconnect=disable_autoconnect)
-    # !SCASH END
+    # !RCPU
+    write_config(os.path.join(datadir, 'rcpu.conf'), n=n, chain=chain, disable_autoconnect=disable_autoconnect)
+    # !RCPU END
     os.makedirs(os.path.join(datadir, 'stderr'), exist_ok=True)
     os.makedirs(os.path.join(datadir, 'stdout'), exist_ok=True)
     return datadir
@@ -369,7 +369,7 @@ def initialize_datadir(dirname, n, chain, disable_autoconnect=True):
 
 def write_config(config_path, *, n, chain, extra_config="", disable_autoconnect=True):
     # Translate chain subdirectory name to config name
-    # !SCASH
+    # !RCPU
     # Chain folder names from chainparamsbase.cpp are used in mininode to select a chain.
     # However chain name e.g. chain=xxx and config file section [xxx] is taken from chaintype.cpp.
     if chain == 'btctestnet3':
@@ -384,7 +384,7 @@ def write_config(config_path, *, n, chain, extra_config="", disable_autoconnect=
     elif chain == 'btcregtest':
         chain_name_conf_arg = 'regtest'
         chain_name_conf_section = 'regtest'
-    #! SCASH END
+    #! RCPU END
     else:
         chain_name_conf_arg = chain
         chain_name_conf_section = chain
@@ -432,26 +432,26 @@ def get_temp_default_datadir(temp_dir: pathlib.Path) -> tuple[dict, pathlib.Path
     temp_dir, as well as the complete path it would return."""
     if platform.system() == "Windows":
         env = dict(APPDATA=str(temp_dir))
-        # !SCASH
-        datadir = temp_dir / "Scash"
-        # !SCASH END
+        # !RCPU
+        datadir = temp_dir / "RCPU"
+        # !RCPU END
     else:
         env = dict(HOME=str(temp_dir))
         if platform.system() == "Darwin":
-            # !SCASH
-            datadir = temp_dir / "Library/Application Support/Scash"
-            # !SCASH END
+            # !RCPU
+            datadir = temp_dir / "Library/Application Support/RCPU"
+            # !RCPU END
         else:
-            # !SCASH
-            datadir = temp_dir / ".scash"
-            # !SCASH END
+            # !RCPU
+            datadir = temp_dir / ".rcpu"
+            # !RCPU END
     return env, datadir
 
 
 def append_config(datadir, options):
-    # !SCASH
-    with open(os.path.join(datadir, "scash.conf"), 'a', encoding='utf8') as f:
-    # !SCASH END
+    # !RCPU
+    with open(os.path.join(datadir, "rcpu.conf"), 'a', encoding='utf8') as f:
+    # !RCPU END
         for option in options:
             f.write(option + "\n")
 
@@ -459,10 +459,10 @@ def append_config(datadir, options):
 def get_auth_cookie(datadir, chain):
     user = None
     password = None
-    # !SCASH
-    if os.path.isfile(os.path.join(datadir, "scash.conf")):
-        with open(os.path.join(datadir, "scash.conf"), 'r', encoding='utf8') as f:
-    # !SCASH END
+    # !RCPU
+    if os.path.isfile(os.path.join(datadir, "rcpu.conf")):
+        with open(os.path.join(datadir, "rcpu.conf"), 'r', encoding='utf8') as f:
+    # !RCPU END
             for line in f:
                 if line.startswith("rpcuser="):
                     assert user is None  # Ensure that there is only one rpcuser line

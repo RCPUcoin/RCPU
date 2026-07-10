@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -90,9 +90,9 @@
 #include <validationinterface.h>
 #include <walletinitinterface.h>
 
-// !SCASH
+// !RCPU
 #include <pow.h>
-// !SCASH END
+// !RCPU END
 
 #include <algorithm>
 #include <condition_variable>
@@ -158,9 +158,9 @@ static const char* DEFAULT_ASMAP_FILENAME="ip_asn.map";
 /**
  * The PID file facilities.
  */
-// !SCASH
-static const char* BITCOIN_PID_FILENAME = "scashd.pid";
-// !SCASH END
+// !RCPU
+static const char* BITCOIN_PID_FILENAME = "rcpud.pid";
+// !RCPU END
 /**
  * True if this process has created a PID file.
  * Used to determine whether we should remove the PID file on shutdown.
@@ -463,14 +463,14 @@ void SetupServerArgs(ArgsManager& argsman)
     const auto signetChainParams = CreateChainParams(argsman, ChainType::SIGNET);
     const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
 
-    // !SCASH
-    const auto scashRegtestBaseParams = CreateBaseChainParams(ChainType::RCPUREGTEST);
-    const auto scashTestnetBaseParams = CreateBaseChainParams(ChainType::RCPUTESTNET);
-    const auto scashMainBaseParams = CreateBaseChainParams(ChainType::RCPUMAIN);
-    const auto scashRegtestChainParams = CreateChainParams(argsman, ChainType::RCPUREGTEST);
-    const auto scashTestnetChainParams = CreateChainParams(argsman, ChainType::RCPUTESTNET);
-    const auto scashMainChainParams = CreateChainParams(argsman, ChainType::RCPUMAIN);
-    // !SCASH END
+    // !RCPU
+    const auto rcpuRegtestBaseParams = CreateBaseChainParams(ChainType::RCPUREGTEST);
+    const auto rcpuTestnetBaseParams = CreateBaseChainParams(ChainType::RCPUTESTNET);
+    const auto rcpuMainBaseParams = CreateBaseChainParams(ChainType::RCPUMAIN);
+    const auto rcpuRegtestChainParams = CreateChainParams(argsman, ChainType::RCPUREGTEST);
+    const auto rcpuTestnetChainParams = CreateChainParams(argsman, ChainType::RCPUTESTNET);
+    const auto rcpuMainChainParams = CreateChainParams(argsman, ChainType::RCPUMAIN);
+    // !RCPU END
 
     // Hidden Options
     std::vector<std::string> hidden_args = {
@@ -526,19 +526,19 @@ void SetupServerArgs(ArgsManager& argsman)
                  strprintf("Maintain an index of compact filters by block (default: %s, values: %s).", DEFAULT_BLOCKFILTERINDEX, ListBlockFilterTypes()) +
                  " If <type> is not supplied or if <type> = 1, indexes for all known types are enabled.",
                  ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
-// !SCASH
+// !RCPU
     argsman.AddArg("-randomxfastmode", strprintf("Enable fast mode for RandomX VM, but with greatly increased memory usage. Use 1 to enable. (default: %u)", DEFAULT_RANDOMX_FAST_MODE), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-randomxvmcachesize=<n>", strprintf("Cache RandomX VMs used for each epoch, but this greatly increases memory usage. (minimum: 1, default: %d).", DEFAULT_RANDOMX_VM_CACHE_SIZE), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-suspiciousreorgdepth=<n>", strprintf("Reorg depth considered suspicious by node. Upon detection, node shuts down. Use 0 to disable. (minimum: 2, default: %d blocks)", DEFAULT_SUSPICIOUS_REORG_DEPTH), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-adddnsseed=<ip>", "Add address of DNS seed to query for addresses of nodes via DNS lookup. This option can be specified multiple times to connect to multiple DNS seeds.", ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
-// !SCASH END
+// !RCPU END
 
     argsman.AddArg("-addnode=<ip>", strprintf("Add a node to connect to and attempt to keep the connection open (see the addnode RPC help for more info). This option can be specified multiple times to add multiple nodes; connections are limited to %u at a time and are counted separately from the -maxconnections limit.", MAX_ADDNODE_CONNECTIONS), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
     argsman.AddArg("-asmap=<file>", strprintf("Specify asn mapping used for bucketing of the peers (default: %s). Relative paths will be prefixed by the net-specific datadir location.", DEFAULT_ASMAP_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-bantime=<n>", strprintf("Default duration (in seconds) of manually configured bans (default: %u)", DEFAULT_MISBEHAVING_BANTIME), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
-// !SCASH
-    argsman.AddArg("-bind=<addr>[:<port>][=onion]", strprintf("Bind to given address and always listen on it (default: 0.0.0.0). Use [host]:port notation for IPv6. Append =onion to tag any incoming connections to that address and port as incoming Tor connections (default: 127.0.0.1:%u=onion, testnet: 127.0.0.1:%u=onion, regtest: 127.0.0.1:%u=onion)", scashMainBaseParams->OnionServiceTargetPort(), scashTestnetBaseParams->OnionServiceTargetPort(), scashRegtestBaseParams->OnionServiceTargetPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
-// !SCASH END
+// !RCPU
+    argsman.AddArg("-bind=<addr>[:<port>][=onion]", strprintf("Bind to given address and always listen on it (default: 0.0.0.0). Use [host]:port notation for IPv6. Append =onion to tag any incoming connections to that address and port as incoming Tor connections (default: 127.0.0.1:%u=onion, testnet: 127.0.0.1:%u=onion, regtest: 127.0.0.1:%u=onion)", rcpuMainBaseParams->OnionServiceTargetPort(), rcpuTestnetBaseParams->OnionServiceTargetPort(), rcpuRegtestBaseParams->OnionServiceTargetPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
+// !RCPU END
     argsman.AddArg("-cjdnsreachable", "If set, then this host is configured for CJDNS (connecting to fc00::/8 addresses would lead us to the CJDNS network, see doc/cjdns.md) (default: 0)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-connect=<ip>", "Connect only to the specified node; -noconnect disables automatic connections (the rules for this peer are the same as for -addnode). This option can be specified multiple times to connect to multiple nodes.", ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
     argsman.AddArg("-discover", "Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -564,9 +564,9 @@ void SetupServerArgs(ArgsManager& argsman)
     argsman.AddArg("-txreconciliation", strprintf("Enable transaction reconciliations per BIP 330 (default: %d)", DEFAULT_TXRECONCILIATION_ENABLE), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::CONNECTION);
     // TODO: remove the sentence "Nodes not using ... incoming connections." once the changes from
     // https://github.com/bitcoin/bitcoin/pull/23542 have become widespread.
-// !SCASH
-    argsman.AddArg("-port=<port>", strprintf("Listen for connections on <port>. Nodes not using the default ports (default: %u, testnet: %u, regtest: %u) are unlikely to get incoming connections. Not relevant for I2P (see doc/i2p.md).", scashMainChainParams->GetDefaultPort(), scashTestnetChainParams->GetDefaultPort(), scashRegtestChainParams->GetDefaultPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
-// !SCASH END
+// !RCPU
+    argsman.AddArg("-port=<port>", strprintf("Listen for connections on <port>. Nodes not using the default ports (default: %u, testnet: %u, regtest: %u) are unlikely to get incoming connections. Not relevant for I2P (see doc/i2p.md).", rcpuMainChainParams->GetDefaultPort(), rcpuTestnetChainParams->GetDefaultPort(), rcpuRegtestChainParams->GetDefaultPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
+// !RCPU END
     argsman.AddArg("-proxy=<ip:port>", "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled)", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_ELISION, OptionsCategory::CONNECTION);
     argsman.AddArg("-proxyrandomize", strprintf("Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)", DEFAULT_PROXYRANDOMIZE), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-seednode=<ip>", "Connect to a node to retrieve peer addresses, and disconnect. This option can be specified multiple times to connect to multiple nodes.", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -680,9 +680,9 @@ void SetupServerArgs(ArgsManager& argsman)
     argsman.AddArg("-rpcdoccheck", strprintf("Throw a non-fatal error at runtime if the documentation for an RPC is incorrect (default: %u)", DEFAULT_RPC_DOC_CHECK), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
     argsman.AddArg("-rpccookiefile=<loc>", "Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     argsman.AddArg("-rpcpassword=<pw>", "Password for JSON-RPC connections", ArgsManager::ALLOW_ANY | ArgsManager::SENSITIVE, OptionsCategory::RPC);
-// !SCASH
-    argsman.AddArg("-rpcport=<port>", strprintf("Listen for JSON-RPC connections on <port> (default: %u, testnet: %u, regtest: %u)", scashMainBaseParams->RPCPort(), scashTestnetBaseParams->RPCPort(), scashRegtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::RPC);
-// !SCASH END
+// !RCPU
+    argsman.AddArg("-rpcport=<port>", strprintf("Listen for JSON-RPC connections on <port> (default: %u, testnet: %u, regtest: %u)", rcpuMainBaseParams->RPCPort(), rcpuTestnetBaseParams->RPCPort(), rcpuRegtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::RPC);
+// !RCPU END
     argsman.AddArg("-rpcservertimeout=<n>", strprintf("Timeout during HTTP requests (default: %d)", DEFAULT_HTTP_SERVER_TIMEOUT), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
     argsman.AddArg("-rpcthreads=<n>", strprintf("Set the number of threads to service RPC calls (default: %d)", DEFAULT_HTTP_THREADS), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     argsman.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY | ArgsManager::SENSITIVE, OptionsCategory::RPC);
@@ -1075,7 +1075,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
         }
     }
 
-    // !SCASH
+    // !RCPU
     if (chain == ChainType::RCPUMAIN || chain == ChainType::RCPUREGTEST || chain == ChainType::RCPUTESTNET) {
         if (args.GetBoolArg("-mempoolfullrbf", DEFAULT_MEMPOOL_FULL_RBF)) {
             return InitError(Untranslated("RBF is not supported."));
@@ -1091,7 +1091,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
             return InitError(Untranslated("suspiciousreorgdepth must be a positive integer, 2 or greater (use 0 to disable)."));
         }
     }
-    // !SCASH END
+    // !RCPU END
 
     return true;
 }
@@ -1148,10 +1148,10 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     const ArgsManager& args = *Assert(node.args);
     const CChainParams& chainparams = Params();
 
-    // !SCASH
+    // !RCPU
     if (chainparams.GetConsensus().fPowRandomX) {
         g_isRandomX = true;
-        LogPrintf("%s: Scash RandomX proof-of-work active\n", __func__);
+        LogPrintf("%s: RCPU RandomX proof-of-work active\n", __func__);
         randomx_flags flags = randomx_get_flags();
         if (flags & RANDOMX_FLAG_ARGON2_AVX2) {
             LogPrintf("- Argon2 implementation: AVX2\n");
@@ -1176,7 +1176,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
             LogPrintf("- light memory mode (256 MiB)\n");
         }
     }
-    // !SCASH END
+    // !RCPU END
 
     auto opt_max_upload = ParseByteUnits(args.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET), ByteUnit::M);
     if (!opt_max_upload) {

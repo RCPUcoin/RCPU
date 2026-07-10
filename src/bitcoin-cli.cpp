@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2022 The Bitcoin Core developers
-// Copyright (c) 2024 The Scash developers
+// Copyright (c) 2024 The RCPU developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -430,7 +430,7 @@ private:
     std::string ChainToString() const
     {
         switch (gArgs.GetChainType()) {
-        // !SCASH
+        // !RCPU
         case ChainType::TESTNET:
             return " btctestnet";
         case ChainType::SIGNET:
@@ -440,12 +440,12 @@ private:
         case ChainType::MAIN:
             return " btc";
         case ChainType::RCPUTESTNET:
-            return " scashtestnet";
+            return " rcputestnet";
         case ChainType::RCPUREGTEST:
-            return " scashregtest";
+            return " rcpuregtest";
         case ChainType::RCPUMAIN:
-            return " scash";
-        // !SCASH END
+            return " rcpu";
+        // !RCPU END
         }
         assert(false);
     }

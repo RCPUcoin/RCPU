@@ -21,9 +21,9 @@
  * for both bitcoind and bitcoin-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-// !SCASH
+// !RCPU
 const std::string CLIENT_NAME("RCPU");
-// !SCASH END
+// !RCPU END
 
 #ifdef HAVE_BUILD_INFO
 #include <obj/build.h>
@@ -93,19 +93,19 @@ std::string CopyrightHolders(const std::string& strPrefix)
         strCopyrightHolders += "\n" + strPrefix + "The Bitcoin Core developers";
     }
 
-    // !SCASH
+    // !RCPU
     if (copyright_devs.find("RCPU") == std::string::npos) {
         strCopyrightHolders += "\nCopyright (C) 2024 The RCPU developers";
     }
-    // !SCASH END
+    // !RCPU END
     return strCopyrightHolders;
 }
 
 std::string LicenseInfo()
 {
-    // !SCASH
+    // !RCPU
     const std::string URL_SOURCE_CODE = "<https://github.com/rcpu-project/rcpu>";
-    // !SCASH END
+    // !RCPU END
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +

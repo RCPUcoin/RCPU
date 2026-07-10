@@ -46,14 +46,14 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 36
 
-// !SCASH
-#define QAPP_ORG_NAME "Scash"
-#define QAPP_ORG_DOMAIN "https://github.com/scash-project/"
-#define QAPP_APP_NAME_DEFAULT "Scash-Qt"
-#define QAPP_APP_NAME_SCASH_TESTNET "Scash-Qt-testnet"
-#define QAPP_APP_NAME_SCASH_REGTEST "Scash-Qt-regtest"
+// !RCPU
+#define QAPP_ORG_NAME "RCPU"
+#define QAPP_ORG_DOMAIN "https://github.com/rcpu-project/"
+#define QAPP_APP_NAME_DEFAULT "RCPU-Qt"
+#define QAPP_APP_NAME_RCPU_TESTNET "RCPU-Qt-testnet"
+#define QAPP_APP_NAME_RCPU_REGTEST "RCPU-Qt-regtest"
 #define QAPP_APP_NAME_BTC "Bitcoin-Qt"
-// !SCASH END
+// !RCPU END
 #define QAPP_APP_NAME_TESTNET "Bitcoin-Qt-testnet"
 #define QAPP_APP_NAME_SIGNET "Bitcoin-Qt-signet"
 #define QAPP_APP_NAME_REGTEST "Bitcoin-Qt-regtest"

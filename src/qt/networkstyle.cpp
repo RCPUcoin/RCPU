@@ -17,12 +17,12 @@ static const struct {
     const int iconColorHueShift;
     const int iconColorSaturationReduction;
 } network_styles[] = {
-    // !SCASH
+    // !RCPU
     {ChainType::RCPUMAIN, QAPP_APP_NAME_DEFAULT, 0, 0},
-    {ChainType::RCPUTESTNET, QAPP_APP_NAME_SCASH_TESTNET, 180, 30},
-    {ChainType::RCPUREGTEST, QAPP_APP_NAME_SCASH_REGTEST, 80, 30},
+    {ChainType::RCPUTESTNET, QAPP_APP_NAME_RCPU_TESTNET, 180, 30},
+    {ChainType::RCPUREGTEST, QAPP_APP_NAME_RCPU_REGTEST, 80, 30},
     {ChainType::MAIN, QAPP_APP_NAME_BTC, 0, 0},
-    // !SCASH END
+    // !RCPU END
     {ChainType::TESTNET, QAPP_APP_NAME_TESTNET, 70, 30},
     {ChainType::SIGNET, QAPP_APP_NAME_SIGNET, 35, 15},
     {ChainType::REGTEST, QAPP_APP_NAME_REGTEST, 160, 30},
@@ -84,9 +84,9 @@ NetworkStyle::NetworkStyle(const QString &_appName, const int iconColorHueShift,
 
 const NetworkStyle* NetworkStyle::instantiate(const ChainType networkId)
 {
-    // !SCASH
+    // !RCPU
     std::string titleAddText = networkId == ChainType::RCPUMAIN ? "" : strprintf("[%s]", ChainTypeToString(networkId));
-    // !SCASH END
+    // !RCPU END
     for (const auto& network_style : network_styles) {
         if (networkId == network_style.networkId) {
             return new NetworkStyle(
