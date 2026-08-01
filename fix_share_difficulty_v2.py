@@ -1,0 +1,41 @@
+import paramiko
+
+host = '103.74.192.168'
+port = 45148
+user = 'root'
+password = '13559714383cQ@'
+
+print("=== 修复share难度 - 使用低难度让矿工能提交更多share ===")
+
+try:
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(host, port=port, username=user, password=password, timeout=30)
+    
+    print("\n1. 修改share难度为网络难度的1/10...")
+    stdin, stdout, stderr = ssh.exec_command('''
+sed -i 's/const MIN_SHARE_DIFFICULTY = [0-9.]\+;/const MIN_SHARE_DIFFICULTY = 0.000024;/' /root/stratum-proxy-pool.js
+sed -i 's/const shareDifficulty = Math.max(MIN_SHARE_DIFFICULTY, networkDifficulty);/const shareDifficulty = MIN_SHARE_DIFFICULTY;/' /root/stratum-proxy-pool.js
+''')
+    stdout.channel.recv_exit_status()
+    
+    print("\n2. 验证修改...")
+    stdin, stdout, stderr = ssh.exec_command('grep -n "MIN_SHARE_DIFFICULTY\\|shareDifficulty =" /root/stratum-proxy-pool.js')
+    print(stdout.read().decode())
+    
+    print("\n3. 重启矿池...")
+    stdin, stdout, stderr = ssh.exec_command('killall -9 node 2>/dev/null; sleep 2')
+    stdout.channel.recv_exit_status()
+    
+    stdin, stdout, stderr = ssh.exec_command('cd /root && node stratum-proxy-pool.js > /root/pool.log 2>&1 &')
+    stdout.channel.recv_exit_status()
+    
+    stdin, stdout, stderr = ssh.exec_command('sleep 5 && tail -15 /root/pool.log')
+    print(stdout.read().decode())
+    
+    ssh.close()
+    
+    print("\n完成! share难度已设为0.000024（网络难度的1/10）")
+    
+except Exception as e:
+    print("失败: " + str(e))
