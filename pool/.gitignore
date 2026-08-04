@@ -1,0 +1,40 @@
+
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.exe
+*.dll
+*.so
+*.dylib
+minerd
+minerd.exe
+cpuminer
+rcpud
+rcpu-cli
+rcpu-tx
+
+# Logs
+*.log
+*.log.*
+pool.log
+miner.log
+debug.log
+*.pid
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Archives we ship explicitly in releases/ not here
+*.tar.gz
+*.tgz
+*.zip
+
+# Explicitly allow our source tarball in miner-src
+!miner-src/cpuminer-opt-3.0.1-src.tar.gz

@@ -1,0 +1,16 @@
+[Unit]
+Description=RCPU Stratum Pool (port 3334)
+After=network.target rcpud.service
+Requires=rcpud.service
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+ExecStart=/usr/bin/node /root/rcpu-nomp-pool.js
+Restart=always
+RestartSec=5
+StandardOutput=append:/root/pool.log
+StandardError=append:/root/pool.log
+
+[Install]
+WantedBy=multi-user.target
