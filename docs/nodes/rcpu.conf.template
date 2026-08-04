@@ -1,0 +1,44 @@
+# RCPU Node Configuration File Template
+# Copy this file to ~/.rcpu/rcpu.conf and modify as needed
+# Replace all <PLACEHOLDER> values with your actual values
+
+# === Network ===
+chain=rcpu
+server=1
+listen=1
+port=9965
+
+# === RPC Settings (IMPORTANT: Security) ===
+# Bind RPC to localhost ONLY - NEVER expose to 0.0.0.0
+rpcbind=127.0.0.1
+rpcallowip=127.0.0.1
+rpcport=9962
+
+# RPC authentication - use STRONG passwords in production
+rpcuser=<YOUR_RPC_USERNAME>
+rpcpassword=<YOUR_RPC_PASSWORD>
+
+# RPC performance
+rpcthreads=4
+rpcservertimeout=0
+rpcclienttimeout=0
+
+# === Peers (Add all other nodes in the network) ===
+# Format: addnode=<IP>:<PORT>
+# Example: addnode=192.168.1.100:9965
+
+addnode=<PEER_NODE_1_IP>:9965
+addnode=<PEER_NODE_2_IP>:9965
+addnode=<PEER_NODE_3_IP>:9965
+
+# === Index ===
+txindex=1
+
+# === Memory ===
+# Adjust based on your system (in MB)
+# 4GB+ RAM: 4096
+# 2GB RAM: 1024
+# 1GB RAM: 512
+
+# === Misc ===
+allowignoredconf=1
