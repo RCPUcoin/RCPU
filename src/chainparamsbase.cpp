@@ -39,7 +39,7 @@ const CBaseChainParams& BaseParams()
 }
 
 /**
- * Port numbers for incoming Tor connections (8334, 18334, 38334, 18445) have
+ * Port numbers for incoming Tor connections (9966, 19966, 39966, 18445) have
  * been chosen arbitrarily to keep ranges of used ports tight.
  */
 std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
@@ -47,19 +47,19 @@ std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
     switch (chain) {
     // !RCPU
     case ChainType::MAIN:
-        return std::make_unique<CBaseChainParams>("btc", 8332, 8334);
+        return std::make_unique<CBaseChainParams>("btc", 9962, 9966);
     case ChainType::TESTNET:
-        return std::make_unique<CBaseChainParams>("btctestnet3", 18332, 18334);
+        return std::make_unique<CBaseChainParams>("btctestnet3", 19962, 19966);
     case ChainType::SIGNET:
-        return std::make_unique<CBaseChainParams>("btcsignet", 38332, 38334);
+        return std::make_unique<CBaseChainParams>("btcsignet", 39962, 39966);
     case ChainType::REGTEST:
         return std::make_unique<CBaseChainParams>("btcregtest", 18443, 18445);
     case ChainType::RCPUMAIN:
-        return std::make_unique<CBaseChainParams>("rcpu", 9362, 9363);
+        return std::make_unique<CBaseChainParams>("rcpu", 9962, 9966);
     case ChainType::RCPUTESTNET:
-        return std::make_unique<CBaseChainParams>("rcputestnet", 19362, 19363);
+        return std::make_unique<CBaseChainParams>("rcputestnet", 19962, 19966);
     case ChainType::RCPUREGTEST:
-        return std::make_unique<CBaseChainParams>("rcpuregtest", 19462, 19463);
+        return std::make_unique<CBaseChainParams>("rcpuregtest", 18443, 18445);
     // !RCPU END
     }
     assert(false);
