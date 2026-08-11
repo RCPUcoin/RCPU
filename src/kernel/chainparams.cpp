@@ -128,20 +128,14 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
-        // Note that of those which support the service bits prefix, most only support a subset of
-        // possible options.
-        // This is fine at runtime as we'll fall back to using them as an addrfetch if they don't support the
-        // service bits we want, but we should get them updated to support all service bits wanted by any
-        // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("seed.bitcoin.sipa.be."); // Pieter Wuille, only supports x1, x5, x9, and xd
-        vSeeds.emplace_back("dnsseed.bluematt.me."); // Matt Corallo, only supports x9
-        vSeeds.emplace_back("dnsseed.bitcoin.dashjr.org."); // Luke Dashjr
-        vSeeds.emplace_back("seed.bitcoinstats.com."); // Christian Decker, supports x1 - xf
-        vSeeds.emplace_back("seed.bitcoin.jonasschnelli.ch."); // Jonas Schnelli, only supports x1, x5, x9, and xd
-        vSeeds.emplace_back("seed.btc.petertodd.net."); // Peter Todd, only supports x1, x5, x9, and xd
-        vSeeds.emplace_back("seed.bitcoin.sprovoost.nl."); // Sjors Provoost
-        vSeeds.emplace_back("dnsseed.emzy.de."); // Stephan Oeste
-        vSeeds.emplace_back("seed.bitcoin.wiz.biz."); // Jason Maurice
+        // RCPU seed nodes
+        vSeeds.emplace_back("47.85.38.146");
+        vSeeds.emplace_back("119.28.152.245");
+        vSeeds.emplace_back("43.159.51.23");
+        vSeeds.emplace_back("38.147.171.29");
+        vSeeds.emplace_back("103.74.192.168");
+        vSeeds.emplace_back("38.55.199.177");
+        vSeeds.emplace_back("8.166.130.149");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -633,8 +627,16 @@ public:
         fprintf(stderr, "NEW hashGenesisBlock: %s\n", consensus.hashGenesisBlock.GetHex().c_str());
         assert(genesis.hashMerkleRoot == uint256S("2f7b90fafd8247ee73d213d49699fcfe12a37c608f1d9d1c06f10e43cb6426c6"));
 
-        vFixedSeeds.clear();
-        vSeeds.clear();
+        vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_main), std::end(chainparams_seed_main));
+
+        // RCPU seed nodes
+        vSeeds.emplace_back("47.85.38.146");
+        vSeeds.emplace_back("119.28.152.245");
+        vSeeds.emplace_back("43.159.51.23");
+        vSeeds.emplace_back("38.147.171.29");
+        vSeeds.emplace_back("103.74.192.168");
+        vSeeds.emplace_back("38.55.199.177");
+        vSeeds.emplace_back("8.166.130.149");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
