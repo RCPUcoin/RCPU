@@ -51,5 +51,4 @@ minerd-rcpu-windows-x64.exe -a randomx ^
 ```
 
 ## Build Date
-
-2026-08-03 (byte-order fix, merkle branch fix, share-diff fix all applied)
+2026-08-13 (latest rebuild with DNS seed and port updates, commit e6ddcf6)
