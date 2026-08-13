@@ -630,15 +630,6 @@ public:
         vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_main), std::end(chainparams_seed_main));
 
         // RCPU seed nodes
-        vSeeds.emplace_back("47.85.38.146");
-        vSeeds.emplace_back("119.28.152.245");
-        vSeeds.emplace_back("43.159.51.23");
-        vSeeds.emplace_back("38.147.171.29");
-        vSeeds.emplace_back("103.74.192.168");
-        vSeeds.emplace_back("38.55.199.177");
-        vSeeds.emplace_back("8.166.130.149");
-
-        // RCPU seed nodes
         vSeeds.emplace_back("seed.rcpu.ren");        // DNS seed
         vSeeds.emplace_back("47.85.38.146");
         vSeeds.emplace_back("119.28.152.245");
