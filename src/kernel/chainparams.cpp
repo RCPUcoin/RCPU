@@ -600,9 +600,9 @@ public:
         consensus.nASERTHalfLife = 2 * 24 * 60 * 60;  // Two days
         consensus.nASERTActivationHeight = 1000;  // RCPU: activate ASERT early
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
-            18144,        // anchor block height
-            0x1c7b9d90,   // anchor block nBits
-            1712987784,   // anchor block previous block timestamp
+            999,          // anchor block height
+            0x1e3ffffc,   // anchor block nBits
+            1786069103,   // anchor block prev timestamp
         };
 
         /**
@@ -630,6 +630,16 @@ public:
         vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_main), std::end(chainparams_seed_main));
 
         // RCPU seed nodes
+        vSeeds.emplace_back("47.85.38.146");
+        vSeeds.emplace_back("119.28.152.245");
+        vSeeds.emplace_back("43.159.51.23");
+        vSeeds.emplace_back("38.147.171.29");
+        vSeeds.emplace_back("103.74.192.168");
+        vSeeds.emplace_back("38.55.199.177");
+        vSeeds.emplace_back("8.166.130.149");
+
+        // RCPU seed nodes
+        vSeeds.emplace_back("seed.rcpu.ren");        // DNS seed
         vSeeds.emplace_back("47.85.38.146");
         vSeeds.emplace_back("119.28.152.245");
         vSeeds.emplace_back("43.159.51.23");
