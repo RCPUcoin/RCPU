@@ -655,6 +655,12 @@ public:
                 { 111, uint256S("8ae1c9355d55513c407c75fbfc5e10aea64654caaae0c94ccb16572cb0e04d17")},
                 { 488, uint256S("9b2583116dd317fee639fed59c698ef91afcd5ab78f4e5582d05b221105eeb00")},
                 { 1433, uint256S("d0c5d5f767374b2e514a7fcc3974e0506085e4260dc43d6b349dfcf5a6969fca")},
+                { 2000, uint256S("66e1402af5c72c59944b84b6f5547d6d2c5f848c72192a12dbf7801b2824a89e")},
+                { 2500, uint256S("785e9293a5b2a8e1f6983b4c05c229a97ba933989d40c8e01b5f630535cda94e")},
+                { 3000, uint256S("4cb0fbf6ca6fe73ebb1662b7c7d14bf239891cdecfe06a11fa5d70ef43dc16ae")},
+                { 3500, uint256S("4c0ff4498e4fc1ab39b70651f196eb9adeb6a378a7f65afd662dd25abbb5a605")},
+                { 4000, uint256S("ad58d72ab1c0791621392b1c93bdcd5ca57b88041f034b9611f5bf58f1a3400e")},
+                { 4500, uint256S("fe2b0710f6c413cc7753e1bec8375044389955cf5ee9f8830ba95d35be012bba")},
                 { 11111, uint256S("321992e4b3b1c13f9a8ae1aa9ce926e795c2f3dbedd3159f157150653683b583")},
                 { 19000, uint256S("6153ba28cc8d030277e308d12642a28ebc94eceb57f447e4ed0ad692b10d3de3")},
             }
