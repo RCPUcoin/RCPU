@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011-2022 The Bitcoin Core developers
+// Copyright (c) 2011-2022 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -302,6 +302,7 @@ TestChain100Setup::TestChain100Setup(
     //         m_node.chainman->ActiveChain().Tip()->GetBlockHash().ToString() ==
     //         "571d80a9967ae599cec0448b0b0ba1cfb606f584d8069bd7166b86854ba7a191");
     // }
+}
 void TestChain100Setup::mineBlocks(int num_blocks)
 {
     CScript scriptPubKey = CScript() << ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
