@@ -1,8 +1,9 @@
-{
+﻿{
   "name": "bitcoin-core",
   "version-string": "1",
   "dependencies": [
     "berkeleydb",
+    "boost-compute",
     "boost-date-time",
     "boost-multi-index",
     "boost-signals2",
