@@ -287,6 +287,32 @@ jobs:
         with:
           path: C:\randomx
           key: ${{ steps.randomx-cache.outputs.cache-primary-key }}
+
+      - name: Restore boost-compute headers cache
+        id: boost-compute-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: C:\boost-compute
+          key: ${{ runner.os }}-boost-compute-1.82.0
+
+      - name: Download boost-compute headers
+        if: steps.boost-compute-cache.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          curl.exe --fail -L -o C:\boost-compute-src.tar.gz https://github.com/boostorg/compute/archive/refs/tags/boost-1.82.0.tar.gz
+          tar -xf C:\boost-compute-src.tar.gz -C C:\
+          New-Item -ItemType Directory -Path C:\boost-compute\include\boost -Force | Out-Null
+          Copy-Item -Path "C:\compute-boost-1.82.0\include\boost\compute" -Destination "C:\boost-compute\include\boost\compute" -Recurse -Force
+          Remove-Item -Path "C:\compute-boost-1.82.0" -Recurse -Force
+          Remove-Item -Path "C:\boost-compute-src.tar.gz" -Force
+
+      - name: Save boost-compute headers cache
+        if: steps.boost-compute-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: C:\boost-compute
+          key: ${{ steps.boost-compute-cache.outputs.cache-primary-key }}
+
       - name: Generate project files
         run: py -3 build_msvc\msvc-autogen.py
 
