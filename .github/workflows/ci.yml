@@ -101,6 +101,39 @@ jobs:
           brew install python@3 || brew link --overwrite python@3
           brew install automake libtool pkg-config gnu-getopt ccache boost libevent miniupnpc libnatpmp zeromq qt@5 qrencode
 
+      - name: Restore RandomX cache
+        id: randomx-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            /usr/local/include/randomx.h
+            /usr/local/lib/librandomx.a
+          key: ${{ runner.os }}-randomx-1.2.1-arm64-v1
+
+      - name: Build RandomX
+        if: steps.randomx-cache.outputs.cache-hit != 'true'
+        run: |
+          curl --fail -L -o /tmp/randomx-src.tar.gz https://github.com/tevador/RandomX/archive/refs/tags/v1.2.1.tar.gz
+          tar -xf /tmp/randomx-src.tar.gz -C /tmp
+          mv /tmp/RandomX-1.2.1 /tmp/randomx-src
+          # Apply RCPU custom Argon salt (RandomX-RCPU instead of RandomX)
+          sed -i '' 's/"RandomX\\x03"/"RandomX-RCPU\\x01"/' /tmp/randomx-src/src/configuration.h
+          # Build with CMake
+          mkdir -p /tmp/randomx-src/build
+          cd /tmp/randomx-src/build
+          cmake -DRANDOMX_BUILD=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local ..
+          make -j$(sysctl -n hw.ncpu)
+          sudo make install
+
+      - name: Save RandomX cache
+        if: steps.randomx-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            /usr/local/include/randomx.h
+            /usr/local/lib/librandomx.a
+          key: ${{ steps.randomx-cache.outputs.cache-primary-key }}
+
       - name: Set Ccache directory
         run: echo "CCACHE_DIR=${RUNNER_TEMP}/ccache_dir" >> "$GITHUB_ENV"
 
