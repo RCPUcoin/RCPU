@@ -370,7 +370,7 @@ BOOST_AUTO_TEST_CASE(util_ParseMoney)
     BOOST_CHECK_EQUAL(ParseMoney(" 0.00000001").value(), COIN/100000000);
 
     // Parsing amount that cannot be represented should fail
-    BOOST_CHECK(!ParseMoney("100000000.00"));
+    BOOST_CHECK(!ParseMoney("2100000001.00")); // RCPU MAX_MONEY is 21e8 COIN, so 1e8 is now valid
     BOOST_CHECK(!ParseMoney("0.000000001"));
 
     // Parsing empty string should fail
