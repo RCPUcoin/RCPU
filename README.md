@@ -95,6 +95,9 @@ Build artifacts:
 ## Links
 
 - Source: https://github.com/RCPUcoin/RCPU
+- Block explorer: https://rcpupool.site/
+- Community (Telegram): https://t.me/btc_rcpu
+- Community (X/Twitter): https://x.com/rcpumm
 - Issues: https://github.com/RCPUcoin/RCPU/issues
 - License: MIT (see [COPYING](COPYING))
 
