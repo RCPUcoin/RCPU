@@ -670,6 +670,9 @@ bool CheckProofOfWorkRandomX(const CBlockHeader& block, const Consensus::Params&
         else {
             // If mining, randomx hash generated, so now check if commitment meets target
             hashRandomX = uint256(std::vector<unsigned char>(rx_hash, rx_hash + RANDOMX_HASH_SIZE));
+            if (outHash != NULL) {
+                *outHash = hashRandomX;
+            }
             if (UintToArith256(GetRandomXCommitment(block, &hashRandomX)) > bnTarget) {
                 return false;
             }
