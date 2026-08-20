@@ -1,43 +1,38 @@
-<!--
-*** Please remove the following help text before submitting: ***
+## 描述
 
-Pull requests without a rationale and clear improvement may be closed
-immediately.
+<!-- 简要描述这个 PR 的变更内容和目的 -->
 
-GUI-related pull requests should be opened against
-https://github.com/bitcoin-core/gui
-first. See CONTRIBUTING.md
--->
+## 变更类型
 
-<!--
-Please provide clear motivation for your patch and explain how it improves
-Bitcoin Core user experience or Bitcoin Core developer experience
-significantly:
+- [ ] Bug 修复
+- [ ] 新功能
+- [ ] 性能优化
+- [ ] 代码重构
+- [ ] 文档更新
+- [ ] CI/CD 配置变更
+- [ ] 共识规则变更（需要额外审查）
 
-* Any test improvements or new tests that improve coverage are always welcome.
-* All other changes should have accompanying unit tests (see `src/test/`) or
-  functional tests (see `test/`). Contributors should note which tests cover
-  modified code. If no tests exist for a region of modified code, new tests
-  should accompany the change.
-* Bug fixes are most welcome when they come with steps to reproduce or an
-  explanation of the potential issue as well as reasoning for the way the bug
-  was fixed.
-* Features are welcome, but might be rejected due to design or scope issues.
-  If a feature is based on a lot of dependencies, contributors should first
-  consider building the system outside of Bitcoin Core, if possible.
-* Refactoring changes are only accepted if they are required for a feature or
-  bug fix or otherwise improve developer experience significantly. For example,
-  most "code style" refactoring changes require a thorough explanation why they
-  are useful, what downsides they have and why they *significantly* improve
-  developer experience or avoid serious programming bugs. Note that code style
-  is often a subjective matter. Unless they are explicitly mentioned to be
-  preferred in the [developer notes](/doc/developer-notes.md), stylistic code
-  changes are usually rejected.
--->
+## 测试
 
-<!--
-Bitcoin Core has a thorough review process and even the most trivial change
-needs to pass a lot of eyes and requires non-zero or even substantial time
-effort to review. There is a huge lack of active reviewers on the project, so
-patches often sit for a long time.
--->
+<!-- 描述你如何测试这些变更 -->
+- [ ] 单元测试通过
+- [ ] 功能测试通过
+- [ ] 回归测试通过
+- [ ] 无需测试（文档/格式类变更）
+
+## 清单
+
+- [ ] 我的代码遵循项目的代码风格
+- [ ] 我已自我审查自己的代码
+- [ ] 我已添加必要的注释
+- [ ] 我已更新相关文档
+- [ ] 我的变更没有引入新的警告
+- [ ] CI 构建通过
+
+## 关联 Issue
+
+<!-- 例如：Closes #123 -->
+
+## 其他说明
+
+<!-- 任何需要额外说明的内容，如性能影响、兼容性考虑等 -->

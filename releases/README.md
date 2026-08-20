@@ -1,36 +1,26 @@
 # RCPU Pre-built Binaries
 
-All binaries are compiled from source on the production pool server
-(103.74.192.168, x86_64). Files are gzip-compressed to fit GitHub's size limits.
+Pre-built binaries are now hosted on [GitHub Releases](https://github.com/RCPUcoin/RCPU/releases).
 
-## Downloads
+## Available Downloads
 
-| File | Platform | Description | Compressed Size |
-|------|----------|-------------|-----------------|
-| `minerd-rcpu-linux-x64.gz` | Linux x86_64 | cpuminer-opt RCPU miner (byte-order fix) | ~50 KB |
-| `minerd-rcpu-windows-x64.exe.gz` | Windows x86_64 | MINGW cross-compiled, statically linked | ~1.1 MB |
-| `rcpud-linux-x64.gz` | Linux x86_64 | RCPU full node daemon | ~98 MB |
-| `rcpu-cli-linux-x64.gz` | Linux x86_64 | RCPU RPC client | ~7 MB |
-| `rcpu-tx-linux-x64.gz` | Linux x86_64 | RCPU transaction utility | ~15 MB |
-| `rcpu-wallet-linux-x64.gz` | Linux x86_64 | RCPU wallet | ~47 MB |
-| `rcpu-util-linux-x64.gz` | Linux x86_64 | RCPU utility (config tool) | ~7 MB |
-| `xmrig-rcpu-linux-x64.gz` | Linux x86_64 | XMRig RCPU build | ~1.8 MB |
+Visit the [latest release page](https://github.com/RCPUcoin/RCPU/releases/latest) to download:
 
-## Verify
+| Package | Platform | Description |
+|---------|----------|-------------|
+| `rcpu-<version>-linux-x64.tar.gz` | Linux x86_64 | Full package: rcpud, rcpu-cli, rcpu-tx, rcpu-util, rcpu-wallet |
+| `rcpu-<version>-win64-wallet.zip` | Windows x86_64 | Windows wallet (GUI + daemon) |
+| `One-click-mining-win.zip` | Windows x86_64 | One-click mining package |
+| `cpuminer-rcpu-src-<version>.tar.gz` | Source | cpuminer-opt RCPU miner source |
+| `RCPU_bluewallet_<date>.apk` | Android | Mobile miner (Bluewallet) |
+
+## Quick Start -- Full Node
 
 ```bash
-sha256sum -c SHA256SUMS
-```
-
-
-## Quick Start — Full Node
-
-```bash
-# Download the node daemon and RPC client
-wget https://github.com/RCPUcoin/RCPU/raw/main/releases/rcpud-linux-x64.gz
-wget https://github.com/RCPUcoin/RCPU/raw/main/releases/rcpu-cli-linux-x64.gz
-gunzip rcpud-linux-x64.gz rcpu-cli-linux-x64.gz
-chmod +x rcpud rcpu-cli
+# Download the latest Linux release
+wget https://github.com/RCPUcoin/RCPU/releases/latest/download/rcpu-3.0.1-linux-x64.tar.gz
+tar -xzf rcpu-3.0.1-linux-x64.tar.gz
+cd rcpu-3.0.1
 
 # Create a data directory and config
 mkdir -p ~/.rcpu
@@ -44,34 +34,21 @@ echo "rpcpassword=yourpassword" >> ~/.rcpu/rcpu.conf
 # Check sync status
 ./rcpu-cli getblockchaininfo
 ```
-## Quick Start — Linux Miner
+
+## Quick Start -- Linux Miner
 
 ```bash
-# Download and decompress
-wget https://github.com/RCPUcoin/RCPU/raw/main/releases/minerd-rcpu-linux-x64.gz
-gunzip minerd-rcpu-linux-x64.gz
-chmod +x minerd-rcpu-linux-x64
-
+# Download cpuminer from releases
 # Start mining
-./minerd-rcpu-linux-x64 -a randomx     -o stratum+tcp://103.74.192.168:3334     -u YOUR_WALLET_ADDRESS.worker1 -p x -t 4
-```
-
-## Quick Start — Windows Miner
-
-```bash
-# Download and decompress (use 7-Zip or PowerShell)
-wget https://github.com/RCPUcoin/RCPU/raw/main/releases/minerd-rcpu-windows-x64.exe.gz
-
-# PowerShell:
-Expand-Archive minerd-rcpu-windows-x64.exe.gz
-
-# Or with 7-Zip: right-click -> 7-Zip -> Extract Here
-
-# Then run:
-minerd-rcpu-windows-x64.exe -a randomx ^
-    -o stratum+tcp://103.74.192.168:3334 ^
+./minerd -a randomx \
+    -o stratum+tcp://103.74.192.168:3334 \
     -u YOUR_WALLET_ADDRESS.worker1 -p x -t 4
 ```
 
-## Build Date
-2026-08-20 (rebuild with test fixes and .gitignore cleanup)
+## Verify
+
+All release assets include SHA256 checksums in the release notes.
+
+```bash
+sha256sum -c SHA256SUMS
+```

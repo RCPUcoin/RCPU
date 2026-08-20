@@ -120,3 +120,9 @@ config.json
 # Keep the miner directory
 !miner/
 !miner/*
+
+# === Release binaries (hosted on GitHub Releases, not in repo) ===
+releases/*.gz
+releases/*.zip
+releases/*.tar.gz
+releases/SHA256SUMS

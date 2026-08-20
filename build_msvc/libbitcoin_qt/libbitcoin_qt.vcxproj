@@ -11,7 +11,7 @@
     <ClCompile Include="..\..\src\qt\addresstablemodel.cpp" />
     <ClCompile Include="..\..\src\qt\askpassphrasedialog.cpp" />
     <ClCompile Include="..\..\src\qt\bantablemodel.cpp" />
-    <ClCompile Include="..\..\src\qt\bitcoin.cpp" />
+    <ClCompile Include="..\..\src\qt\rcpu.cpp" />
     <ClCompile Include="..\..\src\qt\bitcoinaddressvalidator.cpp" />
     <ClCompile Include="..\..\src\qt\bitcoinamountfield.cpp" />
     <ClCompile Include="..\..\src\qt\bitcoingui.cpp" />
@@ -68,7 +68,7 @@
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_addresstablemodel.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_askpassphrasedialog.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_bantablemodel.cpp" />
-    <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_bitcoin.cpp" />
+    <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_rcpu.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_bitcoinaddressvalidator.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_bitcoinamountfield.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_bitcoingui.cpp" />
@@ -120,8 +120,8 @@
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_walletmodeltransaction.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_walletview.cpp" />
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_winshutdownmonitor.cpp" />
-    <ClCompile Include="$(GeneratedFilesOutDir)\rcc\qrc_bitcoin.cpp" />
-    <ClCompile Include="$(GeneratedFilesOutDir)\rcc\qrc_bitcoin_locale.cpp" />
+    <ClCompile Include="$(GeneratedFilesOutDir)\rcc\qrc_rcpu.cpp" />
+    <ClCompile Include="$(GeneratedFilesOutDir)\rcc\qrc_rcpu_locale.cpp" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
