@@ -642,42 +642,42 @@ BOOST_AUTO_TEST_CASE(util_GetArg)
 BOOST_AUTO_TEST_CASE(util_GetChainTypeString)
 {
     TestArgsManager test_args;
-    const auto testnet = std::make_pair("-testnet", ArgsManager::ALLOW_ANY);
-    const auto regtest = std::make_pair("-regtest", ArgsManager::ALLOW_ANY);
+    const auto testnet = std::make_pair("-rcputestnet", ArgsManager::ALLOW_ANY);
+    const auto regtest = std::make_pair("-rcpuregtest", ArgsManager::ALLOW_ANY);
     test_args.SetupArgs({testnet, regtest});
 
-    const char* argv_testnet[] = {"cmd", "-testnet"};
-    const char* argv_regtest[] = {"cmd", "-regtest"};
-    const char* argv_test_no_reg[] = {"cmd", "-testnet", "-noregtest"};
-    const char* argv_both[] = {"cmd", "-testnet", "-regtest"};
+    const char* argv_testnet[] = {"cmd", "-rcputestnet"};
+    const char* argv_regtest[] = {"cmd", "-rcpuregtest"};
+    const char* argv_test_no_reg[] = {"cmd", "-rcputestnet", "-norcpuregtest"};
+    const char* argv_both[] = {"cmd", "-rcputestnet", "-rcpuregtest"};
 
-    // equivalent to "-testnet"
-    // regtest in testnet section is ignored
-    const char* testnetconf = "testnet=1\nregtest=0\n[test]\nregtest=1";
+    // equivalent to "-rcputestnet"
+    // rcpuregtest in rcputestnet section is ignored
+    const char* testnetconf = "rcputestnet=1\nrcpuregtest=0\n[rcputestnet]\nrcpuregtest=1";
     std::string error;
 
     BOOST_CHECK(test_args.ParseParameters(0, argv_testnet, error));
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "main");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcpu");
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_testnet, error));
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_regtest, error));
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "regtest");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcpuregtest");
 
     BOOST_CHECK(test_args.ParseParameters(3, argv_test_no_reg, error));
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(3, argv_both, error));
     BOOST_CHECK_THROW(test_args.GetChainTypeString(), std::runtime_error);
 
     BOOST_CHECK(test_args.ParseParameters(0, argv_testnet, error));
     test_args.ReadConfigString(testnetconf);
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_testnet, error));
     test_args.ReadConfigString(testnetconf);
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_regtest, error));
     test_args.ReadConfigString(testnetconf);
@@ -685,23 +685,23 @@ BOOST_AUTO_TEST_CASE(util_GetChainTypeString)
 
     BOOST_CHECK(test_args.ParseParameters(3, argv_test_no_reg, error));
     test_args.ReadConfigString(testnetconf);
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(3, argv_both, error));
     test_args.ReadConfigString(testnetconf);
     BOOST_CHECK_THROW(test_args.GetChainTypeString(), std::runtime_error);
 
-    // check setting the network to test (and thus making
-    // [test] regtest=1 potentially relevant) doesn't break things
-    test_args.SelectConfigNetwork("test");
+    // check setting the network to rcputestnet (and thus making
+    // [rcputestnet] rcpuregtest=1 potentially relevant) doesn't break things
+    test_args.SelectConfigNetwork("rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(0, argv_testnet, error));
     test_args.ReadConfigString(testnetconf);
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_testnet, error));
     test_args.ReadConfigString(testnetconf);
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_regtest, error));
     test_args.ReadConfigString(testnetconf);
@@ -709,7 +709,7 @@ BOOST_AUTO_TEST_CASE(util_GetChainTypeString)
 
     BOOST_CHECK(test_args.ParseParameters(2, argv_test_no_reg, error));
     test_args.ReadConfigString(testnetconf);
-    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "test");
+    BOOST_CHECK_EQUAL(test_args.GetChainTypeString(), "rcputestnet");
 
     BOOST_CHECK(test_args.ParseParameters(3, argv_both, error));
     test_args.ReadConfigString(testnetconf);
@@ -912,7 +912,7 @@ BOOST_FIXTURE_TEST_CASE(util_ArgsMerge, ArgsMergeTestingSetup)
     // Results file is formatted like:
     //
     //   <input> || <IsArgSet/IsArgNegated/GetArg output> | <GetArgs output> | <GetUnsuitable output>
-    BOOST_CHECK_EQUAL(out_sha_hex, "d1e436c1cd510d0ec44d5205d4b4e3bee6387d316e0075c58206cb16603f3d82");
+    BOOST_CHECK_EQUAL(out_sha_hex, "71d5be260bc2e5a727e98d159720c7afa1c76935412f20e82d7cb143cad766eb");
 }
 
 // Similar test as above, but for ArgsManager::GetChainTypeString function.
@@ -946,15 +946,15 @@ BOOST_FIXTURE_TEST_CASE(util_ChainMerge, ChainMergeTestingSetup)
     ForEachMergeSetup([&](const ActionList& arg_actions, const ActionList& conf_actions) {
         TestArgsManager parser;
         LOCK(parser.cs_args);
-        parser.AddArg("-regtest", "regtest", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
-        parser.AddArg("-testnet", "testnet", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+        parser.AddArg("-rcpuregtest", "rcpuregtest", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+        parser.AddArg("-rcputestnet", "rcputestnet", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 
-        auto arg = [](Action action) { return action == ENABLE_TEST  ? "-testnet=1"   :
-                                              action == DISABLE_TEST ? "-testnet=0"   :
-                                              action == NEGATE_TEST  ? "-notestnet=1" :
-                                              action == ENABLE_REG   ? "-regtest=1"   :
-                                              action == DISABLE_REG  ? "-regtest=0"   :
-                                              action == NEGATE_REG   ? "-noregtest=1" : nullptr; };
+        auto arg = [](Action action) { return action == ENABLE_TEST  ? "-rcputestnet=1"   :
+                                              action == DISABLE_TEST ? "-rcputestnet=0"   :
+                                              action == NEGATE_TEST  ? "-norcputestnet=1" :
+                                              action == ENABLE_REG   ? "-rcpuregtest=1"   :
+                                              action == DISABLE_REG  ? "-rcpuregtest=0"   :
+                                              action == NEGATE_REG   ? "-norcpuregtest=1" : nullptr; };
 
         std::string desc;
         std::vector<const char*> argv = {"ignored"};
@@ -1015,7 +1015,7 @@ BOOST_FIXTURE_TEST_CASE(util_ChainMerge, ChainMergeTestingSetup)
     // Results file is formatted like:
     //
     //   <input> || <output>
-    BOOST_CHECK_EQUAL(out_sha_hex, "f263493e300023b6509963887444c41386f44b63bc30047eb8402e8c1144854c");
+    BOOST_CHECK_EQUAL(out_sha_hex, "92e9b8b6fb01ced56a9c343820c6dfb5f48c791927df2e3e805bd36dc579c548");
 }
 
 BOOST_AUTO_TEST_CASE(util_ReadWriteSettings)
