@@ -335,7 +335,18 @@ CBlock TestChain100Setup::CreateBlock(
     }
     RegenerateCommitments(block, *Assert(m_node.chainman));
 
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, m_node.chainman->GetConsensus())) ++block.nNonce;
+    // !RCPU: RandomX chain PoW requires mining via CheckProofOfWorkRandomX
+    // (which computes the hashRandomX field), not the legacy SHA256 CheckProofOfWork.
+    if (m_node.chainman->GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(block, m_node.chainman->GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+            ++block.nNonce;
+        }
+        block.hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(block.GetHash(), block.nBits, m_node.chainman->GetConsensus())) ++block.nNonce;
+    }
+    // !RCPU END
 
     return block;
 }

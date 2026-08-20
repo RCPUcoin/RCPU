@@ -150,6 +150,15 @@ BOOST_AUTO_TEST_CASE(blockmanager_flush_block_file)
     CBlock block3;
     block3.nVersion = 3;
 
+    // !RCPU: Set a non-null hashPrevBlock so CheckProofOfWorkRandomX does not
+    // treat these junk blocks as the genesis block (which skips PoW verification
+    // via the hashPrevBlock.IsNull() check). Without this, ReadBlockFromDisk
+    // would accept junk data as a valid "genesis-like" header.
+    block1.hashPrevBlock = uint256::ONE;
+    block2.hashPrevBlock = uint256::ONE;
+    block3.hashPrevBlock = uint256::ONE;
+    // !RCPU END
+
     // They are 80 bytes header + 1 byte 0x00 for vtx length
     constexpr int TEST_BLOCK_SIZE{81};
 

@@ -46,7 +46,18 @@ static CBlock BuildBlockTestCase() {
     bool mutated;
     block.hashMerkleRoot = BlockMerkleRoot(block, &mutated);
     assert(!mutated);
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, Params().GetConsensus())) ++block.nNonce;
+    // !RCPU: RandomX chain PoW requires CheckProofOfWorkRandomX (which sets
+    // the hashRandomX field), not the legacy SHA256 CheckProofOfWork.
+    if (Params().GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(block, Params().GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+            ++block.nNonce;
+        }
+        block.hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(block.GetHash(), block.nBits, Params().GetConsensus())) ++block.nNonce;
+    }
+    // !RCPU END
     return block;
 }
 
@@ -277,7 +288,17 @@ BOOST_AUTO_TEST_CASE(EmptyBlockRoundTripTest)
     bool mutated;
     block.hashMerkleRoot = BlockMerkleRoot(block, &mutated);
     assert(!mutated);
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, Params().GetConsensus())) ++block.nNonce;
+    // !RCPU: RandomX chain PoW requires CheckProofOfWorkRandomX.
+    if (Params().GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(block, Params().GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+            ++block.nNonce;
+        }
+        block.hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(block.GetHash(), block.nBits, Params().GetConsensus())) ++block.nNonce;
+    }
+    // !RCPU END
 
     // Test simple header round-trip with only coinbase
     {
