@@ -266,8 +266,11 @@ BOOST_AUTO_TEST_CASE(Check_RandomX_BlockHeader)
     const auto chainParams = CreateChainParams(*m_node.args, ChainType::RCPUTESTNET);
     const auto consensus = chainParams->GetConsensus();
 
-    // Sanity check: block header GetHash() function includes RandomX field when running as RCPU
-    assert(!g_isRandomX);
+    // Sanity check: block header GetHash() function includes RandomX field when running as RCPU.
+    // Note: RCPU is always RandomX (fPowRandomX == true), so g_isRandomX is true
+    // here; explicitly toggle it to verify the GetHash() behavior in both modes.
+    const bool saved_is_randomx = g_isRandomX;
+    g_isRandomX = false;
     BOOST_CHECK_NE(consensus.hashGenesisBlock, chainParams->GenesisBlock().GetHash());
     g_isRandomX = true;
     BOOST_CHECK_EQUAL(consensus.hashGenesisBlock, chainParams->GenesisBlock().GetHash());
@@ -356,6 +359,9 @@ BOOST_AUTO_TEST_CASE(Check_RandomX_BlockHeader)
     rx_hash = uint256(123);
     cm = GetRandomXCommitment(chainParams->GenesisBlock(), &rx_hash);
     BOOST_CHECK_NE(cm, uint256S("0000388a6a0aa5eaa14ce3aa066106e1d3f82a05b4a8fc6c6c7b128924a24868"));
+
+    // Restore the global RandomX flag so subsequent tests see the correct mode.
+    g_isRandomX = saved_is_randomx;
 }
 
 // !RCPU END
