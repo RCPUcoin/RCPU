@@ -1,8 +1,8 @@
 # RCPU BUILD NOTES
 
-RCPU (s/atoshi/cash) is a fork of Bitcoin Core which adds a new chain option to restore home computer mining.
+RCPU is a fork of Bitcoin Core that replaces the proof-of-work algorithm with RandomX to restore CPU-friendly, ASIC-resistant mining.
 
-Technical details are documented in the [RCPU Protocol spec](https://github.com/rcpu-project/sips/blob/main/rcpu-protocol-spec.md).
+Technical details are documented in the [RCPU Protocol spec](https://github.com/RCPUcoin/RCPU).
 
 Building RCPU follows the same instructions as building Bitcoin. The RCPU network shares the same features and rules as Bitcoin mainnet, as specified in Bitcoin Core v26.0.
 
@@ -107,7 +107,7 @@ make deploy
 
 ## Config file
 
-The RCPU configuration file is the same as bitcoin.conf.
+The RCPU configuration file is the same as rcpu.conf.
 
 By default, RCPU looks for a configuration file here:
 `$HOME/.rcpu/rcpu.conf`

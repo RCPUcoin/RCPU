@@ -1,78 +1,114 @@
-Bitcoin Core integration/staging tree
-=====================================
+# RCPU
 
-https://bitcoincore.org
+RCPU 是一个基于 Bitcoin Core 27.0 分叉的独立公有链（cryptocurrency），采用
+[RandomX](https://github.com/tevador/RandomX) 工作量证明算法，旨在通过抗 ASIC
+的 CPU 友好型挖矿实现更公平、更去中心化的出块与代币分发。
 
-For an immediately usable, binary version of the Bitcoin Core software, see
-https://bitcoincore.org/en/download/.
+- 官方仓库：https://github.com/RCPUcoin/RCPU
+- 区块浏览器 / 社区：见下方「链接」小节
 
-What is Bitcoin Core?
----------------------
+---
 
-Bitcoin Core connects to the Bitcoin peer-to-peer network to download and fully
-validate blocks and transactions. It also includes a wallet and graphical user
-interface, which can be optionally built.
+## RCPU 是什么？
 
-Further information about Bitcoin Core is available in the [doc folder](/doc).
+RCPU 是一条独立的 PoW 公有链。它继承了 Bitcoin Core 久经考验的共识内核、
+P2P 网络、交易与钱包实现，同时将工作量证明算法替换为 RandomX，并引入了
+独立的创世区块、链参数与网络魔法值，形成一条与 Bitcoin 完全隔离的新链。
 
-License
--------
+RCPU 节点会下载并完整验证区块与交易，同时可选地构建图形化钱包界面。
 
-Bitcoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+更多技术细节见 [doc 目录](/doc)。
 
-Development Process
--------------------
+---
 
-The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
-completely stable. [Tags](https://github.com/bitcoin/bitcoin/tags) are created
-regularly from release branches to indicate new official, stable release versions of Bitcoin Core.
+## 与 Bitcoin Core 的主要区别
 
-The https://github.com/bitcoin-core/gui repository is used exclusively for the
-development of the GUI. Its master branch is identical in all monotree
-repositories. Release branches and tags do not exist, so please do not fork
-that repository unless it is for development reasons.
+| 维度 | Bitcoin Core | RCPU |
+|------|--------------|------|
+| 共识算法 | SHA-256（ASIC 主导） | RandomX（抗 ASIC，CPU 友好） |
+| 出块间隔 | ~10 分钟 | 5 分钟 |
+| 减半周期 | 210000 块 | 210000 块（约 2 年） |
+| 网络魔数 | `0xf9beb4d9` | `RCPU`（`0x52504355`） |
+| 主网端口 | 8333 | 9965 |
+| bech32 前缀 | `bc` | `rcpu`（主网） |
+| 链类型 | MAIN/TESTNET/REGTEST/SIGNET | RCPUMAIN/RCPUTESTNET/RCPUREGTEST |
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+---
 
-Testing
--------
+## 快速开始
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+### 编译
 
-### Automated Testing
+依赖与编译步骤与 Bitcoin Core 基本一致。请参照：
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+- [doc/build-unix.md](doc/build-unix.md) — Linux / macOS
+- [doc/build-windows.md](doc/build-windows.md) — Windows
+- [doc/build-android.md](doc/build-android.md) — Android（可选）
 
-There are also [regression and integration tests](/test), written
-in Python.
-These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
+通用流程（Linux）：
 
-The CI (Continuous Integration) systems make sure that every pull request is built for Windows, Linux, and macOS,
-and that unit/sanity tests are run automatically.
+\`\`\`bash
+./autogen.sh
+./configure
+make -j$(nproc)
+\`\`\`
 
-### Manual Quality Assurance (QA) Testing
+编译产物为：
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+| 命令 | 说明 |
+|------|------|
+| `rcpud` | RCPU 节点守护进程 |
+| `rcpu-cli` | RPC 命令行客户端 |
+| `rcpu-tx` | 交易工具 |
+| `rcpu-wallet` | 钱包工具 |
+| `rcpu-qt` | 图形化钱包（可选） |
 
-Translations
-------------
+### 运行节点
 
-Changes to translations as well as new translations can be submitted to
-[Bitcoin Core's Transifex page](https://www.transifex.com/bitcoin/bitcoin/).
+\`\`\`bash
+# 启动节点（主网）
+./src/rcpud -daemon
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+# 查看链状态
+./src/rcpu-cli getblockchaininfo
+\`\`\`
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+---
+
+## 链接
+
+- 源码：https://github.com/RCPUcoin/RCPU
+- 问题反馈：https://github.com/RCPUcoin/RCPU/issues
+- 许可证：MIT（见 [COPYING](COPYING)）
+
+---
+
+## 开发流程
+
+主分支会定期构建（见 `doc/build-*.md`）并测试，但不保证完全稳定。
+请通过 GitHub 提交 issue 与 pull request 参与贡献。
+
+贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)，开发提示见
+[doc/developer-notes.md](doc/developer-notes.md)。
+
+## 测试
+
+鼓励开发者为新代码编写单元测试，运行方式：
+
+\`\`\`bash
+make check
+\`\`\`
+
+另有基于 Python 的回归与集成测试，位于 [test/](test/)：
+
+\`\`\`bash
+test/functional/test_runner.py
+\`\`\`
+
+CI 会对每个 pull request 在 Windows / Linux / macOS 上自动构建并运行单元与
+sanitize 测试。
+
+## 许可证
+
+RCPU 基于 MIT 许可证发布。详见 [COPYING](COPYING) 或
+https://opensource.org/licenses/MIT。

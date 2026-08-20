@@ -2,7 +2,7 @@
 
 **Updated for MacOS [11.2](https://www.apple.com/macos/big-sur/)**
 
-This guide describes how to build bitcoind, command-line utilities, and GUI on macOS
+This guide describes how to build rcpud, command-line utilities, and GUI on macOS
 
 ## Preparation
 
@@ -65,7 +65,7 @@ git clone https://github.com/bitcoin/bitcoin.git
 
 #### Wallet Dependencies
 
-It is not necessary to build wallet functionality to run `bitcoind` or  `bitcoin-qt`.
+It is not necessary to build wallet functionality to run `rcpud` or  `rcpu-qt`.
 
 ###### Descriptor Wallet Support
 
@@ -231,10 +231,10 @@ make deploy
 
 ## Running Bitcoin Core
 
-Bitcoin Core should now be available at `./src/bitcoind`.
-If you compiled support for the GUI, it should be available at `./src/qt/bitcoin-qt`.
+Bitcoin Core should now be available at `./src/rcpud`.
+If you compiled support for the GUI, it should be available at `./src/qt/rcpu-qt`.
 
-The first time you run `bitcoind` or `bitcoin-qt`, it will start downloading the blockchain.
+The first time you run `rcpud` or `rcpu-qt`, it will start downloading the blockchain.
 This process could take many hours, or even days on slower than average systems.
 
 By default, blockchain and wallet data files will be stored in:
@@ -248,9 +248,9 @@ Before running, you may create an empty configuration file:
 ```shell
 mkdir -p "/Users/${USER}/Library/Application Support/Bitcoin"
 
-touch "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+touch "/Users/${USER}/Library/Application Support/Bitcoin/rcpu.conf"
 
-chmod 600 "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+chmod 600 "/Users/${USER}/Library/Application Support/Bitcoin/rcpu.conf"
 ```
 
 You can monitor the download process by looking at the debug.log file:
@@ -262,8 +262,8 @@ tail -f $HOME/Library/Application\ Support/Bitcoin/debug.log
 ## Other commands:
 
 ```shell
-./src/bitcoind -daemon      # Starts the bitcoin daemon.
-./src/bitcoin-cli --help    # Outputs a list of command-line options.
-./src/bitcoin-cli help      # Outputs a list of RPC commands when the daemon is running.
-./src/qt/bitcoin-qt -server # Starts the bitcoin-qt server mode, allows bitcoin-cli control
+./src/rcpud -daemon      # Starts the bitcoin daemon.
+./src/rcpu-cli --help    # Outputs a list of command-line options.
+./src/rcpu-cli help      # Outputs a list of RPC commands when the daemon is running.
+./src/qt/rcpu-qt -server # Starts the rcpu-qt server mode, allows rcpu-cli control
 ```
