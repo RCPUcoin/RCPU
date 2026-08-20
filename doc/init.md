@@ -13,7 +13,7 @@ can be found in the contrib/init folder.
 Service User
 ---------------------------------
 
-All three Linux startup configurations assume the existence of a "bitcoin" user
+All three Linux startup configurations assume the existence of a "rcpu" user
 and group.  They must be created before attempting to use these scripts.
 The macOS configuration assumes rcpud will be set up for the current user.
 
@@ -44,7 +44,7 @@ This allows for running rcpud without having to do any manual configuration.
 relative to the data directory. `wallet` *only* supports relative paths.
 
 For an example configuration file that describes the configuration settings,
-see `share/examples/rcpu.conf`.
+see `share/examples/bitcoin.conf`.
 
 Paths
 ---------------------------------
@@ -54,40 +54,40 @@ Paths
 All three configurations assume several paths that might need to be adjusted.
 
     Binary:              /usr/bin/rcpud
-    Configuration file:  /etc/bitcoin/rcpu.conf
+    Configuration file:  /etc/rcpu/rcpu.conf
     Data directory:      /var/lib/rcpud
     PID file:            /var/run/rcpud/rcpud.pid (OpenRC and Upstart) or
                          /run/rcpud/rcpud.pid (systemd)
     Lock file:           /var/lock/subsys/rcpud (CentOS)
 
 The PID directory (if applicable) and data directory should both be owned by the
-bitcoin user and group. It is advised for security reasons to make the
-configuration file and data directory only readable by the bitcoin user and
+rcpu user and group. It is advised for security reasons to make the
+configuration file and data directory only readable by the rcpu user and
 group. Access to rcpu-cli and other rcpud rpc clients can then be
 controlled by group membership.
 
 NOTE: When using the systemd .service file, the creation of the aforementioned
 directories and the setting of their permissions is automatically handled by
-systemd. Directories are given a permission of 710, giving the bitcoin group
+systemd. Directories are given a permission of 710, giving the rcpu group
 access to files under it _if_ the files themselves give permission to the
-bitcoin group to do so. This does not allow
+rcpu group to do so. This does not allow
 for the listing of files under the directory.
 
 NOTE: It is not currently possible to override `datadir` in
-`/etc/bitcoin/rcpu.conf` with the current systemd, OpenRC, and Upstart init
+`/etc/rcpu/rcpu.conf` with the current systemd, OpenRC, and Upstart init
 files out-of-the-box. This is because the command line options specified in the
 init files take precedence over the configurations in
-`/etc/bitcoin/rcpu.conf`. However, some init systems have their own
+`/etc/rcpu/rcpu.conf`. However, some init systems have their own
 configuration mechanisms that would allow for overriding the command line
-options specified in the init files (e.g. setting `BITCOIND_DATADIR` for
+options specified in the init files (e.g. setting `RCPUD_DATADIR` for
 OpenRC).
 
 ### macOS
 
     Binary:              /usr/local/bin/rcpud
-    Configuration file:  ~/Library/Application Support/Bitcoin/rcpu.conf
-    Data directory:      ~/Library/Application Support/Bitcoin
-    Lock file:           ~/Library/Application Support/Bitcoin/.lock
+    Configuration file:  ~/Library/Application Support/RCPU/rcpu.conf
+    Data directory:      ~/Library/Application Support/RCPU
+    Lock file:           ~/Library/Application Support/RCPU/.lock
 
 Installing Service Configuration
 -----------------------------------
@@ -125,19 +125,19 @@ use old versions of Upstart and do not supply the start-stop-daemon utility.
 Copy rcpud.init to /etc/init.d/rcpud. Test by running `service rcpud start`.
 
 Using this script, you can adjust the path and flags to the rcpud program by
-setting the BITCOIND and FLAGS environment variables in the file
+setting the RCPUD and FLAGS environment variables in the file
 /etc/sysconfig/rcpud. You can also use the DAEMONOPTS environment variable here.
 
 ### macOS
 
-Copy org.bitcoin.rcpud.plist into ~/Library/LaunchAgents. Load the launch agent by
-running `launchctl load ~/Library/LaunchAgents/org.bitcoin.rcpud.plist`.
+Copy org.rcpu.rcpud.plist into ~/Library/LaunchAgents. Load the launch agent by
+running `launchctl load ~/Library/LaunchAgents/org.rcpu.rcpud.plist`.
 
 This Launch Agent will cause rcpud to start whenever the user logs in.
 
 NOTE: This approach is intended for those wanting to run rcpud as the current user.
-You will need to modify org.bitcoin.rcpud.plist if you intend to use it as a
-Launch Daemon with a dedicated bitcoin user.
+You will need to modify org.rcpu.rcpud.plist if you intend to use it as a
+Launch Daemon with a dedicated rcpu user.
 
 Auto-respawn
 -----------------------------------

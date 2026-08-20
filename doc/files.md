@@ -26,7 +26,7 @@ The data directory is the default location where the Bitcoin Core files are stor
 
 Platform | Data directory path
 ---------|--------------------
-Linux    | `$HOME/.bitcoin/`
+Linux    | `$HOME/.rcpu/`
 macOS    | `$HOME/Library/Application Support/Bitcoin/`
 Windows  | `%APPDATA%\Bitcoin\` <sup>[\[1\]](#note1)</sup>
 
