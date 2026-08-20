@@ -11,7 +11,7 @@
     <ClCompile Include="..\..\src\qt\addresstablemodel.cpp" />
     <ClCompile Include="..\..\src\qt\askpassphrasedialog.cpp" />
     <ClCompile Include="..\..\src\qt\bantablemodel.cpp" />
-    <ClCompile Include="..\..\src\qt\bitcoin.cpp" />
+    <ClCompile Include="..\..\src\qt\rcpu.cpp" />
     <ClCompile Include="..\..\src\qt\bitcoinaddressvalidator.cpp" />
     <ClCompile Include="..\..\src\qt\bitcoinamountfield.cpp" />
     <ClCompile Include="..\..\src\qt\bitcoingui.cpp" />
