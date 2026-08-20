@@ -85,7 +85,7 @@ EXTRA_LIBRARIES += \
   $(LIBBITCOIN_ZMQ)
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += bitcoind
+  bin_PROGRAMS += rcpud
 endif
 
 if BUILD_BITCOIN_NODE
@@ -93,25 +93,25 @@ if BUILD_BITCOIN_NODE
 endif
 
 if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += bitcoin-cli
+  bin_PROGRAMS += rcpu-cli
 endif
 
 if BUILD_BITCOIN_TX
-  bin_PROGRAMS += bitcoin-tx
+  bin_PROGRAMS += rcpu-tx
 endif
 
 if ENABLE_WALLET
 if BUILD_BITCOIN_WALLET
-  bin_PROGRAMS += bitcoin-wallet
+  bin_PROGRAMS += rcpu-wallet
 endif
 endif
 
 if BUILD_BITCOIN_UTIL
-  bin_PROGRAMS += bitcoin-util
+  bin_PROGRAMS += rcpu-util
 endif
 
 if BUILD_BITCOIN_CHAINSTATE
-  bin_PROGRAMS += bitcoin-chainstate
+  bin_PROGRAMS += rcpu-chainstate
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -775,13 +775,13 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind & bitcoin-node binaries #
-bitcoin_daemon_sources = bitcoind.cpp
+bitcoin_daemon_sources = rcpud.cpp
 bitcoin_bin_cppflags = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 bitcoin_bin_cxxflags = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bitcoin_bin_ldflags = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-bitcoin_daemon_sources += bitcoind-res.rc
+bitcoin_daemon_sources += rcpud-res.rc
 endif
 
 bitcoin_bin_ldadd = \
@@ -798,11 +798,11 @@ bitcoin_bin_ldadd = \
 
 bitcoin_bin_ldadd += $(BDB_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(SQLITE_LIBS) $(RANDOMX_LIBS)
 
-bitcoind_SOURCES = $(bitcoin_daemon_sources) init/bitcoind.cpp
-bitcoind_CPPFLAGS = $(bitcoin_bin_cppflags)
-bitcoind_CXXFLAGS = $(bitcoin_bin_cxxflags)
-bitcoind_LDFLAGS = $(bitcoin_bin_ldflags)
-bitcoind_LDADD = $(LIBBITCOIN_NODE) $(bitcoin_bin_ldadd)
+rcpud_SOURCES = $(bitcoin_daemon_sources) init/rcpud.cpp
+rcpud_CPPFLAGS = $(bitcoin_bin_cppflags)
+rcpud_CXXFLAGS = $(bitcoin_bin_cxxflags)
+rcpud_LDFLAGS = $(bitcoin_bin_ldflags)
+rcpud_LDADD = $(LIBBITCOIN_NODE) $(bitcoin_bin_ldadd)
 
 bitcoin_node_SOURCES = $(bitcoin_daemon_sources) init/bitcoin-node.cpp
 bitcoin_node_CPPFLAGS = $(bitcoin_bin_cppflags)
@@ -811,36 +811,36 @@ bitcoin_node_LDFLAGS = $(bitcoin_bin_ldflags)
 bitcoin_node_LDADD = $(LIBBITCOIN_NODE) $(bitcoin_bin_ldadd) $(LIBBITCOIN_IPC) $(LIBMULTIPROCESS_LIBS)
 
 # bitcoin-cli binary #
-bitcoin_cli_SOURCES = bitcoin-cli.cpp
-bitcoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-bitcoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitcoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+rcpu_cli_SOURCES = rcpu-cli.cpp
+rcpu_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+rcpu_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rcpu_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-bitcoin_cli_SOURCES += bitcoin-cli-res.rc
+rcpu_cli_SOURCES += rcpu-cli-res.rc
 endif
 
-bitcoin_cli_LDADD = \
+rcpu_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-bitcoin_cli_LDADD += $(EVENT_LIBS)
+rcpu_cli_LDADD += $(EVENT_LIBS)
 #
 
 # bitcoin-tx binary #
-bitcoin_tx_SOURCES = bitcoin-tx.cpp
-bitcoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-bitcoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitcoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+rcpu_tx_SOURCES = rcpu-tx.cpp
+rcpu_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+rcpu_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rcpu_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-bitcoin_tx_SOURCES += bitcoin-tx-res.rc
+rcpu_tx_SOURCES += rcpu-tx-res.rc
 endif
 
-bitcoin_tx_LDADD = \
+rcpu_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -850,12 +850,12 @@ bitcoin_tx_LDADD = \
 #
 
 # bitcoin-wallet binary #
-bitcoin_wallet_SOURCES = bitcoin-wallet.cpp
-bitcoin_wallet_SOURCES += init/bitcoin-wallet.cpp
-bitcoin_wallet_CPPFLAGS = $(bitcoin_bin_cppflags)
-bitcoin_wallet_CXXFLAGS = $(bitcoin_bin_cxxflags)
-bitcoin_wallet_LDFLAGS = $(bitcoin_bin_ldflags)
-bitcoin_wallet_LDADD = \
+rcpu_wallet_SOURCES = rcpu-wallet.cpp
+rcpu_wallet_SOURCES += init/rcpu-wallet.cpp
+rcpu_wallet_CPPFLAGS = $(bitcoin_bin_cppflags)
+rcpu_wallet_CXXFLAGS = $(bitcoin_bin_cxxflags)
+rcpu_wallet_LDFLAGS = $(bitcoin_bin_ldflags)
+rcpu_wallet_LDADD = \
   $(LIBBITCOIN_WALLET_TOOL) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
@@ -868,21 +868,21 @@ bitcoin_wallet_LDADD = \
   $(SQLITE_LIBS)
 
 if TARGET_WINDOWS
-bitcoin_wallet_SOURCES += bitcoin-wallet-res.rc
+rcpu_wallet_SOURCES += rcpu-wallet-res.rc
 endif
 #
 
 # bitcoin-util binary #
-bitcoin_util_SOURCES = bitcoin-util.cpp
-bitcoin_util_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-bitcoin_util_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bitcoin_util_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+rcpu_util_SOURCES = rcpu-util.cpp
+rcpu_util_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+rcpu_util_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rcpu_util_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-bitcoin_util_SOURCES += bitcoin-util-res.rc
+rcpu_util_SOURCES += rcpu-util-res.rc
 endif
 
-bitcoin_util_LDADD = \
+rcpu_util_LDADD = \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
   $(LIBUNIVALUE) \
@@ -892,16 +892,16 @@ bitcoin_util_LDADD = \
 #
 
 # bitcoin-chainstate binary #
-bitcoin_chainstate_SOURCES = bitcoin-chainstate.cpp
-bitcoin_chainstate_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BOOST_CPPFLAGS)
-bitcoin_chainstate_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rcpu_chainstate_SOURCES = rcpu-chainstate.cpp
+rcpu_chainstate_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BOOST_CPPFLAGS)
+rcpu_chainstate_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
-bitcoin_chainstate_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(PTHREAD_FLAGS) $(LIBTOOL_APP_LDFLAGS) -static
-bitcoin_chainstate_LDADD = $(LIBBITCOINKERNEL)
+rcpu_chainstate_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(PTHREAD_FLAGS) $(LIBTOOL_APP_LDFLAGS) -static
+rcpu_chainstate_LDADD = $(LIBBITCOINKERNEL)
 
 # libtool is unable to calculate this indirect dependency, presumably because it's a subproject.
 # libsecp256k1 only needs to be linked in when libbitcoinkernel is static.
-bitcoin_chainstate_LDADD += $(LIBSECP256K1)
+rcpu_chainstate_LDADD += $(LIBSECP256K1)
 #
 
 # bitcoinkernel library #
