@@ -21,7 +21,15 @@ static void mineBlock(const node::NodeContext& node, std::chrono::seconds block_
     auto curr_time = GetTime<std::chrono::seconds>();
     SetMockTime(block_time); // update time so the block is created with it
     CBlock block = node::BlockAssembler{node.chainman->ActiveChainstate(), nullptr}.CreateNewBlock(CScript() << OP_TRUE)->block;
-    while (!CheckProofOfWork(block.GetHash(), block.nBits, node.chainman->GetConsensus())) ++block.nNonce;
+    // !RCPU: RandomX chain PoW requires mining via CheckProofOfWorkRandomX.
+    if (node.chainman->GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(block, node.chainman->GetConsensus(), POW_VERIFY_MINING, &rxHash)) ++block.nNonce;
+        block.hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(block.GetHash(), block.nBits, node.chainman->GetConsensus())) ++block.nNonce;
+    }
+    // !RCPU END
     block.fChecked = true; // little speedup
     SetMockTime(curr_time); // process block at current time
     Assert(node.chainman->ProcessNewBlock(std::make_shared<const CBlock>(block), /*force_processing=*/true, /*min_pow_checked=*/true, nullptr));

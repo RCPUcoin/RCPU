@@ -52,10 +52,22 @@ std::vector<std::shared_ptr<CBlock>> CreateBlockChain(size_t total_height, const
         block.nBits = params.GenesisBlock().nBits;
         block.nNonce = 0;
 
-        while (!CheckProofOfWork(block.GetHash(), block.nBits, params.GetConsensus())) {
-            ++block.nNonce;
-            assert(block.nNonce);
+        // !RCPU: RandomX chain PoW requires mining via CheckProofOfWorkRandomX
+        // (which computes the hashRandomX field).
+        if (params.GetConsensus().fPowRandomX) {
+            uint256 rxHash;
+            while (!CheckProofOfWorkRandomX(block, params.GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+                ++block.nNonce;
+                assert(block.nNonce);
+            }
+            block.hashRandomX = rxHash;
+        } else {
+            while (!CheckProofOfWork(block.GetHash(), block.nBits, params.GetConsensus())) {
+                ++block.nNonce;
+                assert(block.nNonce);
+            }
         }
+        // !RCPU END
     }
     return ret;
 }
@@ -86,10 +98,21 @@ protected:
 
 COutPoint MineBlock(const NodeContext& node, std::shared_ptr<CBlock>& block)
 {
-    while (!CheckProofOfWork(block->GetHash(), block->nBits, Params().GetConsensus())) {
-        ++block->nNonce;
-        assert(block->nNonce);
+    // !RCPU: RandomX chain PoW requires mining via CheckProofOfWorkRandomX.
+    if (Params().GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(*block, Params().GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+            ++block->nNonce;
+            assert(block->nNonce);
+        }
+        block->hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(block->GetHash(), block->nBits, Params().GetConsensus())) {
+            ++block->nNonce;
+            assert(block->nNonce);
+        }
     }
+    // !RCPU END
 
     auto& chainman{*Assert(node.chainman)};
     const auto old_height = WITH_LOCK(chainman.GetMutex(), return chainman.ActiveHeight());

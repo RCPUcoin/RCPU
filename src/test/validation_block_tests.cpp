@@ -93,9 +93,19 @@ std::shared_ptr<CBlock> MinerTestingSetup::FinalizeBlock(std::shared_ptr<CBlock>
 
     pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
 
-    while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
-        ++(pblock->nNonce);
+    // !RCPU: RandomX chain PoW requires mining via CheckProofOfWorkRandomX.
+    if (Params().GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(*pblock, Params().GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+            ++(pblock->nNonce);
+        }
+        pblock->hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
+            ++(pblock->nNonce);
+        }
     }
+    // !RCPU END
 
     // submit block header, so that miner can get the block height from the
     // global state and the node has the topology of the chain

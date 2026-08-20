@@ -28,9 +28,19 @@ struct HeadersGeneratorSetup : public RegTestingSetup {
 
 void HeadersGeneratorSetup::FindProofOfWork(CBlockHeader& starting_header)
 {
-    while (!CheckProofOfWork(starting_header.GetHash(), starting_header.nBits, Params().GetConsensus())) {
-        ++(starting_header.nNonce);
+    // !RCPU: RandomX chain PoW requires mining via CheckProofOfWorkRandomX.
+    if (Params().GetConsensus().fPowRandomX) {
+        uint256 rxHash;
+        while (!CheckProofOfWorkRandomX(starting_header, Params().GetConsensus(), POW_VERIFY_MINING, &rxHash)) {
+            ++(starting_header.nNonce);
+        }
+        starting_header.hashRandomX = rxHash;
+    } else {
+        while (!CheckProofOfWork(starting_header.GetHash(), starting_header.nBits, Params().GetConsensus())) {
+            ++(starting_header.nNonce);
+        }
     }
+    // !RCPU END
 }
 
 void HeadersGeneratorSetup::GenerateHeaders(std::vector<CBlockHeader>& headers,
