@@ -1,16 +1,104 @@
+# RCPU — gitignore
+# Based on Bitcoin Core's build system ignores, adapted for RCPU binary names.
+
+# === Build system generated files (autotools) ===
+aclocal.m4
+autom4te.cache/
+build-aux/compile
+build-aux/config.guess
+build-aux/config.sub
+build-aux/depcomp
+build-aux/install-sh
+build-aux/ltmain.sh
+build-aux/missing
+build-aux/test-driver
+config.log
+config.status
+configure
+libtool
+*.la
+*.lo
+Makefile
+Makefile.in
+*.pc
+*.m4
+
+# === Object files / libraries ===
+*.o
+*.a
+*.so
+*.so.*
+
+# === Qt build artifacts (moc / uic / rcc / lrelease) ===
+*.moc
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+qrc_*_locale.cpp
+*.qm
+rcpu-qt
+bitcoin-qt
+
+# === configure-generated headers ===
+bitcoin-config.h
+bitcoin-config.h.in
+stamp-h1
+src/obj/build.h
+
+# === configure-generated packaging files (from .in templates) ===
+share/qt/Info.plist
+share/setup.nsi
+contrib/devtools/split-debug.sh
+
+# === Generated test data headers ===
+src/test/data/*.h
+src/test/fuzz/fuzz
+
+# === Compiled binaries (RCPU names + legacy Bitcoin names) ===
+rcpud
+rcpu-cli
+rcpu-tx
+rcpu-util
+rcpu-wallet
+rcpu-chainstate
+rcpu-node
+bitcoind
+bitcoin-cli
+bitcoin-tx
+bitcoin-util
+bitcoin-wallet
+bitcoin-node
+bitcoin-gui
+*.exe
+
+# === libtool / autotools build dirs ===
+.deps/
+.libs/
+.dirstamp
+
+# === Test / bench artifacts ===
+src/test/test_bitcoin
+src/bench/bench_bitcoin
+*.trs
+*.log
+
+# === Python ===
 *.pyc
 __pycache__/
 *.pyo
 
+# === Node ===
 node_modules/
 npm-debug.log*
 
+# === Editor / OS ===
 .vscode/
 *.swp
 
 .DS_Store
 Thumbs.db
 
+# === Backups / logs ===
 backups/
 *.backup
 
@@ -21,10 +109,14 @@ nohup.out
 *.lock
 
 *.bak
+*.bak.*
 *.tmp
+*~
+configure~
 
 config.json
 *.conf
 
+# Keep the miner directory
 !miner/
 !miner/*
