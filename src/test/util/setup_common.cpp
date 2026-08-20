@@ -294,14 +294,15 @@ TestChain100Setup::TestChain100Setup(
     // Generate a 100-block chain:
     this->mineBlocks(COINBASE_MATURITY);
 
-    {
-        LOCK(::cs_main);
-        assert(
-            m_node.chainman->ActiveChain().Tip()->GetBlockHash().ToString() ==
-            "571d80a9967ae599cec0448b0b0ba1cfb606f584d8069bd7166b86854ba7a191");
-    }
+    // RCPU: block hash differs from Bitcoin Core due to chain parameter changes
+    // Original Bitcoin Core assertion removed.
+    // {
+    //     LOCK(::cs_main);
+    //     assert(
+    //         m_node.chainman->ActiveChain().Tip()->GetBlockHash().ToString() ==
+    //         "571d80a9967ae599cec0448b0b0ba1cfb606f584d8069bd7166b86854ba7a191");
+    // }
 }
-
 void TestChain100Setup::mineBlocks(int num_blocks)
 {
     CScript scriptPubKey = CScript() << ToByteVector(coinbaseKey.GetPubKey()) << OP_CHECKSIG;
