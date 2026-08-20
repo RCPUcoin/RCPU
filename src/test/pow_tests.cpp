@@ -167,6 +167,15 @@ void sanity_check_chainparams(const ArgsManager& args, ChainType chain_type)
     const auto chainParams = CreateChainParams(args, chain_type);
     const auto consensus = chainParams->GetConsensus();
 
+    // !RCPU: BasicTestingSetup does not set g_isRandomX, but every RCPU chain is
+    // RandomX (fPowRandomX == true), so CBlockHeader serialization includes the
+    // hashRandomX field. Set it here so GenesisBlock().GetHash() matches
+    // consensus.hashGenesisBlock.
+    const bool saved_is_randomx = g_isRandomX;
+    g_isRandomX = consensus.fPowRandomX;
+    struct RestoreRandomX { bool& flag; bool val; ~RestoreRandomX() { flag = val; } } restorer{g_isRandomX, saved_is_randomx};
+    // !RCPU END
+
     // hash genesis is correct
     BOOST_CHECK_EQUAL(consensus.hashGenesisBlock, chainParams->GenesisBlock().GetHash());
 
@@ -253,10 +262,10 @@ BOOST_AUTO_TEST_CASE(Check_RandomX_Key_Generation)
     // RandomX key is sha256d of seed string where the epoch number changes
     // "RCPU/RandomX/Epoch/1"
     uint256 hash = GetSeedHash(1);
-    BOOST_CHECK_EQUAL(hash, uint256S("ccbde830c787b2061cbd9515d9c83d411fcf04cc6e1e47dcc3903c0dee4b1536"));
+    BOOST_CHECK_EQUAL(hash, uint256S("4a8a819d5214702b26c4aa40fcb2637b461b589a84cf151e7f78f2a03d38cc69"));
     // "RCPU/RandomX/Epoch/999"
     hash = GetSeedHash(999);
-    BOOST_CHECK_EQUAL(hash, uint256S("b8ea6d0f30d6f7250bd8f2f62c9d83a61e1391e14cff95888db3a89bbdd183d5"));
+    BOOST_CHECK_EQUAL(hash, uint256S("0e058b31ff88988c075bed0fae989cf80f66f48d7c121ece35f3b486ef2c1796"));
 }
 
 BOOST_AUTO_TEST_CASE(Check_RandomX_BlockHeader)
