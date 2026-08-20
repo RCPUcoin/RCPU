@@ -171,6 +171,11 @@ ChainTestingSetup::ChainTestingSetup(const ChainType chainType, const std::vecto
 {
     const CChainParams& chainparams = Params();
 
+    // !RCPU: Set RandomX flag according to chain params so genesis block hash
+    // (GetHash) matches consensus.hashGenesisBlock when loading the chain state.
+    g_isRandomX = chainparams.GetConsensus().fPowRandomX;
+    // !RCPU END
+
     // We have to run a scheduler thread to prevent ActivateBestChain
     // from blocking due to queue overrun.
     m_node.scheduler = std::make_unique<CScheduler>();
@@ -217,6 +222,9 @@ ChainTestingSetup::~ChainTestingSetup()
     m_node.fee_estimator.reset();
     m_node.chainman.reset();
     m_node.scheduler.reset();
+    // !RCPU: Reset RandomX flag after test to avoid cross-test contamination
+    g_isRandomX = false;
+    // !RCPU END
 }
 
 void ChainTestingSetup::LoadVerifyActivateChainstate()
