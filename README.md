@@ -38,6 +38,20 @@ See the [doc directory](/doc) for more technical details.
 
 ---
 
+## Get the Source
+
+The repository history contains pre-built binaries, so a full clone can be large.
+For a quick checkout of the latest code, use a shallow clone (downloads only the
+latest snapshot, without historical binaries):
+
+```bash
+git clone --depth 1 https://github.com/RCPUcoin/RCPU.git
+```
+
+To fetch the full history later: `git fetch --unshallow`.
+
+---
+
 ## Quick Start
 
 ### Build
