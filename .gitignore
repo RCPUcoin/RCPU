@@ -37,7 +37,7 @@ qrc_*.cpp
 qrc_*_locale.cpp
 *.qm
 rcpu-qt
-bitcoin-qt
+/bitcoin-qt
 
 # === configure-generated headers ===
 bitcoin-config.h
@@ -67,8 +67,8 @@ bitcoin-cli
 bitcoin-tx
 bitcoin-util
 bitcoin-wallet
-bitcoin-node
-bitcoin-gui
+/bitcoin-node
+/bitcoin-gui
 *.exe
 
 # === libtool / autotools build dirs ===
