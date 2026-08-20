@@ -59,7 +59,21 @@ jobs:
           # and the ^ prefix is used to exclude these parents and all their
           # ancestors from the rev-list output as described in:
           # https://git-scm.com/docs/git-rev-list
-          echo "TEST_BASE=$(git rev-list -n$((${{ env.MAX_COUNT }} + 1)) --reverse HEAD ^$(git rev-list -n1 --merges HEAD)^@ | head -1)" >> "$GITHUB_ENV"
+          # Determine the test base commit. Handle the case where the most
+          # recent merge commit is outside the shallow clone (e.g. a rebase of
+          # many commits), which previously produced an empty rev that made
+          # git fail with `fatal: bad revision '^^@'`.
+          MERGE_BASE=$(git rev-list -n1 --merges HEAD 2>/dev/null || true)
+          if [ -n "$MERGE_BASE" ]; then
+            EXCLUDE_ARG="^${MERGE_BASE}^@"
+          else
+            EXCLUDE_ARG=""
+          fi
+          TEST_BASE=$(git rev-list -n$((${{ env.MAX_COUNT }} + 1)) --reverse HEAD $EXCLUDE_ARG | head -1)
+          if [ -z "$TEST_BASE" ]; then
+            TEST_BASE=HEAD~
+          fi
+          echo "TEST_BASE=$TEST_BASE" >> "$GITHUB_ENV"
       - run: |
           sudo apt-get update
           sudo apt-get install clang-15 ccache build-essential libtool autotools-dev automake pkg-config bsdmainutils python3-zmq libevent-dev libboost-dev libsqlite3-dev libdb++-dev systemtap-sdt-dev libminiupnpc-dev libnatpmp-dev qtbase5-dev qttools5-dev qttools5-dev-tools qtwayland5 libqrencode-dev -y
