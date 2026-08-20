@@ -9,10 +9,11 @@ All binaries are compiled from source on the production pool server
 |------|----------|-------------|-----------------|
 | `minerd-rcpu-linux-x64.gz` | Linux x86_64 | cpuminer-opt RCPU miner (byte-order fix) | ~50 KB |
 | `minerd-rcpu-windows-x64.exe.gz` | Windows x86_64 | MINGW cross-compiled, statically linked | ~1.1 MB |
-| `rcpud-linux-x64.gz` | Linux x86_64 | RCPU full node daemon | ~88 MB |
+| `rcpud-linux-x64.gz` | Linux x86_64 | RCPU full node daemon | ~98 MB |
 | `rcpu-cli-linux-x64.gz` | Linux x86_64 | RCPU RPC client | ~7 MB |
 | `rcpu-tx-linux-x64.gz` | Linux x86_64 | RCPU transaction utility | ~15 MB |
-| `rcpu-wallet-linux-x64.gz` | Linux x86_64 | RCPU wallet | ~46 MB |
+| `rcpu-wallet-linux-x64.gz` | Linux x86_64 | RCPU wallet | ~47 MB |
+| `rcpu-util-linux-x64.gz` | Linux x86_64 | RCPU utility (config tool) | ~7 MB |
 | `xmrig-rcpu-linux-x64.gz` | Linux x86_64 | XMRig RCPU build | ~1.8 MB |
 
 ## Verify
@@ -21,6 +22,28 @@ All binaries are compiled from source on the production pool server
 sha256sum -c SHA256SUMS
 ```
 
+
+## Quick Start — Full Node
+
+```bash
+# Download the node daemon and RPC client
+wget https://github.com/RCPUcoin/RCPU/raw/main/releases/rcpud-linux-x64.gz
+wget https://github.com/RCPUcoin/RCPU/raw/main/releases/rcpu-cli-linux-x64.gz
+gunzip rcpud-linux-x64.gz rcpu-cli-linux-x64.gz
+chmod +x rcpud rcpu-cli
+
+# Create a data directory and config
+mkdir -p ~/.rcpu
+echo "server=1" > ~/.rcpu/rcpu.conf
+echo "rpcuser=youruser" >> ~/.rcpu/rcpu.conf
+echo "rpcpassword=yourpassword" >> ~/.rcpu/rcpu.conf
+
+# Start the node (daemon mode)
+./rcpud -daemon
+
+# Check sync status
+./rcpu-cli getblockchaininfo
+```
 ## Quick Start — Linux Miner
 
 ```bash
@@ -51,4 +74,4 @@ minerd-rcpu-windows-x64.exe -a randomx ^
 ```
 
 ## Build Date
-2026-08-13 (latest rebuild with DNS seed and port updates, commit e6ddcf6)
+2026-08-20 (rebuild with test fixes and .gitignore cleanup)
