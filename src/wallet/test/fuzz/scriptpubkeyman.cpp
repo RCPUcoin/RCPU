@@ -45,7 +45,7 @@ void initialize_spkm()
 {
     static const auto testing_setup{MakeNoLogFileContext<const TestingSetup>()};
     g_setup = testing_setup.get();
-    SelectParams(ChainType::MAIN);
+    SelectParams(ChainType::RCPUMAIN);
     MOCKED_DESC_CONVERTER.Init();
 }
 

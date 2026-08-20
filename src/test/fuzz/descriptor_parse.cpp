@@ -56,7 +56,7 @@ static void TestDescriptor(const Descriptor& desc, FlatSigningProvider& sig_prov
 void initialize_descriptor_parse()
 {
     ECC_Start();
-    SelectParams(ChainType::MAIN);
+    SelectParams(ChainType::RCPUMAIN);
 }
 
 void initialize_mocked_descriptor_parse()

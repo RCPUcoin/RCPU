@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
 
 
     // SETUP: Chainstate
-    auto chainparams = CChainParams::Main();
+    auto chainparams = CChainParams::RcpuMain();
     const ChainstateManager::Options chainman_opts{
         .chainparams = *chainparams,
         .datadir = abs_datadir,

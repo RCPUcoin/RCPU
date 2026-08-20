@@ -21,7 +21,7 @@ FUZZ_TARGET(utxo_total_supply)
 {
     /** The testing setup that creates a chainman only (no chainstate) */
     ChainTestingSetup test_setup{
-        ChainType::REGTEST,
+        ChainType::RCPUREGTEST,
         {
             "-testactivationheight=bip34@2",
         },

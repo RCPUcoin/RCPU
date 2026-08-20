@@ -31,7 +31,7 @@ const TestingSetup* g_setup;
 void initialize_process_messages()
 {
     static const auto testing_setup = MakeNoLogFileContext<const TestingSetup>(
-            /*chain_type=*/ChainType::REGTEST,
+            /*chain_type=*/ChainType::RCPUREGTEST,
             /*extra_args=*/{"-txreconciliation"});
     g_setup = testing_setup.get();
     for (int i = 0; i < 2 * COINBASE_MATURITY; i++) {

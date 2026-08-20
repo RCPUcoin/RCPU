@@ -147,9 +147,7 @@ std::set<std::string> ArgsManager::GetUnsuitableSectionOnlyArgs() const
     if (m_network.empty()) return std::set<std::string> {};
 
     // if it's okay to use the default section for this network, don't worry
-    // !RCPU
-    if (m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network == ChainTypeToString(ChainType::MAIN)) return std::set<std::string> {};
-    // !RCPU END
+    if (m_network == ChainTypeToString(ChainType::RCPUMAIN)) return std::set<std::string> {};
 
     for (const auto& arg : m_network_only_args) {
         if (OnlyHasDefaultSectionSetting(m_settings, m_network, SettingName(arg))) {
@@ -163,15 +161,9 @@ std::list<SectionInfo> ArgsManager::GetUnrecognizedSections() const
 {
     // Section names to be recognized in the config file.
     static const std::set<std::string> available_sections{
-        // !RCPU
         ChainTypeToString(ChainType::RCPUREGTEST),
         ChainTypeToString(ChainType::RCPUTESTNET),
         ChainTypeToString(ChainType::RCPUMAIN),
-        // !RCPU END
-        ChainTypeToString(ChainType::REGTEST),
-        ChainTypeToString(ChainType::SIGNET),
-        ChainTypeToString(ChainType::TESTNET),
-        ChainTypeToString(ChainType::MAIN),
     };
 
     LOCK(cs_args);
@@ -774,47 +766,32 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
         return value.isNull() ? false : value.isBool() ? value.get_bool() : InterpretBool(value.get_str());
     };
 
-    const bool fRegTest = get_net("-regtest");
-    const bool fSigNet  = get_net("-signet");
-    const bool fTestNet = get_net("-testnet");
     const auto chain_arg = GetArg("-chain");
 
-    if ((int)chain_arg.has_value() + (int)fRegTest + (int)fSigNet + (int)fTestNet > 1) {
-        throw std::runtime_error("Invalid combination of -regtest, -signet, -testnet and -chain. Can use at most one.");
+    const bool fRcpuMain = get_net("-rcpu");
+    const bool fRcpuRegTest = get_net("-rcpuregtest");
+    const bool fRcpuTestnet = get_net("-rcputestnet");
+
+    if ((int)chain_arg.has_value() + (int)fRcpuMain + (int)fRcpuTestnet + (int)fRcpuRegTest > 1) {
+        throw std::runtime_error("Invalid combination of -rcpu, -rcpuregtest, -rcputestnet and -chain. Can use at most one.");
     }
     if (chain_arg) {
         if (auto parsed = ChainTypeFromString(*chain_arg)) return *parsed;
         // Not a known string, so return original string
         return *chain_arg;
     }
-    if (fRegTest) return ChainType::REGTEST;
-    if (fSigNet) return ChainType::SIGNET;
-    if (fTestNet) return ChainType::TESTNET;
-
-    // !RCPU
-    const bool fRcpuMain = get_net("-rcpu");
-    const bool fRcpuRegTest = get_net("-rcpuregtest");
-    const bool fRcpuTestnet = get_net("-rcputestnet");
-
-    if ((int)chain_arg.has_value() + (int)fRcpuMain + (int)fRcpuTestnet + (int)fRcpuRegTest + (int)fRegTest + (int)fSigNet + (int)fTestNet > 1) {
-        throw std::runtime_error("Invalid combination of -rcpu, -rcpuregtest, -rcputestnet, -regtest, -signet, -testnet and -chain. Can use at most one.");
-    }
-
     if (fRcpuMain) return ChainType::RCPUMAIN;
     if (fRcpuRegTest) return ChainType::RCPUREGTEST;
     if (fRcpuTestnet) return ChainType::RCPUTESTNET;
 
     if (fExecutableNamedRcpu) return ChainType::RCPUMAIN;
-    // !RCPU END
 
-    return ChainType::MAIN;
+    return ChainType::RCPUMAIN;
 }
 
 bool ArgsManager::UseDefaultSection(const std::string& arg) const
 {
-    // !RCPU
-    return m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network == ChainTypeToString(ChainType::MAIN) || m_network_only_args.count(arg) == 0;
-    // !RCPU END
+    return m_network == ChainTypeToString(ChainType::RCPUMAIN) || m_network_only_args.count(arg) == 0;
 }
 
 common::SettingsValue ArgsManager::GetSetting(const std::string& arg) const

@@ -10,15 +10,9 @@
 #include <string>
 
 enum class ChainType {
-    MAIN,
-    TESTNET,
-    SIGNET,
-    REGTEST,
-    // !RCPU
     RCPUMAIN,
     RCPUTESTNET,
     RCPUREGTEST
-    // !RCPU END
 };
 
 std::string ChainTypeToString(ChainType chain);

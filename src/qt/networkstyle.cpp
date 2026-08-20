@@ -17,15 +17,9 @@ static const struct {
     const int iconColorHueShift;
     const int iconColorSaturationReduction;
 } network_styles[] = {
-    // !RCPU
     {ChainType::RCPUMAIN, QAPP_APP_NAME_DEFAULT, 0, 0},
     {ChainType::RCPUTESTNET, QAPP_APP_NAME_RCPU_TESTNET, 180, 30},
     {ChainType::RCPUREGTEST, QAPP_APP_NAME_RCPU_REGTEST, 80, 30},
-    {ChainType::MAIN, QAPP_APP_NAME_BTC, 0, 0},
-    // !RCPU END
-    {ChainType::TESTNET, QAPP_APP_NAME_TESTNET, 70, 30},
-    {ChainType::SIGNET, QAPP_APP_NAME_SIGNET, 35, 15},
-    {ChainType::REGTEST, QAPP_APP_NAME_REGTEST, 160, 30},
 };
 
 // titleAddText needs to be const char* for tr()

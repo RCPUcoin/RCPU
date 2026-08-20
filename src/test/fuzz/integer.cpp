@@ -42,7 +42,7 @@
 
 void initialize_integer()
 {
-    SelectParams(ChainType::REGTEST);
+    SelectParams(ChainType::RCPUREGTEST);
 }
 
 FUZZ_TARGET(integer, .init = initialize_integer)

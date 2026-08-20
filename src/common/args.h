@@ -327,14 +327,14 @@ protected:
 
     /**
      * Returns the appropriate chain type from the program arguments.
-     * @return ChainType::MAIN by default; raises runtime error if an invalid
+     * @return ChainType::RCPUMAIN by default; raises runtime error if an invalid
      * combination, or unknown chain is given.
      */
     ChainType GetChainType() const;
 
     /**
      * Returns the appropriate chain type string from the program arguments.
-     * @return ChainType::MAIN string by default; raises runtime error if an
+     * @return ChainType::RCPUMAIN string by default; raises runtime error if an
      * invalid combination is given.
      */
     std::string GetChainTypeString() const;

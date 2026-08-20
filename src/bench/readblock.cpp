@@ -23,7 +23,7 @@ static FlatFilePos WriteBlockToDisk(ChainstateManager& chainman)
 
 static void ReadBlockFromDiskTest(benchmark::Bench& bench)
 {
-    const auto testing_setup{MakeNoLogFileContext<const TestingSetup>(ChainType::MAIN)};
+    const auto testing_setup{MakeNoLogFileContext<const TestingSetup>(ChainType::RCPUMAIN)};
     ChainstateManager& chainman{*testing_setup->m_node.chainman};
 
     CBlock block;
@@ -37,7 +37,7 @@ static void ReadBlockFromDiskTest(benchmark::Bench& bench)
 
 static void ReadRawBlockFromDiskTest(benchmark::Bench& bench)
 {
-    const auto testing_setup{MakeNoLogFileContext<const TestingSetup>(ChainType::MAIN)};
+    const auto testing_setup{MakeNoLogFileContext<const TestingSetup>(ChainType::RCPUMAIN)};
     ChainstateManager& chainman{*testing_setup->m_node.chainman};
 
     std::vector<uint8_t> block_data;
