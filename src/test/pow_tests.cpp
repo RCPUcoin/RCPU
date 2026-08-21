@@ -863,7 +863,6 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
     // Next nbits:  0x18086ee5
     // Result is difficulty increases.
     static const int64_t genesis_time = 1708655094;
-    static const int64_t block_1_time = 1708650456;
     static const int64_t block_19382_time = 1714085302;
     uint32_t block_19382_nBits = 0x1c7b9d90;
     prevTarget = arith_uint256().SetCompact(block_19382_nBits);
@@ -899,7 +898,7 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
     // Prev nBits:  0x1d01ffaf
     // Result is difficulty decreases.
     static const int64_t block_18143_time = 1712987784;
-    static const int64_t block_18144_time = 1712987795;
+    // block_18144_time (1712987795) intentionally kept inline in comment for documentation.
     uint32_t block_18144_nBits = 0x1c7b9d90;
     prevTarget = arith_uint256().SetCompact(block_18144_nBits);
 
@@ -950,7 +949,6 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
         { 1, 600, 600*2*224*144 - 1, 0, arith_uint256(0xffff8) << 204, powLimit_nBits }, // just under powlimit (not clamped) yet over powlimit_nbits
     };
 
-    int i=0;
     for (auto& v : calculate_args) {
         nextTarget = CalculateASERT(v.refTarget, v.targetSpacing, parent_time_diff + v.timeDiff, v.heightDiff, powLimit, nHalfLife);
         next_nBits = nextTarget.GetCompact();
