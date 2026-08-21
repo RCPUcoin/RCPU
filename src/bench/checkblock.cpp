@@ -46,7 +46,8 @@ static void DeserializeAndCheckBlockTest(benchmark::Bench& bench)
         assert(rewound);
 
         BlockValidationState validationState;
-        bool checked = CheckBlock(block, validationState, chainParams->GetConsensus());
+        // Skip PoW check: block413567 is a Bitcoin SHA256D block, but RCPU uses RandomX PoW
+        bool checked = CheckBlock(block, validationState, chainParams->GetConsensus(), false);
         assert(checked);
     });
 }
