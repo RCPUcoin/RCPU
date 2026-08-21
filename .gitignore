@@ -62,11 +62,11 @@ rcpu-util
 rcpu-wallet
 rcpu-chainstate
 rcpu-node
-bitcoind
-bitcoin-cli
-bitcoin-tx
-bitcoin-util
-bitcoin-wallet
+/bitcoind
+/bitcoin-cli
+/bitcoin-tx
+/bitcoin-util
+/bitcoin-wallet
 /bitcoin-node
 /bitcoin-gui
 *.exe
