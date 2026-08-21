@@ -233,6 +233,15 @@ BOOST_AUTO_TEST_CASE(processnewblock_signals_ordering)
  */
 BOOST_AUTO_TEST_CASE(mempool_locks_reorg)
 {
+    // !RCPU
+    // This test deliberately mines a reorg of COINBASE_MATURITY + txs + 1 blocks
+    // (123 blocks) to exercise mempool locking, but RCPU's suspicious-reorg
+    // protection (default depth 30) would trigger FatalError and shut down the
+    // node. Disable it here since this test is validating mempool atomicity,
+    // not the reorg-protection policy.
+    gArgs.ForceSetArg("-suspiciousreorgdepth", "0");
+    // !RCPU END
+
     bool ignored;
     auto ProcessBlock = [&](std::shared_ptr<const CBlock> block) -> bool {
         return Assert(m_node.chainman)->ProcessNewBlock(block, /*force_processing=*/true, /*min_pow_checked=*/true, /*new_block=*/&ignored);
