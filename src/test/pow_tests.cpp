@@ -44,10 +44,10 @@ BOOST_AUTO_TEST_CASE(get_next_work_pow_limit)
     const auto chainParams = CreateChainParams(*m_node.args, ChainType::RCPUMAIN);
     int64_t nLastRetargetTime = 1231006505; // Block #0
     CBlockIndex pindexLast;
-    pindexLast.nHeight = 2015;
-    pindexLast.nTime = 1233061996;  // Block #2015
+    pindexLast.nHeight = 4031; // RCPU: block at the 4032-block difficulty interval boundary
+    pindexLast.nTime = 1233061996;  // Block #4031 (time kept; height aligned to RCPU interval)
     pindexLast.nBits = 0x1d00ffff;
-    unsigned int expected_nbits = 0x1d00ffffU;
+    unsigned int expected_nbits = 0x1d01b304U;
     BOOST_CHECK_EQUAL(CalculateNextWorkRequired(&pindexLast, nLastRetargetTime, chainParams->GetConsensus()), expected_nbits);
     BOOST_CHECK(PermittedDifficultyTransition(chainParams->GetConsensus(), pindexLast.nHeight+1, pindexLast.nBits, expected_nbits));
 }
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(get_next_work_upper_limit_actual)
     const auto chainParams = CreateChainParams(*m_node.args, ChainType::RCPUMAIN);
     int64_t nLastRetargetTime = 1263163443; // NOTE: Not an actual block time
     CBlockIndex pindexLast;
-    pindexLast.nHeight = 46367;
-    pindexLast.nTime = 1269211443;  // Block #46367
+    pindexLast.nHeight = 44351; // RCPU: block at the 4032-block difficulty interval boundary
+    pindexLast.nTime = 1269211443;  // Block #44351 (time kept; height aligned to RCPU interval)
     pindexLast.nBits = 0x1c387f6f;
     unsigned int expected_nbits = 0x1d00e1fdU;
     BOOST_CHECK_EQUAL(CalculateNextWorkRequired(&pindexLast, nLastRetargetTime, chainParams->GetConsensus()), expected_nbits);
@@ -396,9 +396,12 @@ double GetASERTApproximationError(const CBlockIndex *pindexPrev,
 
 BOOST_AUTO_TEST_CASE(asert_difficulty_test) {
     // !RCPU
-    // Use BCH powLimit to replicate BCH tests
+    // Use BCH powLimit and 10-minute spacing to replicate BCH tests.
+    // RCPU uses 5-minute spacing, so restore BCH's 600s spacing here so the
+    // hardcoded BCH solvetimes below remain self-consistent.
     Consensus::Params mutableParams = CreateChainParams(*m_node.args, ChainType::RCPUMAIN)->GetConsensus();
     mutableParams.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    mutableParams.nPowTargetSpacing = 10 * 60;
     std::vector<CBlockIndexPtr> blocks(3000 + 2*24*3600);
     // !RCPU END
     mutableParams.asertAnchorParams.reset();  // clear hard-coded anchor block so that we may perform these below tests
