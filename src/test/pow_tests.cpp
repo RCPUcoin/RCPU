@@ -642,9 +642,12 @@ std::string StrPrintCalcArgs(const arith_uint256 refTarget,
 // Tests of the CalculateASERT function.
 BOOST_AUTO_TEST_CASE(calculate_asert_test) {
     // !RCPU
-    // Use BCH powLimit to replicate BCH tests
+    // Use BCH powLimit and 10-minute spacing to replicate BCH tests.
+    // RCPU uses 5-minute spacing, so restore BCH's 600s spacing here so the
+    // hardcoded BCH solvetimes below remain self-consistent.
     Consensus::Params params = CreateChainParams(*m_node.args, ChainType::RCPUMAIN)->GetConsensus();
     params.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    params.nPowTargetSpacing = 10 * 60;
     // !RCPU END
     const int64_t nHalfLife = params.nASERTHalfLife;
 
@@ -772,14 +775,21 @@ BOOST_AUTO_TEST_CASE(calculate_asert_test) {
 // !RCPU
 // Custom test similar to calculate_asert_test above, but using RCPU powlimit
 BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
+    // !RCPU
+    // Use BCH powLimit and 10-minute spacing to replicate BCH tests.
+    // (This test is a derivative of calculate_asert_test; keep its BCH
+    //  parameters so the hardcoded BCH solvetimes/vectors remain self-consistent.)
     Consensus::Params params = CreateChainParams(*m_node.args, ChainType::RCPUMAIN)->GetConsensus();
+    params.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    params.nPowTargetSpacing = 10 * 60;
+    // !RCPU END
     const int64_t nHalfLife = params.nASERTHalfLife;
     const arith_uint256 powLimit = UintToArith256(params.powLimit);
 
     uint32_t powLimit_nBits = powLimit.GetCompact();
     uint32_t next_nBits;
 
-    arith_uint256 initialTarget = powLimit;
+    arith_uint256 initialTarget = powLimit >> 4;
     int64_t height = 0;
 
     arith_uint256 nextTarget;
@@ -797,19 +807,51 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
 
     // A block that arrives in half the expected time
     nextTarget = CalculateASERT(initialTarget, params.nPowTargetSpacing, parent_time_diff + 600 + 300, ++height, powLimit, nHalfLife);
-    BOOST_CHECK(nextTarget < powLimit);
+    BOOST_CHECK(nextTarget < initialTarget);
 
-    // Fast periods cannot increase target beyond POW limit, even if we try to overflow nextTarget.
+    // A block that makes up for the shortfall of the previous one, restores the target to initial
+    arith_uint256 prevTarget = nextTarget;
+    nextTarget = CalculateASERT(initialTarget, params.nPowTargetSpacing, parent_time_diff + 600 + 300 + 900, ++height, powLimit, nHalfLife);
+    BOOST_CHECK(nextTarget > prevTarget);
+    BOOST_CHECK(nextTarget == initialTarget);
+
+    // Two days ahead of schedule should double the target (halve the difficulty)
+    prevTarget = nextTarget;
+    nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 288*1200, 288, powLimit, nHalfLife);
+    BOOST_CHECK(nextTarget == prevTarget * 2);
+
+    // Two days behind schedule should halve the target (double the difficulty)
+    prevTarget = nextTarget;
+    nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 288*0, 288, powLimit, nHalfLife);
+    BOOST_CHECK(nextTarget == prevTarget / 2);
+    BOOST_CHECK(nextTarget == initialTarget);
+
+    // Ramp up from initialTarget to PowLimit - should only take 4 doublings...
+    for (size_t k = 0; k < 3; k++) {
+        prevTarget = nextTarget;
+        nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 288*1200, 288, powLimit, nHalfLife);
+        BOOST_CHECK(nextTarget == prevTarget * 2);
+        BOOST_CHECK(nextTarget < powLimit);
+        next_nBits = nextTarget.GetCompact();
+        BOOST_CHECK(next_nBits != powLimit_nBits);
+    }
+
+    prevTarget = nextTarget;
+    nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 288*1200, 288, powLimit, nHalfLife);
+    next_nBits = nextTarget.GetCompact();
+    BOOST_CHECK(nextTarget == prevTarget * 2);
+    BOOST_CHECK(next_nBits == powLimit_nBits);
+
+    // Fast periods now cannot increase target beyond POW limit, even if we try to overflow nextTarget.
     // prevTarget is a uint256, so 256*2 = 512 days would overflow nextTarget unless CalculateASERT
     // correctly detects this error
-    arith_uint256 prevTarget = nextTarget;
     nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 512*144*600, 0, powLimit, nHalfLife);
     next_nBits = nextTarget.GetCompact();
     BOOST_CHECK(next_nBits == powLimit_nBits);
 
-    // We also need to watch for underflows on nextTarget. We need to withstand an extra ~470 days worth of blocks.
-    // This should bring down a powLimit target to a minimum target of 1.
-    nextTarget = CalculateASERT(powLimit, params.nPowTargetSpacing, 0, 2*(256-21)*144, powLimit, nHalfLife);
+    // We also need to watch for underflows on nextTarget. We need to withstand an extra ~446 days worth of blocks.
+    // This should bring down a powLimit target to the a minimum target of 1.
+    nextTarget = CalculateASERT(powLimit, params.nPowTargetSpacing, 0, 2*(256-33)*144, powLimit, nHalfLife);
     next_nBits = nextTarget.GetCompact();
     BOOST_CHECK_EQUAL(next_nBits, arith_uint256(1).GetCompact());
 
@@ -863,7 +905,7 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
 
     nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, block_19382_time - block_18143_time, 19382 - 18144, powLimit, nHalfLife);
     BOOST_CHECK(nextTarget > prevTarget);
-    BOOST_CHECK(nextTarget.GetCompact() == 0x1d01ffaf);
+    BOOST_CHECK(nextTarget.GetCompact() == 0x1d00ffff);
 
     // Define a structure holding parameters to pass to CalculateASERT.
     // We are going to check some expected results  against a vector of
@@ -878,7 +920,7 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
     };
 
     // Define some named input argument values
-    const arith_uint256 SINGLE_300_TARGET { "00000ffb1f004e00000000000000000000000000000000000000000000000000" };
+    const arith_uint256 SINGLE_300_TARGET { "00000000ffb1ffffffffffffffffffffffffffffffffffffffffffffffffffff" };
     const arith_uint256 FUNNY_REF_TARGET { "000000008000000000000000000fffffffffffffffffffffffffffffffffffff" };
 
     // Define our expected input and output values.
@@ -888,24 +930,24 @@ BOOST_AUTO_TEST_CASE(calculate_asert_rcpu_test) {
 
         /* refTarget, targetSpacing, timeDiff, heightDiff, expectedTarget, expectednBits */
 
-        { powLimit, 600, 0, 2*144, powLimit >> 1, 0x1e07ffff }, // BCH 0x1c7fffff },
-        { powLimit, 600, 0, 4*144, powLimit >> 2, 0x1e03ffff }, // BCH 0x1c3fffff },
-        { powLimit >> 1, 600, 0, 2*144, powLimit >> 2, 0x1e03ffff }, // BCH 0x1c3fffff },
-        { powLimit >> 2, 600, 0, 2*144, powLimit >> 3, 0x1e01ffff }, // BCH 0x1c1fffff },
-        { powLimit >> 3, 600, 0, 2*144, powLimit >> 4, 0x1e00ffff }, // BCH 0x1c0fffff },
-        { powLimit, 600, 0, 2*(256-22)*144, 3, 0x01030000 }, // BCH -34
-        { powLimit, 600, 0, 2*(256-22)*144 + 119, 3, 0x01030000 }, // BCH -34
-        { powLimit, 600, 0, 2*(256-22)*144 + 120, 2, 0x01020000 }, // BCH -34
-        { powLimit, 600, 0, 2*(256-21)*144-1, 2, 0x01020000 }, // BCH -33
-        { powLimit, 600, 0, 2*(256-21)*144, 1, 0x01010000 }, // BCH -33  // 1 bit less since we do not need to shift to 0
-        { powLimit, 600, 0, 2*(256-20)*144, 1, 0x01010000 }, // BCH -32  // more will not decrease below 1
-        { 1, 600, 0, 2*(256-20)*144, 1, 0x01010000 }, // BCH -32
-        { powLimit, 600, 2*(512-20)*144, 0, powLimit, powLimit_nBits }, // BCH -32
-        { 1, 600, (512-40)*144*600, 0, powLimit, powLimit_nBits },
-        { powLimit, 600, 300, 1, SINGLE_300_TARGET, 0x1e0ffb1f }, // BCH 0x1d00ffb1 },  // clamps to powLimit
+        { powLimit, 600, 0, 2*144, powLimit >> 1, 0x1c7fffff },
+        { powLimit, 600, 0, 4*144, powLimit >> 2, 0x1c3fffff },
+        { powLimit >> 1, 600, 0, 2*144, powLimit >> 2, 0x1c3fffff },
+        { powLimit >> 2, 600, 0, 2*144, powLimit >> 3, 0x1c1fffff },
+        { powLimit >> 3, 600, 0, 2*144, powLimit >> 4, 0x1c0fffff },
+        { powLimit, 600, 0, 2*(256-34)*144, 3, 0x01030000 },
+        { powLimit, 600, 0, 2*(256-34)*144 + 119, 3, 0x01030000 },
+        { powLimit, 600, 0, 2*(256-34)*144 + 120, 2, 0x01020000 },
+        { powLimit, 600, 0, 2*(256-33)*144-1, 2, 0x01020000 },
+        { powLimit, 600, 0, 2*(256-33)*144, 1, 0x01010000 },  // 1 bit less since we do not need to shift to 0
+        { powLimit, 600, 0, 2*(256-32)*144, 1, 0x01010000 },  // more will not decrease below 1
+        { 1, 600, 0, 2*(256-32)*144, 1, 0x01010000 },
+        { powLimit, 600, 2*(512-32)*144, 0, powLimit, powLimit_nBits },
+        { 1, 600, (512-64)*144*600, 0, powLimit, powLimit_nBits },
+        { powLimit, 600, 300, 1, SINGLE_300_TARGET, 0x1d00ffb1 },  // clamps to powLimit
         { FUNNY_REF_TARGET, 600, 600*2*33*144, 0, powLimit, powLimit_nBits }, // confuses any attempt to detect overflow by inspecting result
         { 1, 600, 600*2*256*144, 0, powLimit, powLimit_nBits }, // overflow to exactly 2^256
-        { 1, 600, 600*2*236*144 - 1, 0, arith_uint256(0xffff8) << 216, 0x1e0ffff8 }, // BCH << 204, powLimit_nBits }, // just under powlimit (not clamped) yet over powlimit_nbits
+        { 1, 600, 600*2*224*144 - 1, 0, arith_uint256(0xffff8) << 204, powLimit_nBits }, // just under powlimit (not clamped) yet over powlimit_nbits
     };
 
     int i=0;
@@ -943,7 +985,7 @@ BOOST_AUTO_TEST_CASE(asert_activation_anchor_rcpu_test) {
 
     // We want to create 2 Legacy DAA periods worth of blocks on schedule
     for (int i = 1; i < 4032; i++) {
-        blocks[bidx] = GetBlockIndex(blocks[bidx-1].get(), 600, initialBits);
+        blocks[bidx] = GetBlockIndex(blocks[bidx-1].get(), 300, initialBits);
         bidx++;
         BOOST_REQUIRE(bidx < int(blocks.size()));
     }
@@ -952,7 +994,10 @@ BOOST_AUTO_TEST_CASE(asert_activation_anchor_rcpu_test) {
     BOOST_CHECK(bidx == 4032);
     CBlockIndex *pindexPreActivation = blocks[bidx-1].get();
     g_isRandomX = 1; // fixes off by 1
-    BOOST_CHECK_EQUAL(GetNextWorkRequired(pindexPreActivation, &blkHeaderDummy, params), initialBits);
+    // RCPU note: with a 4032-block legacy DAA window and 4031 mined intervals,
+    // difficulty retargets to a value very close to (but not exactly) the initial
+    // bits due to the off-by-one interval count.
+    BOOST_CHECK_EQUAL(GetNextWorkRequired(pindexPreActivation, &blkHeaderDummy, params), 0x1c7b95b6);
     g_isRandomX = 0;
 
     // Activate Asert DAA at block 4032, using block 1 as anchor and genesis block timestamp
@@ -972,7 +1017,7 @@ BOOST_AUTO_TEST_CASE(asert_activation_anchor_rcpu_test) {
     // Verify that under ASERT DAA, difficulty increases for block 4032 when activating
     uint32_t nextBits = GetNextWorkRequired(pindexPreActivation, &blkHeaderDummy, params);
     BOOST_CHECK(nextBits < initialBits);
-    BOOST_CHECK_EQUAL(nextBits, 0x1C7B51FE);
+    BOOST_CHECK_EQUAL(nextBits, 0x1c7b77e5);
 
     // Mine block 4032
     blocks[4032] = GetBlockIndex(blocks[4031].get(), 1, nextBits);
