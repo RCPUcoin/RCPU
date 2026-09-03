@@ -154,6 +154,9 @@ struct Params {
     bool fPowRandomX{false};
     uint32_t nRandomXEpochDuration;
 
+    /** RCPU: block height at which confidential transactions (tx version >= CT_VERSION) activate. */
+    int nCTActivationHeight{0};
+
     /** Used by the ASERT DAA */
     int nASERTActivationHeight; // Block height at which ASERT DAA becomes active, if asertAnchorParams is set.
     int64_t nASERTHalfLife;

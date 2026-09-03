@@ -166,12 +166,12 @@ int64_t GetTransactionSigOpCost(const CTransaction& tx, const CCoinsViewCache& i
     return nSigOps;
 }
 
-bool Consensus::CheckTxInputs(const CTransaction& tx, TxValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee)
+bool Consensus::CheckTxInputs(const CTransaction& tx, TxValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee, int nCTActivationHeight)
 {
     // RCPU: reject confidential (v3) transactions before the CT activation height.
-    if (tx.nVersion == CT_VERSION && nSpendHeight < CT_FORK_HEIGHT) {
+    if (tx.nVersion == CT_VERSION && nSpendHeight < nCTActivationHeight) {
         return state.Invalid(TxValidationResult::TX_CONSENSUS, "bad-ct-before-activation",
-            strprintf("confidential transaction before activation height %d", CT_FORK_HEIGHT));
+            strprintf("confidential transaction before activation height %d", nCTActivationHeight));
     }
 
     // are the actual inputs available?

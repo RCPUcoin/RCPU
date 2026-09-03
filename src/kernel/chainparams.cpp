@@ -621,6 +621,7 @@ public:
 
         consensus.fPowRandomX = true;
         consensus.nRandomXEpochDuration = 7 * 24 * 60 * 60;     // one week
+        consensus.nCTActivationHeight = 8000;  // RCPU: Confidential Transactions activate at height 8000
         genesis = CreateRcpuGenesisBlock(1708650456, 20076863, 0x1e3ffffc, 1, 50 * COIN);
         genesis.hashRandomX = uint256S("33c450e0152826e3a8948b01464cf9182344a1544b3ddcf6153dd04b62938d01");
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
@@ -738,6 +739,7 @@ public:
 
         consensus.fPowRandomX = true;
         consensus.nRandomXEpochDuration = 7 * 24 * 60 * 60;     // one week
+        consensus.nCTActivationHeight = 0;  // Testnet: CT always active
         genesis = CreateGenesisBlock(1296688602, 6107, 0x1e7fffff, 1, 50 * COIN);
         genesis.hashRandomX = uint256S("e848dddfb604a4b1783c8a38b6db5179ccd6911331f2be18bfec02522d95af86");
         consensus.hashGenesisBlock = genesis.GetHash();

@@ -16,12 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Wallet support for CT outputs (blinding, unblinding)
   - secp256k1-zkp rangeproof module integration
   - CT-specific consensus validation rules
-  - `confidential.h` / `confidential.cpp` primitives library
+  - `confidential_validation.h` / `confidential_validation.cpp` primitives library
 
 - **ASERT Difficulty Adjustment**
   - ASERT activates at block height 1,000
   - Responsive difficulty algorithm based on timestamp anchoring
-  - 12-hour half-life for smooth adjustments
+  - 2-day (48-hour) half-life for smooth adjustments
 
 ### Changed
 
