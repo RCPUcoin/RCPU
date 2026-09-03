@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,7 +20,13 @@ jobs:
             pkg-config bsdmainutils python3 autoconf-archive
           sudo apt-get install -y libssl-dev libevent-dev libboost-all-dev \
             libsqlite3-dev libdb-dev libdb++-dev
+      - name: Provide pkg.m4 macro
+        run: |
+          mkdir -p build-aux/m4
+          find /usr -name "pkg.m4" 2>/dev/null | head -1 | xargs -r -I{} cp {} build-aux/m4/pkg.m4
       - name: Build
+        env:
+          ACLOCAL_PATH: /usr/share/aclocal
         run: |
           ./autogen.sh
           ./configure --without-gui --disable-tests --disable-bench --prefix=/opt/rcpu
