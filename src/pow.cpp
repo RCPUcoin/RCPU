@@ -596,7 +596,6 @@ uint256 GetRandomXCommitment(const CBlockHeader& block, uint256 *inHash) {
  */
 bool CheckProofOfWorkRandomX(const CBlockHeader& block, const Consensus::Params& params, POWVerifyMode verifyMode, uint256 *outHash)
 {
-    return true; // SKIP ALL RandomX VERIFICATION - wallet trust mode
     // Legacy chains continue to use original sha256d PoW
     if (!params.fPowRandomX) {
         return CheckProofOfWork(block.GetHash(), block.nBits, params);
