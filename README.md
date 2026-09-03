@@ -41,11 +41,28 @@ to ASIC and GPU mining. Anyone with a modern CPU can mine RCPU.
 - Fair launch: no pre-mine, no ICO
 - 5-minute block time
 
+### Genesis & Launch Timeline
+
+| Event | Date | Details |
+|-------|------|---------|
+| Genesis block | 22 Feb 2024 | Height 0, 50 RCPU (unspendable origin output) |
+| Mining started | Feb 2024 | Height 1 onward, 5,000 RCPU/block |
+| CT activation | Height 8,000 | Confidential Transactions fork |
+| Source public | Aug 2026 | Repository published on GitHub |
+
+> **Genesis output note**: The genesis coinbase output script reuses the
+> Bitcoin genesis public key (04678afd...). This output is unspendable
+> by design and the genesis block reward is not part of circulating
+> supply. RCPU has an independent genesis hash (2f7b90fa...), not a
+> replay of Bitcoin's genesis block.
+
 ### ASERT Difficulty Adjustment
 
-Responsive difficulty algorithm based on ASERT (Absolutely Smooth Exponential Rescheduling Targets). Difficulty adjusts every block with a **2-day (48-hour) half-life**
-Responsive to Timestamps), adapting quickly to hashrate changes while
-maintaining stable block times.
+Responsive difficulty algorithm based on ASERT (Absolutely Smooth
+Exponential Rescheduling Targets). Difficulty adjusts every block with a
+**2-day (48-hour) half-life**, adapting to hashrate changes while
+maintaining stable block times. ASERT activates at **block height 1,000**
+with an anchor block at height 999.
 
 ---
 
@@ -81,8 +98,12 @@ maintaining stable block times.
 
 ### Seed Nodes
 
-- `seed.rcpu.ren` — DNS seed
-- Multiple fixed seed nodes operated by the community
+- `seed.rcpu.ren` — DNS seed (operated by RCPU team)
+- Fixed seed nodes: 47.85.38.146, 119.28.152.245, 43.159.51.23, 38.147.171.29, 207.57.129.188, 38.55.199.177, 8.166.130.149
+
+> All current seed nodes are operated by the RCPU team. To contribute a
+> community-run DNS seed, submit a PR adding your hostname to `vSeeds`
+> in `src/kernel/chainparams.cpp`.
 
 ### Explorer
 
@@ -110,10 +131,16 @@ Pre-built binaries are available on the
 
 ### Verify Downloads
 
-Each release includes `SHA256SUMS` with file checksums:
+Each release includes `SHA256SUMS` with file checksums. Releases are
+signed with the RCPU GPG key (fingerprint will be published here once
+the v3.1.0 release is signed).
 
 ```bash
+# Verify checksums
 sha256sum -c SHA256SUMS
+
+# Verify signature (once GPG key is published)
+gpg --verify SHA256SUMS.asc
 ```
 
 ---
