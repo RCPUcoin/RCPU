@@ -58,18 +58,22 @@ maintaining stable block times.
 | **Block time** | 5 minutes (300 seconds) | |
 | **Block reward (start)** | 5,000 RCPU | From height 1 onward |
 | **Halving interval** | 210,000 blocks | ~2 years at 5 min/block |
-| **Halvings** | 10 times | Subsidy halves each interval |
+| **Halvings** | ~10 times | Then permanent tail emission of 1 RCPU/block |
 | **Tail emission** | 1 RCPU per block | After 10 halvings, permanent |
-| **MAX_MONEY (consensus)** | 2,100,000,000 RCPU | Upper bound for valid amounts |
+| **MAX_MONEY** | 2,100,000,000 RCPU | Per-output sanity check (consensus critical), NOT a total supply cap |
 | **CT activation** | Height 8,000 | Confidential Transactions fork |
 | **ASERT activation** | Height 1,000 | Difficulty algorithm upgrade |
 | **Port (mainnet)** | 9965 | P2P network port |
 | **RPC port** | 9966 | Default (configurable) |
 | **Address prefix** | `rcpu1` | Bech32 |
 
-> **Note:** The genesis block has a reward of 50 RCPU (a Bitcoin Core
-> legacy). The actual network subsidy begins at height 1 with 5,000 RCPU
-> per block, as defined by `GetBlockSubsidy()`.
+> **Supply model note**: RCPU is not a strictly capped-supply coin.
+> - Genesis block (height 0): 50 RCPU reward (not spendable - historical origin)
+> - Height 1 onwards: 5,000 RCPU base subsidy per block
+> - Subsidy halves every 210,000 blocks (~2 years)
+> - After ~10 halvings: permanent **tail emission** of 1 RCPU per block
+> - `MAX_MONEY` (2.1B) is a per-transaction-output sanity check for
+>   consensus safety - it is **not** a hard cap on total supply.
 
 ---
 
