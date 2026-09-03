@@ -726,9 +726,9 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     }
 
     // RCPU: reject confidential (v3) transactions before the CT activation height.
-    if (tx.nVersion == CT_VERSION && m_active_chainstate.m_chain.Height() + 1 < m_active_chainstate.m_params.GetConsensus().nCTActivationHeight) {
+    if (tx.nVersion == CT_VERSION && m_active_chainstate.m_chain.Height() + 1 < m_active_chainstate.m_chainman.GetParams().GetConsensus().nCTActivationHeight) {
         return state.Invalid(TxValidationResult::TX_CONSENSUS, "bad-ct-before-activation",
-            strprintf("confidential transaction before activation height %d", m_active_chainstate.m_params.GetConsensus().nCTActivationHeight));
+            strprintf("confidential transaction before activation height %d", m_active_chainstate.m_chainman.GetParams().GetConsensus().nCTActivationHeight));
     }
 
     // RCPU: defense in depth - reject CT transactions if CT mode is not enabled.
@@ -857,7 +857,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     }
 
     // The mempool holds txs for the next block, so pass height+1 to CheckTxInputs
-    if (!Consensus::CheckTxInputs(tx, state, m_view, m_active_chainstate.m_chain.Height() + 1, ws.m_base_fees, m_active_chainstate.m_params.GetConsensus().nCTActivationHeight)) {
+    if (!Consensus::CheckTxInputs(tx, state, m_view, m_active_chainstate.m_chain.Height() + 1, ws.m_base_fees, m_active_chainstate.m_chainman.GetParams().GetConsensus().nCTActivationHeight)) {
         return false; // state filled in by CheckTxInputs
     }
 
@@ -2447,7 +2447,7 @@ bool Chainstate::ConnectBlock(const CBlock& block, BlockValidationState& state, 
         {
             CAmount txfee = 0;
             TxValidationState tx_state;
-            if (!Consensus::CheckTxInputs(tx, tx_state, view, pindex->nHeight, txfee, Params().GetConsensus().nCTActivationHeight)) {
+            if (!Consensus::CheckTxInputs(tx, tx_state, view, pindex->nHeight, txfee, m_chainman.GetParams().GetConsensus().nCTActivationHeight)) {
                 // Any transaction validation failure in ConnectBlock is a block consensus failure
                 state.Invalid(BlockValidationResult::BLOCK_CONSENSUS,
                             tx_state.GetRejectReason(), tx_state.GetDebugMessage());

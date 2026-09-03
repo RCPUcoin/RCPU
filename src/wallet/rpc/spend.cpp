@@ -10,6 +10,7 @@
 #include <bech32.h>
 #include <crypto/sha256.h>
 #include <cstring>
+#include <random.h>
 #include <key.h>
 #include <pubkey.h>
 #include <secp256k1.h>
@@ -360,7 +361,13 @@ static const unsigned char LABEL[1] = {0x00};
 
 secp256k1_context* GetSilentContext()
 {
-    static secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+    static secp256k1_context* ctx = []() {
+        secp256k1_context* c = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+        unsigned char seed[32];
+        GetStrongRandBytes(seed);
+        secp256k1_context_randomize(c, seed);
+        return c;
+    }();
     return ctx;
 }
 

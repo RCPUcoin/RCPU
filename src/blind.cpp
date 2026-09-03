@@ -19,8 +19,17 @@ namespace {
 
 secp256k1_context* GetBlindContext()
 {
-    static secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-    assert(ctx != nullptr);
+    // Randomize the context right after creation so the ecmult_gen precomputation
+    // table is seeded with process-local randomness. This mitigates timing/power
+    // side-channel attacks on the blind-factor operations behind Pedersen commitments.
+    static secp256k1_context* ctx = []() {
+        secp256k1_context* c = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+        assert(c != nullptr);
+        unsigned char seed[32];
+        GetStrongRandBytes(seed);
+        secp256k1_context_randomize(c, seed);
+        return c;
+    }();
     return ctx;
 }
 

@@ -16,7 +16,10 @@
 #include <crypto/sha256.h>
 #include <randomx.h>
 #include <logging.h>
-#include <boost/compute/detail/lru_cache.hpp>
+#include <boost/optional.hpp>
+#include <list>
+#include <map>
+#include <stdexcept>
 
 static Mutex rx_caches_mutex;
 
@@ -57,9 +60,72 @@ typedef struct RandomXVMWrapper
 
 using RandomXVMRef = std::shared_ptr<RandomXVMWrapper>;
 
-using LRURandomXCacheRef = std::shared_ptr< boost::compute::detail::lru_cache<int32_t, RandomXCacheRef>>;
-using LRURandomXVMRef = std::shared_ptr< boost::compute::detail::lru_cache<int32_t, RandomXVMRef>>;
-using LRURandomXDatasetRef = std::shared_ptr< boost::compute::detail::lru_cache<int32_t, RandomXDatasetRef>>;
+// Minimal thread-safe LRU cache. Replaces boost::compute::detail::lru_cache,
+// which is an unstable internal API that can change between Boost versions.
+template <typename Key, typename Value>
+class LRUCache
+{
+public:
+    explicit LRUCache(size_t capacity) : m_capacity(capacity ? capacity : 1) {}
+
+    bool contains(const Key& key) const
+    {
+        LOCK(m_mutex);
+        return m_map.find(key) != m_map.end();
+    }
+
+    void insert(const Key& key, const Value& value)
+    {
+        LOCK(m_mutex);
+        auto it = m_map.find(key);
+        if (it != m_map.end()) {
+            m_list.splice(m_list.begin(), m_list, it->second.second);
+            it->second.first = value;
+            return;
+        }
+        m_list.push_front(key);
+        m_map.emplace(key, std::make_pair(value, m_list.begin()));
+        if (m_map.size() > m_capacity) {
+            const Key& evict = m_list.back();
+            m_list.pop_back();
+            m_map.erase(evict);
+        }
+    }
+
+    Value get(const Key& key)
+    {
+        LOCK(m_mutex);
+        auto it = m_map.find(key);
+        if (it == m_map.end()) {
+            throw std::out_of_range("LRUCache: key not present");
+        }
+        m_list.splice(m_list.begin(), m_list, it->second.second);
+        return it->second.first;
+    }
+
+    void clear()
+    {
+        LOCK(m_mutex);
+        m_map.clear();
+        m_list.clear();
+    }
+
+    size_t size() const
+    {
+        LOCK(m_mutex);
+        return m_map.size();
+    }
+
+private:
+    mutable Mutex m_mutex;
+    size_t m_capacity;
+    std::list<Key> m_list;
+    std::map<Key, std::pair<Value, typename std::list<Key>::iterator>> m_map;
+};
+
+using LRURandomXCacheRef = std::shared_ptr<LRUCache<int32_t, RandomXCacheRef>>;
+using LRURandomXVMRef = std::shared_ptr<LRUCache<int32_t, RandomXVMRef>>;
+using LRURandomXDatasetRef = std::shared_ptr<LRUCache<int32_t, RandomXDatasetRef>>;
 
 static LRURandomXCacheRef cache_rx_cache;
 static LRURandomXVMRef cache_rx_vm_light;
@@ -463,7 +529,7 @@ static void CreateFastVM(uint32_t nEpoch, RandomXCacheRef myCache)
 
     RandomXDatasetRef myDataset = nullptr;
     if (cache_rx_dataset->contains(nEpoch)) {
-        myDataset = cache_rx_dataset->get(nEpoch).get();
+        myDataset = cache_rx_dataset->get(nEpoch);
     } else {
         randomx_dataset* pDataset = randomx_alloc_dataset(flags);
         if (pDataset == nullptr) {
@@ -502,10 +568,10 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
     static std::once_flag flag;
     std::call_once(flag, []() {
         int n = gArgs.GetIntArg("-randomxvmcachesize", DEFAULT_RANDOMX_VM_CACHE_SIZE);
-        cache_rx_cache = std::make_shared<boost::compute::detail::lru_cache<int32_t, RandomXCacheRef>>(n);
-        cache_rx_vm_light = std::make_shared<boost::compute::detail::lru_cache<int32_t, RandomXVMRef>>(n);
-        cache_rx_vm_fast = std::make_shared<boost::compute::detail::lru_cache<int32_t, RandomXVMRef>>(n);
-        cache_rx_dataset = std::make_shared<boost::compute::detail::lru_cache<int32_t, RandomXDatasetRef>>(n);
+        cache_rx_cache = std::make_shared<LRUCache<int32_t, RandomXCacheRef>>(n);
+        cache_rx_vm_light = std::make_shared<LRUCache<int32_t, RandomXVMRef>>(n);
+        cache_rx_vm_fast = std::make_shared<LRUCache<int32_t, RandomXVMRef>>(n);
+        cache_rx_dataset = std::make_shared<LRUCache<int32_t, RandomXDatasetRef>>(n);
         LogPrintf("Created RandomX caches of size %d\n", n);
     });
 
@@ -539,7 +605,7 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
     // Create randomx cache if requred
     RandomXCacheRef myCache = nullptr;
     if (cache_rx_cache->contains(nEpoch)) {
-        myCache = cache_rx_cache->get(nEpoch).get();
+        myCache = cache_rx_cache->get(nEpoch);
     } else {
         randomx_cache* pCache = randomx_alloc_cache(flags);
         if (!pCache) {

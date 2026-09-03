@@ -6,6 +6,7 @@
 
 #include <consensus/amount.h>
 #include <primitives/confidential.h>
+#include <random.h>
 #include <secp256k1.h>
 #include <secp256k1_generator.h>
 #include <secp256k1_rangeproof.h>
@@ -20,8 +21,17 @@ namespace {
  *  base point G (uses the ecmult_gen context) even for zero blinding. */
 secp256k1_context* GetCTContext()
 {
-    static secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-    assert(ctx != nullptr);
+    // Randomize the context right after creation so constant-time tables are
+    // seeded with process-local randomness, mitigating timing/power side
+    // channels during range-proof and Pedersen commitment verification.
+    static secp256k1_context* ctx = []() {
+        secp256k1_context* c = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+        assert(c != nullptr);
+        unsigned char seed[32];
+        GetStrongRandBytes(seed);
+        secp256k1_context_randomize(c, seed);
+        return c;
+    }();
     return ctx;
 }
 

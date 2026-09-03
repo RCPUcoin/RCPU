@@ -129,14 +129,9 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
-        // RCPU seed nodes
-        vSeeds.emplace_back("47.85.38.146");
-        vSeeds.emplace_back("119.28.152.245");
-        vSeeds.emplace_back("43.159.51.23");
-        vSeeds.emplace_back("38.147.171.29");
-        vSeeds.emplace_back("207.57.129.188");
-        vSeeds.emplace_back("38.55.199.177");
-        vSeeds.emplace_back("8.166.130.149");
+        // RCPU seed nodes (Bitcoin template class is not used by RCPU;
+        // RCPU mainnet seed is the DNS seed in CRcpuMainParams).
+        vSeeds.emplace_back("seed.rcpu.ren");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -630,15 +625,10 @@ public:
 
         vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_main), std::end(chainparams_seed_main));
 
-        // RCPU seed nodes
+        // RCPU seed nodes: DNS seed only. Static node IPs are resolved via A
+        // records of seed.rcpu.ren (and may be pinned in node -addnode config),
+        // keeping infrastructure topology out of the consensus source.
         vSeeds.emplace_back("seed.rcpu.ren");        // DNS seed
-        vSeeds.emplace_back("47.85.38.146");
-        vSeeds.emplace_back("119.28.152.245");
-        vSeeds.emplace_back("43.159.51.23");
-        vSeeds.emplace_back("38.147.171.29");
-        vSeeds.emplace_back("207.57.129.188");
-        vSeeds.emplace_back("38.55.199.177");
-        vSeeds.emplace_back("8.166.130.149");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
