@@ -596,8 +596,8 @@ public:
 
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
-        // Two days
-        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;  // Two days
+        // 12 hours
+        consensus.nASERTHalfLife = 12 * 60 * 60;  // 12 hours
         consensus.nASERTActivationHeight = 1000;  // RCPU: activate ASERT early
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
             999,          // anchor block height
@@ -718,7 +718,7 @@ public:
 
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
-        // Two days
+        // 12 hours
         consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
         consensus.nASERTActivationHeight = 301;
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
