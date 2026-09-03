@@ -132,8 +132,10 @@ Pre-built binaries are available on the
 ### Verify Downloads
 
 Each release includes `SHA256SUMS` with file checksums. Releases are
-signed with the RCPU GPG key (fingerprint will be published here once
-the v3.1.0 release is signed).
+signed with the RCPU GPG key.
+
+**Signing key fingerprint**: `934D 5BC9 5DD4 B3AC FEF5 21B9 5476 3350 1FE4 B8EE`
+(RCPU Dev Team <rcpudevs@proton.me>)
 
 ```bash
 # Verify checksums
