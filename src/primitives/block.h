@@ -12,9 +12,13 @@
 #include <uint256.h>
 #include <util/time.h>
 
+#include <atomic>
+
 // !RCPU
-extern bool g_isRandomX;
-extern bool g_isIBDFinished;
+// Atomics so readers (validation threads, RPC) and writers (init, IBD
+// completion) observe a consistent value without data races.
+extern std::atomic<bool> g_isRandomX;
+extern std::atomic<bool> g_isIBDFinished;
 // !RCPU END
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,

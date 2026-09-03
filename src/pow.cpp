@@ -744,9 +744,15 @@ bool CheckProofOfWorkRandomX(const CBlockHeader& block, const Consensus::Params&
         fHashVerified = true;
     }
 
-    // Sanity check logic
-    assert((fHashVerified && fCommitmentVerified) || 
-           (verifyMode == POW_VERIFY_COMMITMENT_ONLY && !fHashVerified && fCommitmentVerified));
+    // Sanity check logic. Never abort consensus validation on an invariant
+    // violation: a malformed block (or a bug) must be rejected, not crash the
+    // node, otherwise it becomes a remote denial-of-service vector.
+    if (!((fHashVerified && fCommitmentVerified) ||
+          (verifyMode == POW_VERIFY_COMMITMENT_ONLY && !fHashVerified && fCommitmentVerified))) {
+        LogPrintf("Error: RandomX verification invariant violated (mode=%d, hash=%d, commitment=%d)\n",
+                  static_cast<int>(verifyMode), fHashVerified, fCommitmentVerified);
+        return false;
+    }
 
     if (outHash != NULL) {
         *outHash = hashRandomX;

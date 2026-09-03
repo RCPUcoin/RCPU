@@ -10,8 +10,8 @@
 #include <tinyformat.h>
 
 // !RCPU
-bool g_isRandomX = false;   // global
-bool g_isIBDFinished = false;    // global
+std::atomic<bool> g_isRandomX{false};   // global
+std::atomic<bool> g_isIBDFinished{false};    // global
 // !RCPU END
 
 uint256 CBlockHeader::GetHash() const

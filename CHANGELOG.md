@@ -5,6 +5,35 @@ All notable changes to RCPU Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-09-04
+
+### Added
+
+- **Fuzz targets for CT and RandomX** — new `confidential_transaction` and
+  `randomx_blockheader` fuzz harnesses exercise confidential-transaction
+  deserialization/round-trip and RandomX block-header commitment computation
+  against arbitrary input; both are wired into the fuzz build
+  (`src/Makefile.test.include`).
+- **Unit-test suites for the audit remediation** — `blind_tests`,
+  `confidential_validation_tests` and `randomx_tests` are now compiled and run
+  by `make check` (all 8 cases pass).
+
+### Changed
+
+- **Global consensus flags made atomic** — `g_isRandomX` and
+  `g_isIBDFinished` are now `std::atomic<bool>` so validation threads, RPC and
+  the IBD-completion writer observe a consistent value without data races.
+- **CI hardened** — the workflow now runs the remediation unit-test suites and
+  verifies the RandomX dependency download with `sha256sum -c` before it is
+  compiled, so silent supply-chain modification is detected at build time.
+
+### Security
+
+- **Consensus-path asserts replaced with rejection** — `assert` checks in
+  RandomX verification were replaced with logged error returns so a malformed
+  block is rejected instead of crashing the node, removing a remote
+  denial-of-service vector.
+
 ## [3.1.1] - 2026-09-03
 
 ### Added
