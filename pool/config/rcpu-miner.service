@@ -1,0 +1,16 @@
+[Unit]
+Description=RCPU local miner (2 threads)
+After=rcpu-pool.service
+Requires=rcpu-pool.service
+
+[Service]
+Type=simple
+ExecStart=/root/minerd-rcpu -a randomx -o stratum+tcp://127.0.0.1:3334 -u rcpu_miner.w1 -p x --coinbase-addr=rcpu1qlx8p93gzm6f9h0nn7mn6p5k69t60wj6g7u24w0 -t 6
+Restart=always
+RestartSec=10
+MemoryMax=3G
+StandardOutput=append:/root/miner.log
+StandardError=append:/root/miner.log
+
+[Install]
+WantedBy=multi-user.target

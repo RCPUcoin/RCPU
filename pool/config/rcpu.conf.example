@@ -1,0 +1,12 @@
+rpcuser=rcpu
+rpcpassword=rcpupass
+rpcport=9962
+rpcbind=127.0.0.1
+rpcallowip=127.0.0.1
+server=1
+listen=1
+port=9965
+deprecatedrpc=create_bdb
+rpcworkqueue=128
+maxconnections=64
+fallbackfee=0.00001000
