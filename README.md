@@ -141,7 +141,7 @@ signed with the RCPU GPG key.
 # Verify checksums
 sha256sum -c SHA256SUMS
 
-# Verify signature (once GPG key is published)
+# Verify signature
 gpg --verify SHA256SUMS.asc
 ```
 

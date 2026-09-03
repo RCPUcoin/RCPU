@@ -70,6 +70,7 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
 /**
  * Main network on which people trade goods and services.
  */
+// Upstream Bitcoin template retained for test compatibility. RCPU mainnet uses CRcpuMainParams (ChainType::RCPUMAIN).
 class CMainParams : public CChainParams {
 public:
     CMainParams() {
@@ -625,7 +626,6 @@ public:
         genesis = CreateRcpuGenesisBlock(1708650456, 20076863, 0x1e3ffffc, 1, 50 * COIN);
         genesis.hashRandomX = uint256S("33c450e0152826e3a8948b01464cf9182344a1544b3ddcf6153dd04b62938d01");
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
-        fprintf(stderr, "NEW hashGenesisBlock: %s\n", consensus.hashGenesisBlock.GetHex().c_str());
         assert(genesis.hashMerkleRoot == uint256S("2f7b90fafd8247ee73d213d49699fcfe12a37c608f1d9d1c06f10e43cb6426c6"));
 
         vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_main), std::end(chainparams_seed_main));
@@ -743,7 +743,6 @@ public:
         genesis = CreateRcpuGenesisBlock(1708750000, 1, 0x1e7fffff, 1, 50 * COIN, "22/Feb/2024 RCPU Testnet Genesis - Independent Chain");
         genesis.hashRandomX = uint256{};
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
-        fprintf(stderr, "TESTNET hashGenesisBlock: %s\n", consensus.hashGenesisBlock.GetHex().c_str());
         fprintf(stderr, "TESTNET hashMerkleRoot: %s\n", genesis.hashMerkleRoot.GetHex().c_str());
 
         vFixedSeeds.clear();
