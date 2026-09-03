@@ -5,6 +5,48 @@ All notable changes to RCPU Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 2026-09-03
+
+### Added
+
+- Chronicler CI workflow restored (`.github/workflows/ci.yml`): builds RandomX
+  from source, then configures and compiles the daemon on `ubuntu-24.04`.
+
+### Changed
+
+- **Mainnet chain rolled back to block height 8,743** to drop blocks mined under
+  a removed PoW-verification bypass in `CheckProofOfWorkRandomX`. Any node built
+  from the pre-fix source will land on a divergent chain; always run the latest
+  release and expect a one-time reindex on upgrade.
+- CT activation height is now a per-network consensus parameter
+  (`nCTActivationHeight` in `src/kernel/chainparams.cpp`) instead of an implicit
+  constant. Mainnet still activates CT at block height 8,000.
+- Testnet now uses an **independent genesis block** and its own chain
+  parameters (no longer sharing the mainnet origin).
+
+### Security
+
+- Removed the `CheckProofOfWorkRandomX` verification bypass (see rollback above).
+
+### Docs
+
+- Unified network/consensus numbers in a single source of truth:
+  `doc/consensus-params.md`. README and the node deployment guide now reference
+  that table instead of repeating values inline.
+- Removed plaintext infrastructure IP list from `docs/nodes/README.md` — nodes
+  now discover each other via the `seed.rcpu.ren` DNS seed plus compiled-in
+  `vSeeds`, with `addnode` by hostname for locked-down networks.
+- Standardized the official domain set to `rcpuapp.top`
+  (`rcpuapp.top` / `explorer.rcpuapp.top` / `pool.rcpuapp.top` /
+  `wallet.rcpuapp.top`); `rcpu.cloud` and `rcpupool.asia` are marked deprecated.
+- RPC port documented as **9962** (the binary default) everywhere.
+- Added `RCPU-DEV-GPG-KEY.asc`; SECURITY.md now lists the RCPU signing key
+  (fingerprint `934D 5BC9 5DD4 B3AC FEF5 21B9 5476 3350 1FE4 B8EE`) and marks
+  the legacy SCASH key revoked.
+- Removed `SECURITY-SCASH.md` (legacy from the SCASH fork era).
+- Build guides (`doc/build-*.md`) fully rebranded from the Bitcoin Core
+  template; config docs now describe `rcpu.conf`.
+
 ## [3.1.0] - 2026-09-03
 
 ### Added
@@ -85,9 +127,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 RCPU Core uses a hybrid version scheme:
 
-- **RCPU client version**: `3.1.0` (project-specific version)
+- **RCPU client version**: `3.1.1` (project-specific version)
 - **Upstream base**: `Bitcoin Core 27.0.0`
-- **Full version string**: `3.1.0-narnia-core-27.0.0`
+- **Full version string**: `3.1.1-narnia-core-27.0.0`
 
 The `narnia` release codename refers to the current development series.
-

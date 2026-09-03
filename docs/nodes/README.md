@@ -40,20 +40,29 @@ sudo apt-get install -y libevent-dev libzmq5 libdb5.3++t64 libminiupnpc17 ca-cer
 
 ```bash
 # Download latest release from GitHub
-# Download latest release
-wget https://github.com/RCPUcoin/RCPU/releases/latest/download/rcpu-core-3.1.0-linux-x86_64.tar.gz
+# Asset names change between releases - check the Releases page for the
+# exact current filename (pattern: rcpu-core-<version>-linux-x86_64.tar.gz).
+# The 'latest/download/' URL below only works when a matching asset is
+# attached to the newest release; otherwise open the release page directly.
+wget https://github.com/RCPUcoin/RCPU/releases/latest/download/rcpu-core-<VERSION>-linux-x86_64.tar.gz
 
 # Verify checksums and signature
 wget https://github.com/RCPUcoin/RCPU/releases/latest/download/SHA256SUMS.txt
 wget https://github.com/RCPUcoin/RCPU/releases/latest/download/SHA256SUMS.txt.asc
+gpg --import RCPU-DEV-GPG-KEY.asc
 gpg --verify SHA256SUMS.txt.asc SHA256SUMS.txt
 sha256sum -c SHA256SUMS.txt
 
-# Extract and install
-tar xzf rcpu-core-3.1.0-linux-x86_64.tar.gz
-sudo cp rcpu-core-3.1.0-linux-x86_64/bin/* /usr/local/bin/
+# Extract and install (replace with the version you downloaded)
+tar xzf rcpu-core-<VERSION>-linux-x86_64.tar.gz
+sudo cp rcpu-core-<VERSION>-linux-x86_64/bin/* /usr/local/bin/
 sudo chmod +x /usr/local/bin/rcpud /usr/local/bin/rcpu-cli
 ```
+
+> **Releases page always wins**. Download URLs are stable only when a given
+> release carries a matching asset. Point users at
+> <https://github.com/RCPUcoin/RCPU/releases> — pick the current tag and its
+> attached binaries rather than guessing a filename.
 
 ### 2. Create Configuration
 
@@ -302,25 +311,35 @@ python scripts/monitor_nodes.py
    truncate -s 0 ~/.rcpu/rcpu/debug.log
    ```
 
-## Network Topology
+## Network Connectivity
 
-The RCPU network uses a full-mesh topology with 7 interconnected nodes:
+RCPU nodes discover each other automatically through the **DNS seed
+`seed.rcpu.ren`** (mainnet) plus seed addresses compiled into the client
+(`vSeeds` in `src/kernel/chainparams.cpp`). For a fresh node this is normally
+enough — you do not need to hard-code peers.
 
+For nodes that cannot use DNS (locked-down firewalls, isolated networks),
+pin peers by hostname in `rcpu.conf`:
+
+```ini
+# rcpu.conf - connect to specific peers (hostname or IP)
+addnode=seed.rcpu.ren:9965
+addnode=<YOUR_PEER_HOST>:9965
 ```
-Node Types:
-  - Mining Pool: 207.57.129.188
-  - Wallet Service: 38.147.171.29
-  - Blockchain Explorer: 43.159.51.23
-  - Main Website: 38.55.199.177
-  - Pool Website: 119.28.152.245
-  - US Alibaba Cloud: 47.85.38.146
-  - Guangzhou Alibaba Cloud: 8.166.130.149
-```
 
-For new nodes, configure `addnode` with 3-5 of these peer addresses for optimal connectivity.
+> For deployment-specific peer addresses, contact the RCPU team privately.
+> Infrastructure node addresses are intentionally **not** published in this
+> public repository to keep the network collectively operated and
+> discourage targeted scanning.
 
 ## Support
 
 - GitHub: https://github.com/RCPUcoin/RCPU
-- Website: https://rcpu.cloud
-- Pool: https://rcpupool.asia
+- Website: https://rcpuapp.top
+- Pool: https://pool.rcpuapp.top
+- Explorer: https://explorer.rcpuapp.top
+- Wallet: https://wallet.rcpuapp.top
+- Telegram: https://t.me/RCPUcoin
+
+> **Deprecated domains** (still reachable, no longer official): `rcpu.cloud`
+> and `rcpupool.asia`. New deployments should use the `rcpuapp.top` set above.

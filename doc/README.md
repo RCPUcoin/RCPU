@@ -69,7 +69,8 @@ Development
 -----------
 
 The root [README](/README.md) covers project overview, economic parameters, and
-contribution guidelines.
+contribution guidelines. Network/consensus numbers are maintained in the
+single source of truth: [consensus-params.md](consensus-params.md).
 
 - [Developer Notes](developer-notes.md)
 - [Productivity Notes](productivity.md)
@@ -95,7 +96,7 @@ BIP implementations remain relevant for protocol-level understanding:
 
 ### Miscellaneous
 
-- [bitcoin.conf Configuration File](bitcoin-conf.md)
+- [bitcoin.conf Configuration File](bitcoin-conf.md) *(legacy/upstream — RCPU uses [rcpu.conf](rcpu-conf.md))*
 - [CJDNS Support](cjdns.md)
 - [I2P Support](i2p.md)
 - [Dnsseed Policy](dnsseed-policy.md)

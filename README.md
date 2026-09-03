@@ -81,8 +81,14 @@ with an anchor block at height 999.
 | **CT activation** | Height 8,000 | Confidential Transactions fork |
 | **ASERT activation** | Height 1,000 | Difficulty algorithm upgrade |
 | **Port (mainnet)** | 9965 | P2P network port |
-| **RPC port** | 9966 | Default (configurable) |
-| **Address prefix** | `rcpu1` | Bech32 |
+| **RPC port** | 9962 | Default (configurable) |
+| **Address prefix** | `rcpu` | Bech32 HRP (`rcpu1...`) |
+
+> **Single source of truth**: `doc/consensus-params.md` lists every
+> consensus-critical value above and cross-references the source
+> location (`src/kernel/chainparams.cpp`, `src/validation.cpp`). If a
+> number here ever disagrees with that table, the table (and the code)
+> wins.
 
 > **Supply model note**: RCPU is not a strictly capped-supply coin.
 > - Genesis block (height 0): 50 RCPU reward (not spendable - historical origin)
@@ -98,11 +104,14 @@ with an anchor block at height 999.
 
 ### Seed Nodes
 
-- `seed.rcpu.ren` — DNS seed (operated by RCPU team)
-- Fixed seed nodes: 47.85.38.146, 119.28.152.245, 43.159.51.23, 38.147.171.29, 207.57.129.188, 38.55.199.177, 8.166.130.149
+- `seed.rcpu.ren` — official DNS seed (operated by RCPU team)
+- Additional seed addresses ship compiled into the client (`vSeeds` in
+  `src/kernel/chainparams.cpp`) and are refreshed on first start, so you
+  normally do **not** need to configure peers manually.
 
-> All current seed nodes are operated by the RCPU team. To contribute a
-> community-run DNS seed, submit a PR adding your hostname to `vSeeds`
+> To pin a specific peer, add `addnode=<host>:9965` to `rcpu.conf`.
+> The RCPU team operates `seed.rcpu.ren`; community DNS seeds are welcome —
+> submit a PR adding your hostname to `vSeeds`
 > in `src/kernel/chainparams.cpp`.
 
 ### Explorer
@@ -127,7 +136,6 @@ Pre-built binaries are available on the
 | rcpu-cli | ✅ | ✅ |
 | CPU Miner | ✅ | ✅ |
 | One-Click Mining | ✅ | — |
-| Mobile Miner | — | — |
 
 ### Verify Downloads
 
@@ -137,7 +145,13 @@ signed with the RCPU GPG key.
 **Signing key fingerprint**: `934D 5BC9 5DD4 B3AC FEF5 21B9 5476 3350 1FE4 B8EE`
 (RCPU Dev Team <rcpudevs@proton.me>)
 
+The public key is committed to the repo at `RCPU-DEV-GPG-KEY.asc` and also
+published on the [Releases](https://github.com/RCPUcoin/RCPU/releases) page.
+
 ```bash
+# Import the RCPU signing key
+gpg --import RCPU-DEV-GPG-KEY.asc
+
 # Verify checksums
 sha256sum -c SHA256SUMS
 
