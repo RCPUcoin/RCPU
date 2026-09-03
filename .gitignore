@@ -39,6 +39,7 @@ nohup.out
 # Config files (may contain secrets)
 config.json
 *.conf
+!contrib/init/rcpud.conf
 
 # ============================================================================
 # Pre-built binaries - use GitHub Releases instead of committing to git
@@ -119,7 +120,6 @@ ylwrap
 
 # Build directories
 build/
-build-*/
 out/
 dist/
 
@@ -131,6 +131,7 @@ dist/
 moc_*.cpp
 qrc_*.cpp
 ui_*.h
+!src/util/ui_change_type.h
 *.pro.user
 *.qmake.stash
 *.qm
@@ -177,6 +178,7 @@ miner/*.so
 miner/minerd
 
 pool/miner-bin/
+!pool/miner-bin/README.md
 pool/miner-src/*.tar.gz
 pool/miner-src/*.zip
 
@@ -194,14 +196,6 @@ src/test/test_rcpu
 src/test/test_rcpu-qt
 src/bench/bench_rcpu
 src/qt/test/test_rcpu-qt
-
-# LevelDB
-src/leveldb/
-!src/leveldb/**
-
-# Univalue
-src/univalue/
-!src/univalue/**
 
 # Secp256k1 build
 src/secp256k1/.libs/
@@ -221,8 +215,5 @@ pool/backups/
 # Documentation build
 # ============================================================================
 
-doc/man/
-*.1
-*.html
 doc/doxygen/
 
