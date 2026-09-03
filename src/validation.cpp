@@ -726,9 +726,9 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     }
 
     // RCPU: reject confidential (v3) transactions before the CT activation height.
-    if (tx.nVersion == CT_VERSION && m_active_chainstate.m_chain.Height() + 1 < CT_FORK_HEIGHT) {
+    if (tx.nVersion == CT_VERSION && m_active_chainstate.m_chain.Height() + 1 < m_active_chainstate.m_params.GetConsensus().nCTActivationHeight) {
         return state.Invalid(TxValidationResult::TX_CONSENSUS, "bad-ct-before-activation",
-            strprintf("confidential transaction before activation height %d", CT_FORK_HEIGHT));
+            strprintf("confidential transaction before activation height %d", m_active_chainstate.m_params.GetConsensus().nCTActivationHeight));
     }
 
     // RCPU: defense in depth - reject CT transactions if CT mode is not enabled.
