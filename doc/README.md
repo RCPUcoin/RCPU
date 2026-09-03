@@ -1,93 +1,75 @@
-Bitcoin Core
+RCPU Core
 =============
 
-Setup
----------------------
-Bitcoin Core is the original Bitcoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Bitcoin transactions, which requires a few hundred gigabytes of disk space. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
+RCPU is an experimental digital currency that enables instant payments to
+anyone, anywhere in the world. RCPU uses peer-to-peer technology to operate
+with no central authority: managing transactions and issuing money are carried
+out collectively by the network. RCPU Core is the name of open source
+software which enables the use of this currency.
 
-To download Bitcoin Core, visit [bitcoincore.org](https://bitcoincore.org/en/download/).
+For more information, as well as an immediately usable binary version of
+RCPU Core, see the [RCPU website](https://rcpuapp.top/) and the
+[GitHub Releases page](https://github.com/RCPUcoin/RCPU/releases).
 
-Running
----------------------
-The following are some helpful notes on how to run Bitcoin Core on your native platform.
+## License
 
-### Unix
+RCPU Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+information or see https://opensource.org/licenses/MIT.
 
-Unpack the files into a directory and run:
+## Development Process
 
-- `bin/bitcoin-qt` (GUI) or
-- `bin/bitcoind` (headless)
+The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
+completely stable. [Tags](https://github.com/RCPUcoin/RCPU/tags) are created
+regularly from release branches to indicate new official, stable release versions of RCPU Core.
 
-### Windows
+The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
+and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
 
-Unpack the files into a directory, and then run bitcoin-qt.exe.
+## Testing
 
-### macOS
+Testing and code review is the bottleneck for development; we get more pull
+requests than we can review and test on short notice. Please be patient and help out by testing
+other people's pull requests, and remember this is a security-critical project where any mistake might cost people
+lots of money.
 
-Drag Bitcoin Core to your applications folder, and then run Bitcoin Core.
+### Automated Testing
 
-### Need Help?
+Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
+submit new unit tests for old code. Unit tests can be compiled and run
+(assuming they weren't disabled in configure) with: `make check`. Further details on running
+and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
 
-* See the documentation at the [Bitcoin Wiki](https://en.bitcoin.it/wiki/Main_Page)
-for help and more information.
-* Ask for help on [Bitcoin StackExchange](https://bitcoin.stackexchange.com).
-* Ask for help on #bitcoin on Libera Chat. If you don't have an IRC client, you can use [web.libera.chat](https://web.libera.chat/#bitcoin).
-* Ask for help on the [BitcoinTalk](https://bitcointalk.org/) forums, in the [Technical Support board](https://bitcointalk.org/index.php?board=4.0).
+There are also [regression and integration tests](/test), written
+in Python.
+These tests are run regularly by CI.
 
-Building
----------------------
-The following are developer notes on how to build Bitcoin Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+### Manual Quality Assurance (QA) Testing
 
-- [Dependencies](dependencies.md)
-- [macOS Build Notes](build-osx.md)
-- [Unix Build Notes](build-unix.md)
-- [Windows Build Notes](build-windows.md)
-- [FreeBSD Build Notes](build-freebsd.md)
-- [OpenBSD Build Notes](build-openbsd.md)
-- [NetBSD Build Notes](build-netbsd.md)
-- [Android Build Notes](build-android.md)
+Changes should be tested by somebody other than the developer who wrote the
+code. This is especially important for large or high-risk changes. It is useful
+to add a test plan to the pull request description if testing the changes is
+not straightforward.
 
-Development
----------------------
-The Bitcoin repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+## Translations
 
-- [Developer Notes](developer-notes.md)
-- [Productivity Notes](productivity.md)
-- [Release Process](release-process.md)
-- [Source Code Documentation (External Link)](https://doxygen.bitcoincore.org/)
-- [Translation Process](translation_process.md)
-- [Translation Strings Policy](translation_strings_policy.md)
-- [JSON-RPC Interface](JSON-RPC-interface.md)
-- [Unauthenticated REST Interface](REST-interface.md)
-- [Shared Libraries](shared-libraries.md)
-- [BIPS](bips.md)
-- [Dnsseed Policy](dnsseed-policy.md)
-- [Benchmarking](benchmarking.md)
-- [Internal Design Docs](design/)
+Changes to translations as well as new translations can be submitted via pull request.
 
-### Resources
-* Discuss on the [BitcoinTalk](https://bitcointalk.org/) forums, in the [Development & Technical Discussion board](https://bitcointalk.org/index.php?board=6.0).
-* Discuss project-specific development on #bitcoin-core-dev on Libera Chat. If you don't have an IRC client, you can use [web.libera.chat](https://web.libera.chat/#bitcoin-core-dev).
+Translations are periodically pulled from the translation platform and merged
+into the git repository. **Important**: We do not accept translation changes as
+GitHub pull requests because the next pull from the translation platform would
+automatically overwrite them again.
 
-### Miscellaneous
-- [Assets Attribution](assets-attribution.md)
-- [bitcoin.conf Configuration File](bitcoin-conf.md)
-- [CJDNS Support](cjdns.md)
-- [Files](files.md)
-- [Fuzz-testing](fuzzing.md)
-- [I2P Support](i2p.md)
-- [Init Scripts (systemd/upstart/openrc)](init.md)
-- [Managing Wallets](managing-wallets.md)
-- [Multisig Tutorial](multisig-tutorial.md)
-- [Offline Signing Tutorial](offline-signing-tutorial.md)
-- [P2P bad ports definition and list](p2p-bad-ports.md)
-- [PSBT support](psbt.md)
-- [Reduce Memory](reduce-memory.md)
-- [Reduce Traffic](reduce-traffic.md)
-- [Tor Support](tor.md)
-- [Transaction Relay Policy](policy/README.md)
-- [ZMQ](zmq.md)
+## Notable Features
 
-License
----------------------
-Distributed under the [MIT software license](/COPYING).
+- **RandomX PoW**: CPU-friendly mining algorithm, ASIC-resistant
+- **Confidential Transactions (CT)**: Amounts are hidden on-chain using
+  Pedersen commitments (activated at height 8000)
+- **ASERT Difficulty Adjustment**: Responsive difficulty algorithm
+- **5-minute block time**: Faster confirmations than Bitcoin
+- **Independent genesis**: RCPU has its own genesis block and chain parameters
+
+## Upstream
+
+RCPU Core is forked from [Bitcoin Core](https://github.com/bitcoin/bitcoin) 27.0.
+We maintain the upstream copyright and license, and contribute back where possible.
+
