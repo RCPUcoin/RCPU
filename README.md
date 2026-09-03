@@ -1,78 +1,167 @@
-Bitcoin Core integration/staging tree
-=====================================
+# RCPU Core
 
-https://bitcoincore.org
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](COPYING)
+[![Release](https://img.shields.io/github/v/release/RCPUcoin/RCPU)](https://github.com/RCPUcoin/RCPU/releases)
+[![Explorer](https://img.shields.io/badge/Explorer-explorer.rcpuapp.top-blue)](https://explorer.rcpuapp.top/)
+[![Mining Pool](https://img.shields.io/badge/Pool-pool.rcpuapp.top-green)](https://pool.rcpuapp.top/)
+[![Wallet](https://img.shields.io/badge/Wallet-wallet.rcpuapp.top-orange)](https://wallet.rcpuapp.top/)
+[![Telegram](https://img.shields.io/badge/Telegram-join-blue)](https://t.me/rcpucoin)
 
-For an immediately usable, binary version of the Bitcoin Core software, see
-https://bitcoincore.org/en/download/.
+RCPU is a CPU-mineable cryptocurrency with **Confidential Transactions (CT)**.
+It is forked from Bitcoin Core 27.0, replacing SHA-256 PoW with RandomX for
+ASIC resistance, and adding on-chain privacy via Pedersen commitments.
 
-What is Bitcoin Core?
----------------------
+**Clone shallow to save time and bandwidth** — this repo contains full Bitcoin
+Core history plus RCPU additions:
 
-Bitcoin Core connects to the Bitcoin peer-to-peer network to download and fully
-validate blocks and transactions. It also includes a wallet and graphical user
-interface, which can be optionally built.
+```bash
+git clone --depth=1 https://github.com/RCPUcoin/RCPU.git
+```
 
-Further information about Bitcoin Core is available in the [doc folder](/doc).
+---
 
-License
--------
+## Key Features
 
-Bitcoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+### Confidential Transactions (CT)
 
-Development Process
--------------------
+Amounts in RCPU transactions are hidden on-chain using **Pedersen commitments**.
+Only the sender and receiver know the transferred amount; miner fees remain
+public. CT activates at **block height 8,000**.
 
-The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
-completely stable. [Tags](https://github.com/bitcoin/bitcoin/tags) are created
-regularly from release branches to indicate new official, stable release versions of Bitcoin Core.
+- Send confidential transactions with `sendct` RPC
+- Based on secp256k1-zkp rangeproof module (from Elements Project)
+- Compatible with standard address formats (bech32 `rcpu1...`)
 
-The https://github.com/bitcoin-core/gui repository is used exclusively for the
-development of the GUI. Its master branch is identical in all monotree
-repositories. Release branches and tags do not exist, so please do not fork
-that repository unless it is for development reasons.
+### RandomX Proof-of-Work
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+RCPU uses **RandomX**, a CPU-optimized mining algorithm that is resistant
+to ASIC and GPU mining. Anyone with a modern CPU can mine RCPU.
 
-Testing
--------
+- ASIC-resistant, CPU-friendly mining
+- Fair launch: no pre-mine, no ICO
+- 5-minute block time
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+### ASERT Difficulty Adjustment
 
-### Automated Testing
+Responsive difficulty algorithm based on ASERT (Absolutely Smooth Exponential
+Response to Timestamps), adapting quickly to hashrate changes while
+maintaining stable block times.
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+---
 
-There are also [regression and integration tests](/test), written
-in Python.
-These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
+## Economic Parameters
 
-The CI (Continuous Integration) systems make sure that every pull request is built for Windows, Linux, and macOS,
-and that unit/sanity tests are run automatically.
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| **Ticker** | RCPU | |
+| **Genesis block** | 22/Feb/2024 | Independent genesis, not Bitcoin |
+| **Block time** | 5 minutes (300 seconds) | |
+| **Block reward (start)** | 5,000 RCPU | From height 1 onward |
+| **Halving interval** | 210,000 blocks | ~2 years at 5 min/block |
+| **Halvings** | 10 times | Subsidy halves each interval |
+| **Tail emission** | 1 RCPU per block | After 10 halvings, permanent |
+| **MAX_MONEY (consensus)** | 2,100,000,000 RCPU | Upper bound for valid amounts |
+| **CT activation** | Height 8,000 | Confidential Transactions fork |
+| **ASERT activation** | Height 1,000 | Difficulty algorithm upgrade |
+| **Port (mainnet)** | 9965 | P2P network port |
+| **RPC port** | 9966 | Default (configurable) |
+| **Address prefix** | `rcpu1` | Bech32 |
 
-### Manual Quality Assurance (QA) Testing
+> **Note:** The genesis block has a reward of 50 RCPU (a Bitcoin Core
+> legacy). The actual network subsidy begins at height 1 with 5,000 RCPU
+> per block, as defined by `GetBlockSubsidy()`.
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+---
 
-Translations
-------------
+## Network
 
-Changes to translations as well as new translations can be submitted to
-[Bitcoin Core's Transifex page](https://www.transifex.com/bitcoin/bitcoin/).
+### Seed Nodes
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+- `seed.rcpu.ren` — DNS seed
+- Multiple fixed seed nodes operated by the community
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+### Explorer
+
+- **Mainnet**: [explorer.rcpuapp.top](https://explorer.rcpuapp.top/)
+
+### Mining Pool
+
+- **Official pool**: [pool.rcpuapp.top](https://pool.rcpuapp.top/)
+
+---
+
+## Downloads
+
+Pre-built binaries are available on the
+[GitHub Releases page](https://github.com/RCPUcoin/RCPU/releases).
+
+| Component | Windows | Linux |
+|-----------|---------|-------|
+| Core Wallet (GUI) | ✅ | ✅ |
+| rcpud (daemon) | ✅ | ✅ |
+| rcpu-cli | ✅ | ✅ |
+| CPU Miner | ✅ | ✅ |
+| One-Click Mining | ✅ | — |
+| Mobile Miner | — | — |
+
+### Verify Downloads
+
+Each release includes `SHA256SUMS` with file checksums:
+
+```bash
+sha256sum -c SHA256SUMS
+```
+
+---
+
+## Building from Source
+
+See the build documentation:
+
+- [doc/build-unix.md](doc/build-unix.md) — Linux
+- [doc/build-windows.md](doc/build-windows.md) — Windows (cross-compile)
+- [doc/build-osx.md](doc/build-osx.md) — macOS
+
+### Quick Start (Linux)
+
+```bash
+git clone https://github.com/RCPUcoin/RCPU.git
+cd RCPU
+./autogen.sh
+./configure --without-gui --disable-tests --disable-bench
+make -j$(nproc)
+```
+
+---
+
+## License
+
+RCPU Core is released under the terms of the MIT license. See [COPYING](COPYING)
+for more information or see https://opensource.org/licenses/MIT.
+
+RCPU Core is based on Bitcoin Core. Copyright for the upstream code belongs to
+the Bitcoin Core developers and other contributors.
+
+---
+
+## Community
+
+- [Telegram](https://t.me/rcpucoin)
+- [X / Twitter](https://x.com/rcpucoin)
+- [Official Website](https://rcpuapp.top/)
+
+---
+
+## Development
+
+Want to contribute? Great!
+
+- Read the [contributing guidelines](CONTRIBUTING.md)
+- Check the [open issues](https://github.com/RCPUcoin/RCPU/issues)
+- Submit pull requests against the `main` branch
+
+### Security
+
+If you find a security vulnerability, please report it privately to
+**rcpudevs@proton.me**. See [SECURITY.md](SECURITY.md) for details.
+
