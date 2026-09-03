@@ -42,6 +42,8 @@ jobs:
           make -j$(nproc)
       - name: Test
         run: |
-          make -j$(nproc) test_bitcoin
+          # test_bitcoin is a target of src/Makefile; invoke it from src so the
+          # top-level Makefile does not fail with "no rule to make target".
+          make -C src -j$(nproc) test/test_bitcoin
           ./src/test/test_bitcoin --log_level=test_suite \
             --run_test=blind_tests,confidential_validation_tests,randomx_tests,pow_tests,amount_tests,mempool_tests
