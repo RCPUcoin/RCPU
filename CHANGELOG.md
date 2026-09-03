@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ASERT Difficulty Adjustment**
   - ASERT activates at block height 1,000
   - Responsive difficulty algorithm based on timestamp anchoring
-  - 2-day half-life for smooth adjustments
+  - 12-hour half-life for smooth adjustments
 
 ### Changed
 
