@@ -17,17 +17,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libtool autotools-dev automake \
-            pkg-config bsdmainutils python3 autoconf-archive
-          sudo apt-get install -y libssl-dev libevent-dev libboost-all-dev \
+            pkg-config bsdmainutils python3 autoconf-archive \
+            libssl-dev libevent-dev libboost-all-dev \
             libsqlite3-dev libdb-dev libdb++-dev
-      - name: Provide pkg.m4 macro
+      - name: Install pkg-config macros
         run: |
-          mkdir -p build-aux/m4
-          find /usr -name "pkg.m4" 2>/dev/null | head -1 | xargs -r -I{} cp {} build-aux/m4/pkg.m4
+          sudo cp build-aux/m4/pkg.m4 /usr/share/aclocal/pkg.m4
+          ls -la /usr/share/aclocal/pkg.m4
       - name: Build
-        env:
-          ACLOCAL_PATH: /usr/share/aclocal
         run: |
           ./autogen.sh
           ./configure --without-gui --disable-tests --disable-bench --prefix=/opt/rcpu
-          make -j$(nproc) 2>&1 | tail -20
+          make -j$(nproc) 2>&1 | tail -30
