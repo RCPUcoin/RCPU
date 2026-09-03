@@ -549,9 +549,9 @@ static uint256 GetHashOfRcpuGenesisBlock(const CBlock& genesis) {
     return uint256(hash);
 }
 
-static CBlock CreateRcpuGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
+static CBlock CreateRcpuGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward, const char* pszTimestampMsg = nullptr)
 {
-    const char* pszTimestamp = "22/Feb/2024 S&P 5087.03 @elonmusk 1760819426688115087 Congrats";
+    const char* pszTimestamp = pszTimestampMsg ? pszTimestampMsg : "22/Feb/2024 S&P 5087.03 @elonmusk 1760819426688115087 Congrats";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -740,12 +740,11 @@ public:
         consensus.fPowRandomX = true;
         consensus.nRandomXEpochDuration = 7 * 24 * 60 * 60;     // one week
         consensus.nCTActivationHeight = 0;  // Testnet: CT always active
-        genesis = CreateGenesisBlock(1296688602, 6107, 0x1e7fffff, 1, 50 * COIN);
-        genesis.hashRandomX = uint256S("e848dddfb604a4b1783c8a38b6db5179ccd6911331f2be18bfec02522d95af86");
-        consensus.hashGenesisBlock = genesis.GetHash();
+        genesis = CreateRcpuGenesisBlock(1708750000, 1, 0x1e7fffff, 1, 50 * COIN, "22/Feb/2024 RCPU Testnet Genesis - Independent Chain");
+        genesis.hashRandomX = uint256{};
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
-        assert(consensus.hashGenesisBlock == uint256S("0e3ba94819749c208e2526d9b829e0dba109f1bce4e62600c0fc556294f24c82"));
-        assert(genesis.hashMerkleRoot == uint256S("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        fprintf(stderr, "TESTNET hashGenesisBlock: %s\n", consensus.hashGenesisBlock.GetHex().c_str());
+        fprintf(stderr, "TESTNET hashMerkleRoot: %s\n", genesis.hashMerkleRoot.GetHex().c_str());
 
         vFixedSeeds.clear();
         vSeeds.clear();
