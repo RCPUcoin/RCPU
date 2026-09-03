@@ -20,6 +20,8 @@
 #include <list>
 #include <map>
 #include <stdexcept>
+#include <thread>
+#include <vector>
 
 static Mutex rx_caches_mutex;
 
@@ -103,6 +105,20 @@ public:
         return it->second.first;
     }
 
+    // Atomically check for the key and retrieve it, avoiding the
+    // contains()+get() TOCTOU race. Returns false if the key is absent.
+    bool try_get(const Key& key, Value& value)
+    {
+        LOCK(m_mutex);
+        auto it = m_map.find(key);
+        if (it == m_map.end()) {
+            return false;
+        }
+        m_list.splice(m_list.begin(), m_list, it->second.second);
+        value = it->second.first;
+        return true;
+    }
+
     void clear()
     {
         LOCK(m_mutex);
@@ -131,6 +147,23 @@ static LRURandomXCacheRef cache_rx_cache;
 static LRURandomXVMRef cache_rx_vm_light;
 static LRURandomXVMRef cache_rx_vm_fast;
 static LRURandomXDatasetRef cache_rx_dataset;
+
+// Background RandomX fast-VM creation threads. Tracked so Shutdown() can join
+// them before the static caches above are destroyed (avoids use-after-free).
+static Mutex g_rx_threads_mutex;
+static std::vector<std::thread> g_rx_threads;
+
+void StopRandomXThreads()
+{
+    std::vector<std::thread> threads;
+    {
+        LOCK(g_rx_threads_mutex);
+        threads.swap(g_rx_threads);
+    }
+    for (auto& t : threads) {
+        if (t.joinable()) t.join();
+    }
+}
 
 // !RCPU END
 
@@ -528,9 +561,7 @@ static void CreateFastVM(uint32_t nEpoch, RandomXCacheRef myCache)
     flags |= RANDOMX_FLAG_FULL_MEM;
 
     RandomXDatasetRef myDataset = nullptr;
-    if (cache_rx_dataset->contains(nEpoch)) {
-        myDataset = cache_rx_dataset->get(nEpoch);
-    } else {
+    if (!cache_rx_dataset->try_get(nEpoch, myDataset)) {
         randomx_dataset* pDataset = randomx_alloc_dataset(flags);
         if (pDataset == nullptr) {
             LogPrintf("Error: randomx_alloc_dataset() failed\n");
@@ -591,10 +622,11 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
 
 
     // If VM in fast mode is cached, return it first, due to faster performance than light mode
-    if (cache_rx_vm_fast->contains(nEpoch)) {
-        return cache_rx_vm_fast->get(nEpoch);
-    } else if (cache_rx_vm_light->contains(nEpoch)) {
-        return cache_rx_vm_light->get(nEpoch);
+    RandomXVMRef vm;
+    if (cache_rx_vm_fast->try_get(nEpoch, vm)) {
+        return vm;
+    } else if (cache_rx_vm_light->try_get(nEpoch, vm)) {
+        return vm;
     }
 
     // No VM exists, so create light mode VM first and create fast mode VM in background thread.
@@ -604,9 +636,7 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
 
     // Create randomx cache if requred
     RandomXCacheRef myCache = nullptr;
-    if (cache_rx_cache->contains(nEpoch)) {
-        myCache = cache_rx_cache->get(nEpoch);
-    } else {
+    if (!cache_rx_cache->try_get(nEpoch, myCache)) {
         randomx_cache* pCache = randomx_alloc_cache(flags);
         if (!pCache) {
             LogPrintf("Error: randomx_alloc_cache() failed\n");
@@ -631,7 +661,8 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
     // When IBD has finished, allow background thread to create fast mode VM (can be disabled to reduce memory usage)
     if (g_isIBDFinished && gArgs.GetBoolArg("-randomxfastmode", DEFAULT_RANDOMX_FAST_MODE)) {
         std::thread t(CreateFastVM, nEpoch, myCache);
-        t.detach();
+        LOCK(g_rx_threads_mutex);
+        g_rx_threads.push_back(std::move(t));
     }
 
     return vmRef;

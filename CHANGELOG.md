@@ -5,6 +5,35 @@ All notable changes to RCPU Core will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.1] - 2026-09-04
+
+### Fixed
+
+- **Checkpoint data audited against the live chain** — removed stale checkpoints
+  at heights 111, 488 and 1,433 whose hashes did not match the main chain, and
+  removed future-height entries (11,111 and 19,000) that were never reached.
+  Checkpoints at heights 2,000 – 4,500 were re-verified against the live chain
+  and retained.
+- **`nMinimumChainWork` populated for mainnet** — filled in the cumulative
+  chain-work value at height 8,500
+  (`0x000000000000000000000000000000000000000000000000000000023258f4a6`) so
+  initial-block-download can reject trivially-fake low-work chains.
+- **LRUCache TOCTOU race in RandomX VM lookups** — replaced the
+  `contains()` + `get()` pattern with an atomic `try_get()` method so concurrent
+  cache access cannot fail with a key that was evicted between the two calls.
+- **RandomX fast-VM thread lifecycle** — `CreateFastVM` threads are no longer
+  detached; they are registered in a global thread list and joined by
+  `StopRandomXThreads()` during `Shutdown()`, eliminating a use-after-free
+  window when the node exits while fast-VM creation is still in progress.
+- **Regtest genesis block** — the regtest network now uses
+  `CreateRcpuGenesisBlock` (matching mainnet/testnet) instead of the legacy
+  `CreateGenesisBlock`. The genesis hash assertion was updated accordingly
+  (`fc0a929579bf03d869a81439c7488e8c76e2ad68c4bbf5e84d0bbffcac542ba0`).
+- **`Check_RandomX_BlockHeader` unit test** — rewritten to exercise the real
+  RandomX verification paths (commitment-only and full) on a non-genesis
+  header. The old test relied on genesis-block short-circuiting and therefore
+  did not actually verify the code paths it claimed to cover.
+
 ## [3.2.0] - 2026-09-04
 
 ### Added

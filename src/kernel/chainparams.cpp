@@ -587,7 +587,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
-        consensus.nMinimumChainWork = uint256{};
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000023258f4a6");
         consensus.defaultAssumeValid = uint256{};
 
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
@@ -643,17 +643,12 @@ public:
 
         checkpointData = {
             {
-                { 111, uint256S("8ae1c9355d55513c407c75fbfc5e10aea64654caaae0c94ccb16572cb0e04d17")},
-                { 488, uint256S("9b2583116dd317fee639fed59c698ef91afcd5ab78f4e5582d05b221105eeb00")},
-                { 1433, uint256S("d0c5d5f767374b2e514a7fcc3974e0506085e4260dc43d6b349dfcf5a6969fca")},
                 { 2000, uint256S("66e1402af5c72c59944b84b6f5547d6d2c5f848c72192a12dbf7801b2824a89e")},
                 { 2500, uint256S("785e9293a5b2a8e1f6983b4c05c229a97ba933989d40c8e01b5f630535cda94e")},
                 { 3000, uint256S("4cb0fbf6ca6fe73ebb1662b7c7d14bf239891cdecfe06a11fa5d70ef43dc16ae")},
                 { 3500, uint256S("4c0ff4498e4fc1ab39b70651f196eb9adeb6a378a7f65afd662dd25abbb5a605")},
                 { 4000, uint256S("ad58d72ab1c0791621392b1c93bdcd5ca57b88041f034b9611f5bf58f1a3400e")},
                 { 4500, uint256S("fe2b0710f6c413cc7753e1bec8375044389955cf5ee9f8830ba95d35be012bba")},
-                { 11111, uint256S("321992e4b3b1c13f9a8ae1aa9ce926e795c2f3dbedd3159f157150653683b583")},
-                { 19000, uint256S("6153ba28cc8d030277e308d12642a28ebc94eceb57f447e4ed0ad692b10d3de3")},
             }
         };
 
@@ -840,11 +835,11 @@ public:
 
         consensus.fPowRandomX = true;
         consensus.nRandomXEpochDuration = 24 * 60 * 60;     // one day
-        genesis = CreateGenesisBlock(1296688602, 1, 0x207fffff, 1, 50 * COIN);
+        genesis = CreateRcpuGenesisBlock(1296688602, 1, 0x207fffff, 1, 50 * COIN);
         genesis.hashRandomX = uint256S("0x177a9deba97f0dae00a6bf55e03671ec6bce7051d6a5054db49237598b803f93");
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
-        assert(consensus.hashGenesisBlock == uint256S("f44d4e3a27c9c0dbd8c6c2596950c782a99ad33f749d296d2a0ab3af84b4cb86"));
-        assert(genesis.hashMerkleRoot == uint256S("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(consensus.hashGenesisBlock == uint256S("fc0a929579bf03d869a81439c7488e8c76e2ad68c4bbf5e84d0bbffcac542ba0"));
+        assert(genesis.hashMerkleRoot == uint256S("2f7b90fafd8247ee73d213d49699fcfe12a37c608f1d9d1c06f10e43cb6426c6"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();

@@ -309,6 +309,9 @@ void Shutdown(NodeContext& node)
     if (node.scheduler) node.scheduler->stop();
     if (node.chainman && node.chainman->m_thread_load.joinable()) node.chainman->m_thread_load.join();
 
+    // Join background RandomX fast-VM creation threads before the RandomX caches are destroyed.
+    StopRandomXThreads();
+
     // After the threads that potentially access these pointers have been stopped,
     // destruct and reset all to nullptr.
     node.peerman.reset();

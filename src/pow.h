@@ -58,6 +58,9 @@ uint32_t GetEpoch(uint32_t nTime, uint32_t nDuration);
 /** Calculate RandomX key for a given epoch */
 uint256 GetSeedHash(uint32_t nEpoch);
 
+/** Join and clear background RandomX fast-VM creation threads. Safe to call at shutdown. */
+void StopRandomXThreads();
+
 /** Check if RandomX commitment of block satisfies the proof-of-work requirement specified by nBits */
 bool CheckProofOfWorkRandomX(const CBlockHeader& block, const Consensus::Params& params, POWVerifyMode mode = POW_VERIFY_FULL, uint256 *outHash = nullptr);
 
