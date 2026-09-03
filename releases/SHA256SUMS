@@ -1,9 +1,11 @@
 # SHA256 checksums for RCPU releases
 #
-# Current checksums are published with each release on GitHub:
-# https://github.com/RCPUcoin/RCPU/releases
+# Current release: v3.1.0
+# Full checksums and signature: https://github.com/RCPUcoin/RCPU/releases/tag/v3.1.0
 #
 # To verify a download:
-#   sha256sum -c SHA256SUMS
-
-
+#   1. Download SHA256SUMS.txt and SHA256SUMS.txt.asc from the release page
+#   2. gpg --verify SHA256SUMS.txt.asc SHA256SUMS.txt
+#   3. sha256sum -c SHA256SUMS.txt
+#
+# Signing key fingerprint: 934D 5BC9 5DD4 B3AC FEF5  21B9 5476 3350 1FE4 B8EE
