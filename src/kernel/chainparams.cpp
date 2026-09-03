@@ -743,7 +743,6 @@ public:
         genesis = CreateRcpuGenesisBlock(1708750000, 1, 0x1e7fffff, 1, 50 * COIN, "22/Feb/2024 RCPU Testnet Genesis - Independent Chain");
         genesis.hashRandomX = uint256{};
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
-        fprintf(stderr, "TESTNET hashMerkleRoot: %s\n", genesis.hashMerkleRoot.GetHex().c_str());
 
         vFixedSeeds.clear();
         vSeeds.clear();
