@@ -1720,6 +1720,12 @@ PackageMempoolAcceptResult ProcessNewPackage(Chainstate& active_chainstate, CTxM
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
+    // RCPU subsidy schedule:
+    // - Genesis block (height 0): 50 RCPU (not spendable)
+    // - Height 1 onwards: 5,000 RCPU base subsidy
+    // - Halving every 210,000 blocks (~2 years at 5 min/block)
+    // - After 10 halvings: 1 RCPU per block tail emission
+    // - MAX_MONEY is per-output sanity check, not supply cap
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
     
     // After 10 halvings (~20 years, ~2.1B total supply), fixed reward of 1 RCPU forever
