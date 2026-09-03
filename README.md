@@ -43,7 +43,7 @@ to ASIC and GPU mining. Anyone with a modern CPU can mine RCPU.
 
 ### ASERT Difficulty Adjustment
 
-Responsive difficulty algorithm based on ASERT (Absolutely Smooth Exponential
+Responsive difficulty algorithm based on ASERT (Absolutely Smooth Exponential Rescheduling Targets). Difficulty adjusts every block with a **12-hour half-life**
 Response to Timestamps), adapting quickly to hashrate changes while
 maintaining stable block times.
 

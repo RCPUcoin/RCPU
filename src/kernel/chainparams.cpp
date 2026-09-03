@@ -719,7 +719,7 @@ public:
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
         // 12 hours
-        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
+        consensus.nASERTHalfLife = 12 * 60 * 60;
         consensus.nASERTActivationHeight = 301;
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
             280,          // anchor block height

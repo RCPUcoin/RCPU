@@ -690,12 +690,12 @@ BOOST_AUTO_TEST_CASE(calculate_asert_test) {
     BOOST_CHECK(nextTarget > prevTarget);
     BOOST_CHECK(nextTarget == initialTarget);
 
-    // Two days ahead of schedule should double the target (halve the difficulty)
+    // 12 hours ahead of schedule should double the target (halve the difficulty)
     prevTarget = nextTarget;
     nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 288*1200, 288, powLimit, nHalfLife);
     BOOST_CHECK(nextTarget == prevTarget * 2);
 
-    // Two days behind schedule should halve the target (double the difficulty)
+    // 12 hours behind schedule should halve the target (double the difficulty)
     prevTarget = nextTarget;
     nextTarget = CalculateASERT(prevTarget, params.nPowTargetSpacing, parent_time_diff + 288*0, 288, powLimit, nHalfLife);
     BOOST_CHECK(nextTarget == prevTarget / 2);
