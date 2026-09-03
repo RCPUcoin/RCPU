@@ -134,7 +134,7 @@ public:
         vSeeds.emplace_back("43.159.51.23");
         vSeeds.emplace_back("38.147.171.29");
         vSeeds.emplace_back("207.57.129.188");
-        vSeeds.emplace_back("103.74.192.168");
+        vSeeds.emplace_back("207.57.129.188");
         vSeeds.emplace_back("38.55.199.177");
         vSeeds.emplace_back("8.166.130.149");
 
@@ -637,7 +637,7 @@ public:
         vSeeds.emplace_back("43.159.51.23");
         vSeeds.emplace_back("38.147.171.29");
         vSeeds.emplace_back("207.57.129.188");
-        vSeeds.emplace_back("103.74.192.168");
+        vSeeds.emplace_back("207.57.129.188");
         vSeeds.emplace_back("38.55.199.177");
         vSeeds.emplace_back("8.166.130.149");
 

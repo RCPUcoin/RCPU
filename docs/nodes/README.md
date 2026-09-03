@@ -307,7 +307,7 @@ The RCPU network uses a full-mesh topology with 7 interconnected nodes:
 
 ```
 Node Types:
-  - Mining Pool: 103.74.192.168
+  - Mining Pool: 207.57.129.188
   - Wallet Service: 38.147.171.29
   - Blockchain Explorer: 43.159.51.23
   - Main Website: 38.55.199.177

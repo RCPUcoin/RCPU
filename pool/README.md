@@ -1,7 +1,7 @@
 # RCPU Mining Pool
 
 Complete production mining pool for RCPU (RandomX CPU coin) — extracted from live
-server (103.74.192.168). Includes the Stratum pool server, miner source with the
+server (207.57.129.188). Includes the Stratum pool server, miner source with the
 critical byte-order fix, payout scripts, miner binaries, systemd units and all
 helper scripts needed to deploy your own pool.
 
