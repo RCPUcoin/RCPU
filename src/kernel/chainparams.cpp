@@ -134,7 +134,6 @@ public:
         vSeeds.emplace_back("43.159.51.23");
         vSeeds.emplace_back("38.147.171.29");
         vSeeds.emplace_back("207.57.129.188");
-        vSeeds.emplace_back("207.57.129.188");
         vSeeds.emplace_back("38.55.199.177");
         vSeeds.emplace_back("8.166.130.149");
 
@@ -598,7 +597,7 @@ public:
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
         // Two days
-        consensus.nASERTHalfLife = 12 * 60 * 60;  // Two days
+        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;  // Two days
         consensus.nASERTActivationHeight = 1000;  // RCPU: activate ASERT early
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
             999,          // anchor block height
@@ -636,7 +635,6 @@ public:
         vSeeds.emplace_back("119.28.152.245");
         vSeeds.emplace_back("43.159.51.23");
         vSeeds.emplace_back("38.147.171.29");
-        vSeeds.emplace_back("207.57.129.188");
         vSeeds.emplace_back("207.57.129.188");
         vSeeds.emplace_back("38.55.199.177");
         vSeeds.emplace_back("8.166.130.149");
@@ -721,7 +719,7 @@ public:
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
         // Two days
-        consensus.nASERTHalfLife = 12 * 60 * 60;
+        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
         consensus.nASERTActivationHeight = 301;
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
             280,          // anchor block height

@@ -17,11 +17,14 @@ This guide provides instructions for deploying RCPU nodes on Linux servers.
 
 | Component | Minimum | Recommended |
 |-----------|---------|-------------|
-| OS | Ubuntu 18.04 / Debian 10 | Ubuntu 22.04+ / Debian 12+ |
-| CPU | 2 cores | 4+ cores |
-| RAM | 2 GB | 4+ GB |
-| Disk | 50 GB | 100+ GB SSD |
-| Network | 10 Mbps | 100+ Mbps |
+| OS | Ubuntu 20.04+ / Debian 11+ | Ubuntu 22.04+ / Debian 12+ |
+| CPU | 1 core | 2+ cores |
+| RAM | 1 GB | 2+ GB |
+| Disk | 5 GB SSD | 10+ GB SSD |
+| Network | 5 Mbps | 50+ Mbps |
+
+> RCPU launched in February 2024. The blockchain is lightweight (under 1 GB as
+> of late 2026) and a full node runs comfortably on the smallest VPS.
 
 ### Dependencies
 
@@ -37,20 +40,18 @@ sudo apt-get install -y libevent-dev libzmq5 libdb5.3++t64 libminiupnpc17 ca-cer
 
 ```bash
 # Download latest release from GitHub
-wget https://github.com/RCPUcoin/RCPU/releases/latest/download/rcpud-linux-x64.gz
-wget https://github.com/RCPUcoin/RCPU/releases/latest/download/rcpu-cli-linux-x64.gz
+# Download latest release
+wget https://github.com/RCPUcoin/RCPU/releases/latest/download/rcpu-core-3.1.0-linux-x86_64.tar.gz
 
-# Verify checksums
-wget https://github.com/RCPUcoin/RCPU/releases/latest/download/SHA256SUMS
-sha256sum -c SHA256SUMS
+# Verify checksums and signature
+wget https://github.com/RCPUcoin/RCPU/releases/latest/download/SHA256SUMS.txt
+wget https://github.com/RCPUcoin/RCPU/releases/latest/download/SHA256SUMS.txt.asc
+gpg --verify SHA256SUMS.txt.asc SHA256SUMS.txt
+sha256sum -c SHA256SUMS.txt
 
-# Decompress
-gunzip rcpud-linux-x64.gz
-gunzip rcpu-cli-linux-x64.gz
-
-# Install
-sudo mv rcpud-linux-x64 /usr/local/bin/rcpud
-sudo mv rcpu-cli-linux-x64 /usr/local/bin/rcpu-cli
+# Extract and install
+tar xzf rcpu-core-3.1.0-linux-x86_64.tar.gz
+sudo cp rcpu-core-3.1.0-linux-x86_64/bin/* /usr/local/bin/
 sudo chmod +x /usr/local/bin/rcpud /usr/local/bin/rcpu-cli
 ```
 

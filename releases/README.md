@@ -1,61 +1,66 @@
 # RCPU Releases
 
-Pre-built binaries for RCPU are available on the
-[**GitHub Releases page**](https://github.com/RCPUcoin/RCPU/releases).
+Official binary releases are published on GitHub Releases:
 
-> **Note:** Binary files are not stored in this git repository.
-> They are distributed exclusively via GitHub Releases to keep the
-> repository lean and fast to clone.
+  **https://github.com/RCPUcoin/RCPU/releases**
 
-## Available downloads
+This directory contains **release notes and checksum manifests only** - no
+pre-compiled binaries are stored in the git repository.
 
-| Component | Description |
-|-----------|-------------|
-| **Core Wallet** | Full node with GUI wallet (Windows & Linux) |
-| **CLI Tools** | `rcpud`, `rcpu-cli`, `rcpu-tx` (command line) |
-| **CPU Miner** | `cpuminer-rcpu` (Windows & Linux) |
-| **One-Click Mining** | Easy mining setup for Windows |
-| **Mobile Miner** | Android mining app |
+## Download
 
-## Verifying downloads
+Go to the [Releases page](https://github.com/RCPUcoin/RCPU/releases) and grab
+the files for your platform. Each release includes:
 
-All release files are signed with the RCPU Dev Team GPG key.
+| File | Platform | Description |
+|------|----------|-------------|
+| `rcpu-core-*-linux-x86_64.tar.gz` | Linux x86_64 | Full node (rcpud, rcpu-cli, rcpu-tx, rcpu-wallet) |
+| `rcpu-wallet-*-windows.zip` | Windows x64 | GUI wallet (rcpu-qt) |
+| `cpuminer-rcpu-*-linux-x86_64.tar.gz` | Linux x86_64 | CPU miner (RandomX) |
+| `cpuminer-rcpu-*-windows.zip` | Windows x64 | CPU miner (RandomX) |
+| `One-click-mining-win.zip` | Windows x64 | One-click mining bundle |
+| `SHA256SUMS.txt` | - | SHA-256 checksums for all files |
+| `SHA256SUMS.txt.asc` | - | GPG detached signature of checksums |
+| `RCPU-DEV-GPG-KEY.asc` | - | Signing public key |
 
-### 1. Import the signing key
+## Verification
+
+Always verify downloads before running them:
 
 ```bash
-# Download the public key from the release page
-wget https://github.com/RCPUcoin/RCPU/releases/download/v3.1.0/RCPU-DEV-GPG-KEY.asc
-
-# Import it
+# 1. Import the signing key (first time)
 gpg --import RCPU-DEV-GPG-KEY.asc
-```
 
-Key fingerprint:
-```
-934D 5BC9 5DD4 B3AC FEF5  21B9 5476 3350 1FE4 B8EE
-```
-
-### 2. Verify checksums signature
-
-```bash
+# 2. Verify the checksum file signature
 gpg --verify SHA256SUMS.txt.asc SHA256SUMS.txt
-```
 
-You should see:
-```
-Good signature from "RCPU Dev Team <rcpudevs@proton.me>"
-```
-
-### 3. Verify file checksums
-
-```bash
+# 3. Verify file checksums
 sha256sum -c SHA256SUMS.txt
 ```
 
-## Building from source
+The signing key fingerprint is published in the root README and on the
+project website for cross-reference.
 
-See the build documentation in the [`doc/`](../doc/) directory:
-- `doc/build-unix.md` - Linux build instructions
-- `doc/build-windows.md` - Windows (cross-compile) instructions
-- `doc/build-osx.md` - macOS build instructions
+## Build from source
+
+If you prefer to compile your own binaries, see:
+
+- [Unix build notes](../doc/build-unix.md)
+- [Windows build notes](../doc/build-windows.md)
+- [macOS build notes](../doc/build-osx.md)
+
+## Mining
+
+Quick start with the official pool:
+
+```bash
+# Linux
+./cpuminer -a randomx -o stratum+tcp://pool.rcpuapp.top:3333 -u YOUR_ADDRESS -p x
+```
+
+```batch
+:: Windows (one-click mining)
+start-mining.bat
+```
+
+See [pool.rcpuapp.top](https://pool.rcpuapp.top) for pool details.

@@ -1,75 +1,101 @@
 RCPU Core
-=============
+==========
 
-RCPU is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. RCPU uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. RCPU Core is the name of open source
-software which enables the use of this currency.
+Setup
+-----
+RCPU Core is the reference client for the RCPU network - a RandomX-proof-of-work
+cryptocurrency with Confidential Transactions (CT). It validates blocks and
+transactions, and stores the blockchain history.
 
-For more information, as well as an immediately usable binary version of
-RCPU Core, see the [RCPU website](https://rcpuapp.top/) and the
-[GitHub Releases page](https://github.com/RCPUcoin/RCPU/releases).
+### Disk usage
 
-## License
+The RCPU blockchain is relatively young (launched February 2024) and lightweight.
+As of late 2026 the full chain is well under **1 GB** and a full node can run
+comfortably on a small VPS with 10 GB of disk space. SSD is recommended but not
+required.
 
-RCPU Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+Initial sync takes a few minutes to an hour depending on your connection and
+hardware - not days.
 
-## Development Process
+### Download
 
-The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
-completely stable. [Tags](https://github.com/RCPUcoin/RCPU/tags) are created
-regularly from release branches to indicate new official, stable release versions of RCPU Core.
+Pre-built binaries are available on the GitHub Releases page:
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+  <https://github.com/RCPUcoin/RCPU/releases>
 
-## Testing
+Verify the SHA256 checksums and GPG signature before running. The signing key is
+published in each release as `RCPU-DEV-GPG-KEY.asc`.
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+Running
+-------
 
-### Automated Testing
+### Unix / Linux
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+Extract the tarball and run:
 
-There are also [regression and integration tests](/test), written
-in Python.
-These tests are run regularly by CI.
+- `bin/rcpud` (headless daemon) or
+- `bin/rcpu-qt` (GUI, if built)
 
-### Manual Quality Assurance (QA) Testing
+### Windows
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+Unpack the zip file and run `rcpu-qt.exe` (GUI) or `rcpud.exe` (headless).
 
-## Translations
+### macOS
 
-Changes to translations as well as new translations can be submitted via pull request.
+Drag RCPU Core to your Applications folder, then run it.
 
-Translations are periodically pulled from the translation platform and merged
-into the git repository. **Important**: We do not accept translation changes as
-GitHub pull requests because the next pull from the translation platform would
-automatically overwrite them again.
+### Need Help?
 
-## Notable Features
+* Read the rest of the documentation in this `doc/` directory.
+* Open an issue on GitHub: <https://github.com/RCPUcoin/RCPU/issues>
+* Join the community:
+  - Telegram: <https://t.me/RCPUcoin>
+  - X / Twitter: <https://x.com/RCPUcoin>
 
-- **RandomX PoW**: CPU-friendly mining algorithm, ASIC-resistant
-- **Confidential Transactions (CT)**: Amounts are hidden on-chain using
-  Pedersen commitments (activated at height 8000)
-- **ASERT Difficulty Adjustment**: Responsive difficulty algorithm
-- **5-minute block time**: Faster confirmations than Bitcoin
-- **Independent genesis**: RCPU has its own genesis block and chain parameters
+Building
+--------
 
-## Upstream
+Developer build notes for each platform:
 
-RCPU Core is forked from [Bitcoin Core](https://github.com/bitcoin/bitcoin) 27.0.
-We maintain the upstream copyright and license, and contribute back where possible.
+- [Dependencies](dependencies.md)
+- [Unix Build Notes](build-unix.md)
+- [Windows Build Notes](build-windows.md)
+- [macOS Build Notes](build-osx.md)
+- [FreeBSD Build Notes](build-freebsd.md)
+- [OpenBSD Build Notes](build-openbsd.md)
+- [NetBSD Build Notes](build-netbsd.md)
 
+Development
+-----------
+
+The root [README](/README.md) covers project overview, economic parameters, and
+contribution guidelines.
+
+- [Developer Notes](developer-notes.md)
+- [Productivity Notes](productivity.md)
+- [Release Process](release-process.md)
+- [Translation Process](translation_process.md)
+- [JSON-RPC Interface](JSON-RPC-interface.md)
+- [REST Interface](REST-interface.md)
+- [Shared Libraries](shared-libraries.md)
+- [Assets Attribution](assets-attribution.md)
+- [Files](files.md)
+- [Init Scripts (systemd/upstart/openrc)](init.md)
+- [Managing Wallets](managing-wallets.md)
+- [Fuzz-testing](fuzz-testing.md)
+
+### Upstream
+
+RCPU Core is forked from Bitcoin Core v27. The Bitcoin upstream design docs and
+BIP implementations remain relevant for protocol-level understanding:
+
+- [BIPs](bips.md)
+- [Benchmarking](benchmarking.md)
+- [Internal Design Docs](design/)
+
+### Miscellaneous
+
+- [bitcoin.conf Configuration File](bitcoin-conf.md)
+- [CJDNS Support](cjdns.md)
+- [I2P Support](i2p.md)
+- [Dnsseed Policy](dnsseed-policy.md)
