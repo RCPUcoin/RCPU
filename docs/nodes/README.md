@@ -339,7 +339,7 @@ addnode=<YOUR_PEER_HOST>:9965
 - Pool: https://pool.rcpuapp.top
 - Explorer: https://explorer.rcpuapp.top
 - Wallet: https://wallet.rcpuapp.top
-- Telegram: https://t.me/RCPUcoin
+- Telegram: https://t.me/btc_rcpu
 
 > **Deprecated domains** (still reachable, no longer official): `rcpu.cloud`
 > and `rcpupool.asia`. New deployments should use the `rcpuapp.top` set above.

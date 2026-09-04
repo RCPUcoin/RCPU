@@ -5,7 +5,7 @@
 [![Explorer](https://img.shields.io/badge/Explorer-explorer.rcpuapp.top-blue)](https://explorer.rcpuapp.top/)
 [![Mining Pool](https://img.shields.io/badge/Pool-pool.rcpuapp.top-green)](https://pool.rcpuapp.top/)
 [![Wallet](https://img.shields.io/badge/Wallet-wallet.rcpuapp.top-orange)](https://wallet.rcpuapp.top/)
-[![Telegram](https://img.shields.io/badge/Telegram-join-blue)](https://t.me/RCPUcoin)
+[![Telegram](https://img.shields.io/badge/Telegram-join-blue)](https://t.me/btc_rcpu)
 
 RCPU is a CPU-mineable cryptocurrency with **Confidential Transactions (CT)**.
 It is forked from Bitcoin Core 27.0, replacing SHA-256 PoW with RandomX for
@@ -193,8 +193,8 @@ the Bitcoin Core developers and other contributors.
 
 ## Community
 
-- [Telegram](https://t.me/RCPUcoin)
-- [X / Twitter](https://x.com/rcpucoin)
+- [Telegram](https://t.me/btc_rcpu)
+- [X / Twitter](https://x.com/btc_rcpu)
 - [Official Website](https://rcpuapp.top/)
 
 ---

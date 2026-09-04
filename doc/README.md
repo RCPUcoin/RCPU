@@ -49,8 +49,8 @@ Drag RCPU Core to your Applications folder, then run it.
 * Read the rest of the documentation in this `doc/` directory.
 * Open an issue on GitHub: <https://github.com/RCPUcoin/RCPU/issues>
 * Join the community:
-  - Telegram: <https://t.me/RCPUcoin>
-  - X / Twitter: <https://x.com/RCPUcoin>
+  - Telegram: <https://t.me/btc_rcpu>
+  - X / Twitter: <https://x.com/btc_rcpu>
 
 Building
 --------
