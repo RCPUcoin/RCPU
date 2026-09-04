@@ -16,9 +16,9 @@
 #include <crypto/sha256.h>
 #include <randomx.h>
 #include <logging.h>
-#include <boost/optional.hpp>
 #include <list>
 #include <map>
+#include <optional>
 #include <stdexcept>
 #include <thread>
 #include <vector>
@@ -593,7 +593,7 @@ static void CreateFastVM(uint32_t nEpoch, RandomXCacheRef myCache)
 }
 
 // Get VM for a given epoch, creating and caching if necessary.
-static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
+static std::optional<RandomXVMRef> GetVM(int32_t nEpoch)
 {
     // Initialize caches once with desired size
     static std::once_flag flag;
@@ -640,7 +640,7 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
         randomx_cache* pCache = randomx_alloc_cache(flags);
         if (!pCache) {
             LogPrintf("Error: randomx_alloc_cache() failed\n");
-            return boost::none;
+            return std::nullopt;
         }
         randomx_init_cache(pCache, seedHash.data(), seedHash.size());
         myCache = std::make_shared<RandomXCacheWrapper>(pCache);
@@ -652,7 +652,7 @@ static boost::optional<RandomXVMRef> GetVM(int32_t nEpoch)
     myVM = randomx_create_vm(flags, myCache->cache, NULL);
     if (!myVM) {
         LogPrintf("Error: randomx_create_vm() failed\n");
-        return boost::none;
+        return std::nullopt;
     }
 
     RandomXVMRef vmRef = std::make_shared<RandomXVMWrapper>(myVM, myCache, nullptr);
@@ -739,7 +739,7 @@ bool CheckProofOfWorkRandomX(const CBlockHeader& block, const Consensus::Params&
     // Compute RandomX hash if necessary
     if (verifyMode == POW_VERIFY_FULL || verifyMode == POW_VERIFY_MINING) {
         int32_t nEpoch = GetEpoch(block.nTime, params.nRandomXEpochDuration);
-        boost::optional<RandomXVMRef> vmRef = GetVM(nEpoch);
+        std::optional<RandomXVMRef> vmRef = GetVM(nEpoch);
         if (!vmRef) {
             LogPrintf("Error: Could not obtain VM for RandomX\n");
             return false;
@@ -751,9 +751,9 @@ bool CheckProofOfWorkRandomX(const CBlockHeader& block, const Consensus::Params&
         tmp.hashRandomX.SetNull();   // set to null when hashing
 
         {
-            AssertLockNotHeld(vmRef.get()->m_hashing_mutex);
-            LOCK(vmRef.get()->m_hashing_mutex);
-            randomx_calculate_hash(vmRef.get()->vm, &tmp, sizeof(tmp), rx_hash);
+            AssertLockNotHeld((*vmRef)->m_hashing_mutex);
+            LOCK((*vmRef)->m_hashing_mutex);
+            randomx_calculate_hash((*vmRef)->vm, &tmp, sizeof(tmp), rx_hash);
         }
 
         // If not mining, compare hash in block header with our computed value

@@ -12,7 +12,7 @@ Unicode true
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
 !define COMPANY "RCPU project"
-!define URL https://github.com/rcpu-project/rcpu
+!define URL https://github.com/RCPUcoin/RCPU
 
 # MUI Symbol Definitions
 # !RCPU
@@ -71,7 +71,7 @@ VIAddVersionKey CompanyWebsite "${URL}"
 VIAddVersionKey FileVersion "2.0.0-narnia-core-27.0.0"
 VIAddVersionKey FileDescription "Installer for RCPU"
 # !RCPU
-VIAddVersionKey LegalCopyright "Copyright (C) 2009-2024 The Bitcoin Core developers and the RCPU Developers"
+VIAddVersionKey LegalCopyright "Copyright (C) 2009-2026 The Bitcoin Core developers and the RCPU Developers"
 # !RCPU END
 InstallDirRegKey HKCU "${REGKEY}" Path
 ShowUninstDetails show
