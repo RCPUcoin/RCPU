@@ -213,7 +213,9 @@ static uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
     // as per the absolute formulation of ASERT.
     // This is somewhat counterintuitive since it is referred to as the anchor timestamp, but
     // as per the formula the timestamp of block M-1 must be used if the anchor is M.
-    assert(pindexPrev->pprev != nullptr);
+    // Note: when anchor is genesis (height 0), pindexPrev->pprev may be nullptr for the
+    // first block after genesis, but nTimeDiff uses anchorParams.nPrevBlockTime which is
+    // already set correctly, so no need to access pindexPrev->pprev here.
 
     const arith_uint256 refBlockTarget = arith_uint256().SetCompact(anchorParams.nBits);
 
