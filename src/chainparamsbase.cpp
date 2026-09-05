@@ -55,7 +55,7 @@ std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const ChainType chain)
     case ChainType::REGTEST:
         return std::make_unique<CBaseChainParams>("btcregtest", 18443, 18445);
     case ChainType::RCPUMAIN:
-        return std::make_unique<CBaseChainParams>("rcpu", 9962, 9966);
+        return std::make_unique<CBaseChainParams>("rcpu", 7337, 7228);
     case ChainType::RCPUTESTNET:
         return std::make_unique<CBaseChainParams>("rcputestnet", 19962, 19966);
     case ChainType::RCPUREGTEST:

@@ -569,18 +569,18 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000023258f4a6");
+        consensus.nMinimumChainWork = uint256{};
         consensus.defaultAssumeValid = uint256{};
 
         // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
         // Two days
         consensus.nASERTHalfLife = 2 * 24 * 60 * 60;  // Two days
-        consensus.nASERTActivationHeight = 1000;  // RCPU: activate ASERT early
+        consensus.nASERTActivationHeight = 0;  // RCPU: activate ASERT from genesis
         consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
-            999,          // anchor block height
+            0,            // anchor block height (genesis)
             0x1e3ffffc,   // anchor block nBits
-            1786069103,   // anchor block prev timestamp
+            1788566400,   // anchor block prev timestamp (2026-09-05)
         };
 
         /**
@@ -592,25 +592,22 @@ public:
         pchMessageStart[1] = 0x43;  // C
         pchMessageStart[2] = 0x50;  // P
         pchMessageStart[3] = 0x55;  // U
-        nDefaultPort = 9965;
+        nDefaultPort = 7227;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
 
         consensus.fPowRandomX = true;
         consensus.nRandomXEpochDuration = 7 * 24 * 60 * 60;     // one week
-        consensus.nCTActivationHeight = 8000;  // RCPU: Confidential Transactions activate at height 8000
-        genesis = CreateRcpuGenesisBlock(1708650456, 20076863, 0x1e3ffffc, 1, 50 * COIN);
+        consensus.nCTActivationHeight = 0;  // RCPU: Confidential Transactions active from genesis
+        genesis = CreateRcpuGenesisBlock(1788566400, 20076863, 0x1e3ffffc, 1, 50 * COIN);
         genesis.hashRandomX = uint256S("33c450e0152826e3a8948b01464cf9182344a1544b3ddcf6153dd04b62938d01");
         consensus.hashGenesisBlock = GetHashOfRcpuGenesisBlock(genesis);
         assert(genesis.hashMerkleRoot == uint256S("2f7b90fafd8247ee73d213d49699fcfe12a37c608f1d9d1c06f10e43cb6426c6"));
 
-        vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_main), std::end(chainparams_seed_main));
+        vFixedSeeds.clear();  // No hardcoded peer IPs
 
-        // RCPU seed nodes: DNS seed only. Static node IPs are resolved via A
-        // records of seed.rcpu.ren (and may be pinned in node -addnode config),
-        // keeping infrastructure topology out of the consensus source.
-        vSeeds.emplace_back("seed.rcpu.ren");        // DNS seed
+        vSeeds.emplace_back("207.57.129.188");        // DNS seed
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -625,12 +622,6 @@ public:
 
         checkpointData = {
             {
-                { 2000, uint256S("66e1402af5c72c59944b84b6f5547d6d2c5f848c72192a12dbf7801b2824a89e")},
-                { 2500, uint256S("785e9293a5b2a8e1f6983b4c05c229a97ba933989d40c8e01b5f630535cda94e")},
-                { 3000, uint256S("4cb0fbf6ca6fe73ebb1662b7c7d14bf239891cdecfe06a11fa5d70ef43dc16ae")},
-                { 3500, uint256S("4c0ff4498e4fc1ab39b70651f196eb9adeb6a378a7f65afd662dd25abbb5a605")},
-                { 4000, uint256S("ad58d72ab1c0791621392b1c93bdcd5ca57b88041f034b9611f5bf58f1a3400e")},
-                { 4500, uint256S("fe2b0710f6c413cc7753e1bec8375044389955cf5ee9f8830ba95d35be012bba")},
             }
         };
 
@@ -638,10 +629,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 ff02998d8803b5a6fd668c0b6f6ee3208a78422d41d6e102080a16703038a550
-            .nTime    = 1788478789,
-            .nTxCount = 26801,
-            .dTxRate  = 0.004966515669383668,
+            .nTime    = 1788566400,
+            .nTxCount = 1,
+            .dTxRate  = 0.0,
         };
     }
 };
